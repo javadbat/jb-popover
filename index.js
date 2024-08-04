@@ -1,0 +1,1 @@
+import {JBPopoverWebComponent} from './dist/jb-popover.js';

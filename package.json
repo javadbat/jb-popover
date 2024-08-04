@@ -1,0 +1,31 @@
+{
+  "name": "jb-popover",
+  "description": "popover web component",
+  "type": "module",
+  "author": {
+		"name": "mohammad javad bathaei",
+		"email": "javadbat@gmail.com"
+	},
+  "keywords": [
+    "jb",
+    "jb-popover",
+    "popover",
+    "bottomsheet",
+    "web component"
+  ],
+  "version": "0.0.1",
+  "bugs": "https://github.com/javadbat/jb-popover/issues",
+  "license": "MIT",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib/",
+    "dist/"
+  ],
+  "main": "index.js",
+  "types": "./dist/web-component/jb-popover/lib/jb-popover.d.ts",
+  "repository": {
+		"type": "git",
+		"url": "git@github.com:javadbat/jb-popover.git"
+  }
+}
