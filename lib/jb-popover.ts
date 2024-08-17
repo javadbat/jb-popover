@@ -25,6 +25,9 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.initProp();
     this.callOnInitEvent();
   }
+  disconnectedCallback(){
+    window.removeEventListener("popstate", this.#onBrowserBack);
+  }
   callOnLoadEvent() {
     const event = new CustomEvent("load", { bubbles: true, composed: true });
     this.dispatchEvent(event);
@@ -52,8 +55,8 @@ export class JBPopoverWebComponent extends HTMLElement {
       "click",
       this.onBackgroundClick.bind(this)
     );
-    //TODO: remove listener on component unmount
-    window.addEventListener("popstate", this.#onBrowserBack.bind(this));
+    window.addEventListener("popstate", this.#onBrowserBack);
+
   }
   initProp() {
     this.registerEventListener();
@@ -125,10 +128,12 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.elements.componentWrapper.classList.remove("--closed");
     this.elements.componentWrapper.classList.add("--opened");
   }
-  #onBrowserBack() {
-    if ( this.isOpen && isMobile()) {
+  #onBrowserBack = (e:PopStateEvent)=>{
+    if (this.isOpen && isMobile()) {
+      e.preventDefault();
       this.close();
       this.#dispatchCloseEvent("HISTORY_BACK_EVENT");
+
     }
   }
 }

@@ -3,4 +3,40 @@ sometimes you need a to open a small window next to a element to show more detai
 
 - handle overflow if popover could not fit into it's designed place.
 - show popover as a small window next to element in desktop and show it as a bottom-sheet in mobile
-- handle animations in standard manner with overflow handler  
+- handle animations in standard manner with overflow handler
+
+## usage
+
+install:
+```cmd
+npm i jb-popover
+```
+usage:
+```js
+import 'jb-popover
+```
+```html
+<jb-popover>
+  <!-- put your content here   -->
+   <div>my custom content</div>
+<jb-popover>
+```
+## open & close popover
+
+by just calling `open` and `close` method:
+
+```javascript
+document.querySelector('jb-popover').open();
+document.querySelector('jb-popover').close();
+```
+<!-- in mobile view we close popover on back click and prevent real back click event -->
+
+## set custom style
+
+you can customize jb-popover styles by just set some css variable. here is the variable list:    
+
+| css variable name                       | description                                                                     |
+| -------------                           | -------------                                                                   |
+| --jb-popover-z-index                    | z-index of opened popover                                                       |
+| --jb-popover-bg-color                   | background color of popover content                                             |
+| --jb-popover-border-radius              | border-radius of popover (must be single like 24px and not 24px 24px 24px 24px) |

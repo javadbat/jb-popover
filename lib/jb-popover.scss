@@ -4,7 +4,7 @@
   display: none;
   inset-block-start: 64px;
   inset-inline-start: 0;
-  z-index: var(--jb-date-input-calendar-wrapper-z-index, 10);
+  z-index: var(--jb-popover-z-index, 10);
   will-change: transform;
   transition: transform 0.3s 0s ease;
   @include mobile{
@@ -19,7 +19,7 @@
       display: none;
       grid-template-rows: 1fr auto;
       grid-template-columns: 1fr;
-      grid-template-areas: "." "calendar-wrapper";
+      grid-template-areas: "." "content-wrapper";
       overflow-x: hidden;
   }
   &.--opened {
@@ -27,8 +27,8 @@
   }
   .popover-background{}
   .popover-content-wrapper{
-      background-color: var(--jb-date-input-calender-wrapper-bg-color,#fff);
-      border-radius: var(--jb-date-input-calender-wrapper-border-radius, 24px);
+      background-color: var(--jb-popover-bg-color,#fff);
+      border-radius: var(--jb-popover-border-radius, 24px);
       padding: 16px;
       box-shadow:
           12px 12px 16px 0 rgba(0, 0, 0, 0.25),
@@ -38,8 +38,8 @@
       justify-content: center;
       box-sizing: border-box;
       @include mobile{
-          border-radius: var(--jb-date-input-calender-wrapper-border-radius, 24px) var(--jb-date-input-calender-wrapper-border-radius, 24px) 0 0;
-          grid-area: calendar-wrapper;
+          border-radius: var(--jb-popover-border-radius, 24px) var(--jb-popover-border-radius, 24px) 0 0;
+          grid-area: content-wrapper;
           padding: 0;
           padding: 32px 0;
       }
