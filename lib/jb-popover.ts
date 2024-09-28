@@ -11,7 +11,7 @@ export class JBPopoverWebComponent extends HTMLElement {
   get JBID() {
     return this.#JBID;
   }
-  #autoCloseOnBackgroundClick= false;
+  #autoCloseOnBackgroundClick = false;
   get isOpen() {
     return this.#isOpen;
   }
@@ -25,7 +25,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.initProp();
     this.callOnInitEvent();
   }
-  disconnectedCallback(){
+  disconnectedCallback() {
     window.removeEventListener("popstate", this.#onBrowserBack);
   }
   callOnLoadEvent() {
@@ -50,16 +50,18 @@ export class JBPopoverWebComponent extends HTMLElement {
       contentWrapper: shadowRoot.querySelector(".popover-content-wrapper")!,
     };
   }
-  registerEventListener() {
+  #registerEventListener() {
     this.elements.background.addEventListener(
       "click",
       this.onBackgroundClick.bind(this)
     );
-    window.addEventListener("popstate", this.#onBrowserBack);
 
+    window.addEventListener("popstate", this.#onBrowserBack);
+    this.elements.contentWrapper.addEventListener('mouseenter', this.#fixCalendarContainerPos);
+    this.elements.contentWrapper.addEventListener('mouseleave', this.#resetCalendarContainerPos);
   }
   initProp() {
-    this.registerEventListener();
+    this.#registerEventListener();
   }
   checkInitialOpenness() {
     //if page has modal url we open it automatically
@@ -77,11 +79,11 @@ export class JBPopoverWebComponent extends HTMLElement {
   static get observedAttributes() {
     return ["is-open", "id"];
   }
-  attributeChangedCallback(name:string, oldValue:string, newValue:string) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     // do something when an attribute has changed
     this.onAttributeChange(name, newValue);
   }
-  onAttributeChange(name:string, value:string) {
+  onAttributeChange(name: string, value: string) {
     switch (name) {
       case "is-open":
         if (value == "true") {
@@ -105,7 +107,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       this.close();
     }
   }
-  #dispatchCloseEvent(type:"BACKGROUND_CLICK" | "HISTORY_BACK_EVENT" | "OUTSIDE_CLICK" | "CLOSE_BUTTON_CLICK") {
+  #dispatchCloseEvent(type: "BACKGROUND_CLICK" | "HISTORY_BACK_EVENT" | "OUTSIDE_CLICK" | "CLOSE_BUTTON_CLICK") {
     //we have many ways to dispatch close event like back button on close clicked
     const event = new CustomEvent("close", { detail: { eventType: type } });
     this.dispatchEvent(event);
@@ -128,13 +130,41 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.elements.componentWrapper.classList.remove("--closed");
     this.elements.componentWrapper.classList.add("--opened");
   }
-  #onBrowserBack = (e:PopStateEvent)=>{
+  #onBrowserBack = (e: PopStateEvent) => {
     if (this.isOpen && isMobile()) {
       e.preventDefault();
       this.close();
       this.#dispatchCloseEvent("HISTORY_BACK_EVENT");
 
     }
+  }
+  overflowHandler: "NONE" | "SLIDE" = "NONE";
+  overflowDom:HTMLElement|null = null;
+  #resetCalendarContainerPos = () => {
+    if (this.overflowHandler == "SLIDE") {
+      this.elements.contentWrapper.style.transform = `translateY(${0}px)`;
+    }
+  }
+  #fixCalendarContainerPos = () => {
+    if (this.overflowHandler == "SLIDE") {
+      //bounding client rect
+      const bcr = this.elements.contentWrapper.getBoundingClientRect();
+      const overflowSize = this.#getParentBottom() - bcr.bottom;
+      if (overflowSize < 0) {
+        this.elements.contentWrapper.style.transform = `translateY(${overflowSize}px)`;
+      }
+    }
+
+  }
+  /**
+   * @description return height of element that we want to calc our overflow based on.
+   */
+  #getParentBottom():number{
+    if(this.overflowDom){
+      return this.overflowDom.getBoundingClientRect().bottom;
+    }
+    //default height of parent if no parent set
+    return window.innerHeight;
   }
 }
 const myElementNotExists = !customElements.get("jb-popover");
