@@ -11,9 +11,13 @@ export class JBPopoverWebComponent extends HTMLElement {
   get JBID() {
     return this.#JBID;
   }
-  #autoCloseOnBackgroundClick = false;
+  #autoCloseOnBackgroundClick = true;
   get isOpen() {
     return this.#isOpen;
+  }
+  get PopoverHashPath():string | null{
+    //this used to add # route to prevent back button in mobile. it only work if element have id
+    return this.id?`#${this.id}`:null;
   }
   constructor() {
     super();
@@ -22,7 +26,7 @@ export class JBPopoverWebComponent extends HTMLElement {
   connectedCallback() {
     // standard web component event that called when all of dom is bound
     this.callOnLoadEvent();
-    this.initProp();
+    this.#registerEventListener();
     this.callOnInitEvent();
   }
   disconnectedCallback() {
@@ -55,13 +59,9 @@ export class JBPopoverWebComponent extends HTMLElement {
       "click",
       this.onBackgroundClick.bind(this)
     );
-
-    window.addEventListener("popstate", this.#onBrowserBack);
+    //we add popstate event listener
     this.elements.contentWrapper.addEventListener('mouseenter', this.#fixCalendarContainerPos);
     this.elements.contentWrapper.addEventListener('mouseleave', this.#resetCalendarContainerPos);
-  }
-  initProp() {
-    this.#registerEventListener();
   }
   checkInitialOpenness() {
     //if page has modal url we open it automatically
@@ -120,6 +120,13 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.#isOpen = false;
     this.elements.componentWrapper.classList.remove("--opened");
     this.elements.componentWrapper.classList.add("--closed");
+    // if we pushed state to the history but state doesn't popped yet we pop it.
+    if(window.history.state == "jb-popover-open" && this.PopoverHashPath !== null){
+      window.removeEventListener("popstate", this.#onBrowserBack);
+      if(window.location.hash == this.PopoverHashPath){
+        history.go(-1);
+      }
+    }
   }
   /**
    * @public
@@ -129,10 +136,14 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.#isOpen = true;
     this.elements.componentWrapper.classList.remove("--closed");
     this.elements.componentWrapper.classList.add("--opened");
+    if (isMobile() && this.PopoverHashPath !== null) {
+      window.history.pushState('jb-popover-open',"",this.PopoverHashPath);
+      window.addEventListener("popstate", this.#onBrowserBack,{once:true});
+    }
   }
   #onBrowserBack = (e: PopStateEvent) => {
     if (this.isOpen && isMobile()) {
-      e.preventDefault();
+      //we will push state when modal get open
       this.close();
       this.#dispatchCloseEvent("HISTORY_BACK_EVENT");
 

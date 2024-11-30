@@ -32,13 +32,16 @@ document.querySelector('jb-popover').close();
 <!-- in mobile view we close popover on back click and prevent real back click event -->
 ## overflow
 
-we can handle overflow by set 2 ``overflowHandler`, `overflowDom` property
+we can handle overflow by set 2 `overflowHandler`, `overflowDom` property
 ```javascript
 //popover will slide soothly up if it overflow the page or any other assigned container
 document.querySelector('jb-popover').overflowHandler = "SLIDE";
 // popover would check overflow status with window by default if you set overflowDom to any other DOM Element it will check overflow by it for example if ypu use it in a modal you can set it to modal dom. set this property is optional
 document.querySelector('jb-popover').overflowDom= document.querySelector('jb-modal');
 ```
+## prevent close on mobile by back button
+
+in some cases you want to prevent popover from closing in mobile. for doing so, just add id attribute to the popover element
 
 ## set custom style
 
