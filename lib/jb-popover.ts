@@ -1,9 +1,9 @@
-import { symbol } from "prop-types";
 import HTML from "./jb-popover.html";
 import CSS from "./jb-popover.scss";
-import { ElementsObject } from "./types";
-import { isMobile } from "../../../common/scripts/device-detection";
+import { ElementsObject } from "./types.js";
+import { isMobile } from "jb-core";
 
+export * from './types.js';
 export class JBPopoverWebComponent extends HTMLElement {
   #isOpen = false;
   #JBID = Symbol();
