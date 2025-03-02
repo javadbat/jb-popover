@@ -23,7 +23,7 @@
     "dist/"
   ],
   "main": "index.js",
-  "types": "./dist/web-component/jb-popover/lib/jb-popover.d.ts",
+  "types": "./dist/jb-popover.d.ts",
   "repository": {
 		"type": "git",
 		"url": "git@github.com:javadbat/jb-popover.git"
