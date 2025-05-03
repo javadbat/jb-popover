@@ -1,4 +1,6 @@
 :host{
+  --border-radius:var(--jb-popover-border-radius, var(--jb-radius-xl));
+  /*colors*/
   --back-bg-color:var(--jb-popover-back-bg-color, oklch(from var(--jb-black) l c h / 0.5));
   --bg-color:var(--jb-popover-bg-color, #fff);
 }

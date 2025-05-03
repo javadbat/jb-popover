@@ -2,7 +2,7 @@ import HTML from "./jb-popover.html";
 import CSS from "./jb-popover.scss";
 import { ElementsObject } from "./types.js";
 import { isMobile } from "jb-core";
-import {defineColors} from 'jb-core/theme';
+import {registerDefaultVariables} from 'jb-core/theme';
 
 export * from './types.js';
 export class JBPopoverWebComponent extends HTMLElement {
@@ -45,7 +45,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     const shadowRoot = this.attachShadow({
       mode: "open",
     });
-    defineColors();
+    registerDefaultVariables();
     const html = `<style>${CSS}</style>` + "\n" + HTML;
     const element = document.createElement("template");
     element.innerHTML = html;
