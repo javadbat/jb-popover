@@ -1,5 +1,5 @@
-import HTML from "./jb-popover.html";
 import CSS from "./jb-popover.scss";
+import { renderHTML } from "./render";
 import { ElementsObject } from "./types.js";
 import { isMobile } from "jb-core";
 import {registerDefaultVariables} from 'jb-core/theme';
@@ -46,7 +46,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       mode: "open",
     });
     registerDefaultVariables();
-    const html = `<style>${CSS}</style>` + "\n" + HTML;
+    const html = `<style>${CSS}</style>` + "\n" + renderHTML();
     const element = document.createElement("template");
     element.innerHTML = html;
     shadowRoot.appendChild(element.content.cloneNode(true));
