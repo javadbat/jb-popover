@@ -13,19 +13,23 @@ sometimes you need a to open a small window next to a element to show more detai
 ## usage
 
 install:
-```cmd
+
+```sh
 npm i jb-popover
 ```
 usage:
+
 ```js
 import 'jb-popover'
 ```
+
 ```html
 <jb-popover>
   <!-- put your content here   -->
    <div>my custom content</div>
 <jb-popover>
 ```
+
 ## open & close popover
 
 by just calling `open` and `close` method:
@@ -44,6 +48,7 @@ document.querySelector('jb-popover').overflowHandler = "SLIDE";
 // popover would check overflow status with window by default if you set overflowDom to any other DOM Element it will check overflow by it for example if ypu use it in a modal you can set it to modal dom. set this property is optional
 document.querySelector('jb-popover').overflowDom= document.querySelector('jb-modal');
 ```
+
 ## prevent close on mobile by back button
 
 in some cases you want to prevent popover from closing in mobile. for doing so, just add id attribute to the popover element
