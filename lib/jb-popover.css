@@ -1,16 +1,16 @@
-@use '~jb-core/styles/medias.scss' as *;
-@use './variables.css';
+/*480px*/
+@custom-media --mobile-until (max-width: 30rem);
 
 .jb-popover-web-component {
     position: absolute;
     display: none;
-    inset-block-start: 64px;
+    inset-block-start: 4rem;
     inset-inline-start: 0;
     z-index: var(--jb-popover-z-index, 10);
     will-change: transform;
     transition: transform 0.3s 0s ease;
 
-    @include mobile {
+    @media(--mobile-until) {
         inset-block-start: 0;
         inset-inline-start: 0;
         bottom: 0;
@@ -43,11 +43,11 @@
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        //animation to handle overflow move
+        /*animation to handle overflow move*/
         will-change: transform;
         transition: transform 0.3s 0s ease;
 
-        @include mobile {
+        @media(--mobile-until) {
             border-radius: var(--border-radius) var(--border-radius) 0 0;
             grid-area: content-wrapper;
             padding: 0;
