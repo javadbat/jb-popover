@@ -5,9 +5,10 @@ export const webComponentList: WebComponentBuildConfig[] = [
     name: "jb-popover",
     path: "./lib/jb-popover.ts",
     outputPath: "./dist/jb-popover.js",
-    external: ["jb-core"],
+    external: ["jb-core", "jb-core/theme"],
     globals:{
       "jb-core":"JBCore",
+      "jb-core/theme":"JBCoreTheme",
     },
     umdName: "JBPopover",
   },

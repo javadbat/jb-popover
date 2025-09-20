@@ -7,8 +7,9 @@
     inset-block-start: 4rem;
     inset-inline-start: 0;
     z-index: var(--jb-popover-z-index, 10);
-    will-change: transform;
-    transition: transform 0.3s 0s ease;
+    will-change: opacity;
+    opacity: 1;
+    transition: opacity 0.2s 0s ease;
 
     @media(--mobile-until) {
         inset-block-start: 0;
@@ -24,10 +25,15 @@
         grid-template-columns: 1fr;
         grid-template-areas: "." "content-wrapper";
         overflow-x: hidden;
+        overflow-y: hidden;
     }
 
     &.--opened {
         display: grid;
+    }
+
+    @starting-style {
+        opacity: 0;
     }
 
     .popover-background {}
@@ -46,12 +52,17 @@
         /*animation to handle overflow move*/
         will-change: transform;
         transition: transform 0.3s 0s ease;
+        transform: translateY(0%);
 
         @media(--mobile-until) {
             border-radius: var(--border-radius) var(--border-radius) 0 0;
             grid-area: content-wrapper;
             padding: 0;
-            padding: 32px 0;
+            padding: 2rem 0;
+
+            @starting-style {
+                transform: translateY(100%);
+            }
         }
     }
 }

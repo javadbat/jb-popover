@@ -13,7 +13,7 @@
     "bottomsheet",
     "web component"
   ],
-  "version": "1.3.0",
+  "version": "1.4.0",
   "bugs": "https://github.com/javadbat/jb-popover/issues",
   "license": "MIT",
   "files": [
@@ -29,6 +29,6 @@
 		"url": "git@github.com:javadbat/jb-popover.git"
   },
   "dependencies": {
-    "jb-core": ">=0.14.0"
+    "jb-core": ">=0.16.1"
   }
 }

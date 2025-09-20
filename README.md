@@ -10,6 +10,10 @@ sometimes you need a to open a small window next to a element to show more detai
 - show popover as a small window next to element in desktop and show it as a bottom-sheet in mobile
 - handle animations in standard manner with overflow handler
 
+## demo
+
+jb-popover doesn't have any Demo right now but you can see it's usage in [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput)
+
 ## usage
 
 install:
