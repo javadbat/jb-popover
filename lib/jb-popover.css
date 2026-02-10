@@ -1,16 +1,23 @@
 /*480px*/
 @custom-media --mobile-until (max-width: 30rem);
 
+:host{
+    width: max-content;
+    display: block;
+    @media(--mobile-until) {
+        width: 100vw;
+    }
+}
 .jb-popover-web-component {
     position: absolute;
     display: none;
-    inset-block-start: 4rem;
+    inset-block-start: var(--inset-block-start);
     inset-inline-start: 0;
     z-index: var(--jb-popover-z-index, 10);
     will-change: opacity;
     opacity: 1;
     transition: opacity 0.2s 0s ease;
-
+    width: inherit;
     @media(--mobile-until) {
         inset-block-start: 0;
         inset-inline-start: 0;
@@ -53,7 +60,7 @@
         will-change: transform;
         transition: transform 0.3s 0s ease;
         transform: translateY(0%);
-
+        grid-template-columns: minmax(0, 1fr);
         @media(--mobile-until) {
             border-radius: var(--border-radius) var(--border-radius) 0 0;
             grid-area: content-wrapper;

@@ -1,7 +1,7 @@
 import CSS from "./jb-popover.css";
 import VariablesCSS from "./variables.css";
 import { renderHTML } from "./render";
-import { ElementsObject } from "./types.js";
+import type { ElementsObject } from "./types.js";
 import { isMobile } from "jb-core";
 import {registerDefaultVariables} from 'jb-core/theme';
 
@@ -47,7 +47,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       mode: "open",
     });
     registerDefaultVariables();
-    const html = `<style>${CSS} ${VariablesCSS}</style>` + "\n" + renderHTML();
+    const html = `<style>${CSS} ${VariablesCSS}</style>\n${renderHTML()}`;
     const element = document.createElement("template");
     element.innerHTML = html;
     shadowRoot.appendChild(element.content.cloneNode(true));
@@ -75,14 +75,14 @@ export class JBPopoverWebComponent extends HTMLElement {
     }
   }
   triggerUrlOpenEvent() {
-    //when modal open itself becuase url contain modal id
+    //when modal open itself because url contain modal id
     const event = new CustomEvent("urlOpen", { bubbles: true, composed: true });
     this.dispatchEvent(event);
   }
   static get observedAttributes() {
     return ["is-open", "id"];
   }
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
     // do something when an attribute has changed
     this.onAttributeChange(name, newValue);
   }
@@ -144,7 +144,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       window.addEventListener("popstate", this.#onBrowserBack,{once:true});
     }
   }
-  #onBrowserBack = (e: PopStateEvent) => {
+  #onBrowserBack = (_e: PopStateEvent) => {
     if (this.isOpen && isMobile()) {
       //we will push state when modal get open
       this.close();

@@ -66,3 +66,4 @@ you can customize jb-popover styles by just set some css variable. here is the v
 | --jb-popover-z-index                    | z-index of opened popover                                                       |
 | --jb-popover-bg-color                   | background color of popover content                                             |
 | --jb-popover-border-radius              | border-radius of popover (must be single like 24px and not 24px 24px 24px 24px) |
+| --jb-popover-top                        | top of the popover in desktop mode.                                             |
