@@ -3,7 +3,7 @@ import VariablesCSS from "./variables.css";
 import { renderHTML } from "./render";
 import type { ElementsObject } from "./types.js";
 import { isMobile } from "jb-core";
-import {registerDefaultVariables} from 'jb-core/theme';
+import { registerDefaultVariables } from 'jb-core/theme';
 
 export * from './types.js';
 export class JBPopoverWebComponent extends HTMLElement {
@@ -17,9 +17,9 @@ export class JBPopoverWebComponent extends HTMLElement {
   get isOpen() {
     return this.#isOpen;
   }
-  get PopoverHashPath():string | null{
+  get PopoverHashPath(): string | null {
     //this used to add # route to prevent back button in mobile. it only work if element have id
-    return this.id?`#${this.id}`:null;
+    return this.id ? `#${this.id}` : null;
   }
   constructor() {
     super();
@@ -121,12 +121,15 @@ export class JBPopoverWebComponent extends HTMLElement {
    */
   close() {
     this.#isOpen = false;
+    /* remove place observer when menu closed */
+    this.#bindTargetObserverController?.abort();
+    this.#bindTargetObserverController = null;
     this.elements.componentWrapper.classList.remove("--opened");
     this.elements.componentWrapper.classList.add("--closed");
     // if we pushed state to the history but state doesn't popped yet we pop it.
-    if(window.history.state == "jb-popover-open" && this.PopoverHashPath !== null){
+    if (window.history.state == "jb-popover-open" && this.PopoverHashPath !== null) {
       window.removeEventListener("popstate", this.#onBrowserBack);
-      if(window.location.hash == this.PopoverHashPath){
+      if (window.location.hash == this.PopoverHashPath) {
         history.go(-1);
       }
     }
@@ -137,11 +140,46 @@ export class JBPopoverWebComponent extends HTMLElement {
    */
   open() {
     this.#isOpen = true;
+    this.#updatePos();
+    this.#observeBindTarget();
     this.elements.componentWrapper.classList.remove("--closed");
     this.elements.componentWrapper.classList.add("--opened");
     if (isMobile() && this.PopoverHashPath !== null) {
-      window.history.pushState('jb-popover-open',"",this.PopoverHashPath);
-      window.addEventListener("popstate", this.#onBrowserBack,{once:true});
+      window.history.pushState('jb-popover-open', "", this.PopoverHashPath);
+      window.addEventListener("popstate", this.#onBrowserBack, { once: true });
+    }
+  }
+  #bindTarget: HTMLElement;
+  #bindTargetObserverController: AbortController | null = null;
+  /**
+   * will bind certain dom to the popover. when you bind something it get position fix and move base on target dom position on the page. it will solve overflow problem on some modal pr container with scroll.
+   */
+  bindTarget(element: HTMLElement) {
+    this.#bindTarget = element;
+    this.#updatePos();
+  }
+  #observeBindTarget(){
+     if (!this.#bindTarget || isMobile()) return;
+     let lastPos = this.#bindTarget.getBoundingClientRect();
+     const checkPosChange = ()=>{
+      const pos = this.#bindTarget.getBoundingClientRect();
+      if(lastPos.x !== pos.x || lastPos.y !== pos.y){
+        this.#updatePos();
+        lastPos = pos;
+      }
+     }
+     this.#bindTargetObserverController = new AbortController();
+     window.addEventListener("scroll",checkPosChange,{signal:this.#bindTargetObserverController.signal, passive:true})
+     window.addEventListener("resize",checkPosChange,{signal:this.#bindTargetObserverController.signal, passive:true})
+  }
+  #updatePos() {
+    if (this.#bindTarget && !isMobile()) {
+      const boundary = this.#bindTarget.getBoundingClientRect();
+      const style = getComputedStyle(this.#bindTarget);
+      const direction = style.direction;
+      this.elements.componentWrapper.style.position = "fixed";
+      this.elements.componentWrapper.style.top = `${boundary.bottom}px`;
+      this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
     }
   }
   #onBrowserBack = (_e: PopStateEvent) => {
@@ -153,7 +191,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     }
   }
   overflowHandler: "NONE" | "SLIDE" = "NONE";
-  overflowDom:HTMLElement|null = null;
+  overflowDom: HTMLElement | null = null;
   #resetCalendarContainerPos = () => {
     if (this.overflowHandler == "SLIDE") {
       this.elements.contentWrapper.style.transform = `translateY(${0}px)`;
@@ -173,8 +211,8 @@ export class JBPopoverWebComponent extends HTMLElement {
   /**
    * @description return height of element that we want to calc our overflow based on.
    */
-  #getParentBottom():number{
-    if(this.overflowDom){
+  #getParentBottom(): number {
+    if (this.overflowDom) {
       return this.overflowDom.getBoundingClientRect().bottom;
     }
     //default height of parent if no parent set
