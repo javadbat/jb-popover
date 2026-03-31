@@ -35,16 +35,18 @@ export class JBPopoverWebComponent extends HTMLElement {
     window.removeEventListener("popstate", this.#onBrowserBack);
   }
   callOnLoadEvent() {
-    const event = new CustomEvent("load", { bubbles: true, composed: true });
+    const event = new CustomEvent("load", { bubbles: false, composed: false });
     this.dispatchEvent(event);
   }
   callOnInitEvent() {
-    const event = new CustomEvent("init", { bubbles: true, composed: true });
+    const event = new CustomEvent("init", { bubbles: false, composed: false });
     this.dispatchEvent(event);
   }
   initWebComponent() {
     const shadowRoot = this.attachShadow({
       mode: "open",
+      clonable:true,
+      serializable:true
     });
     registerDefaultVariables();
     const html = `<style>${CSS} ${VariablesCSS}</style>\n${renderHTML()}`;
