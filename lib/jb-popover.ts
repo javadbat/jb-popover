@@ -4,6 +4,7 @@ import { renderHTML } from "./render";
 import type { ElementsObject } from "./types.js";
 import { isMobile } from "jb-core";
 import { registerDefaultVariables } from 'jb-core/theme';
+import { getScrollParent } from "./utils";
 
 export * from './types.js';
 export class JBPopoverWebComponent extends HTMLElement {
@@ -45,8 +46,8 @@ export class JBPopoverWebComponent extends HTMLElement {
   initWebComponent() {
     const shadowRoot = this.attachShadow({
       mode: "open",
-      clonable:true,
-      serializable:true
+      clonable: true,
+      serializable: true
     });
     registerDefaultVariables();
     const html = `<style>${VariablesCSS} ${CSS}</style>\n${renderHTML()}`;
@@ -151,7 +152,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       window.addEventListener("popstate", this.#onBrowserBack, { once: true });
     }
   }
-  #bindTarget: HTMLElement| null = null;
+  #bindTarget: HTMLElement | null = null;
   #bindTargetObserverController: AbortController | null = null;
   /**
    * will bind certain dom to the popover. when you bind something it get position fix and move base on target dom position on the page. it will solve overflow problem on some modal pr container with scroll.
@@ -163,24 +164,36 @@ export class JBPopoverWebComponent extends HTMLElement {
   /**
    * will unbind bounded target by `bindTarget` method. 
    */
-  unBindTarget(){
+  unBindTarget() {
     this.#bindTarget = null;
     this.#bindTargetObserverController?.abort();
     this.#updatePos();
   }
-  #observeBindTarget(){
-     if (!this.#bindTarget || isMobile()) return;
-     let lastPos = this.#bindTarget.getBoundingClientRect();
-     const checkPosChange = ()=>{
+  #observeBindTarget() {
+    if (!this.#bindTarget || isMobile()) return;
+    let lastPos = this.#bindTarget.getBoundingClientRect();
+    const checkPosChange = () => {
       const pos = this.#bindTarget!.getBoundingClientRect();
-      if(lastPos.x !== pos.x || lastPos.y !== pos.y){
+      if (lastPos.x !== pos.x || lastPos.y !== pos.y) {
         this.#updatePos();
         lastPos = pos;
       }
-     }
-     this.#bindTargetObserverController = new AbortController();
-     window.addEventListener("scroll",checkPosChange,{signal:this.#bindTargetObserverController.signal, passive:true})
-     window.addEventListener("resize",checkPosChange,{signal:this.#bindTargetObserverController.signal, passive:true})
+    }
+    this.#bindTargetObserverController = new AbortController();
+    const scrollableParent = getScrollParent(this.#bindTarget);
+    //init listeners
+    scrollableParent.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
+    window.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
+    window.addEventListener("resize", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
+    //init observers
+    const resizeObserver = new ResizeObserver(() => {
+      checkPosChange();
+    });
+    this.#bindTargetObserverController.signal.addEventListener("abort", () => resizeObserver.disconnect());
+    resizeObserver.observe(this.#bindTarget, { box: "border-box" });
+    if (this.#bindTarget.parentElement) {
+      resizeObserver.observe(this.#bindTarget.parentElement, { box: "border-box" })
+    }
   }
   #updatePos() {
     if (this.#bindTarget && !isMobile()) {
@@ -190,7 +203,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       this.elements.componentWrapper.style.position = "fixed";
       this.elements.componentWrapper.style.top = `${boundary.bottom}px`;
       this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
-    }else{
+    } else {
       this.elements.componentWrapper.style.removeProperty('position');
       this.elements.componentWrapper.style.removeProperty('top');
       this.elements.componentWrapper.style.removeProperty('insetInlineStart');
