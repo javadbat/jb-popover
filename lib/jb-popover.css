@@ -11,6 +11,7 @@
 .jb-popover-web-component {
     position: absolute;
     display: none;
+    margin-block-start: var(--margin-top);
     inset-block-start: var(--inset-block-start);
     inset-inline-start: 0;
     z-index: var(--jb-popover-z-index, 10);
@@ -19,6 +20,7 @@
     transition: opacity 0.2s 0s ease;
     width: inherit;
     @media(--mobile-until) {
+        margin-block-start: 0;
         inset-block-start: 0;
         inset-inline-start: 0;
         bottom: 0;

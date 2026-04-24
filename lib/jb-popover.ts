@@ -8,8 +8,8 @@ import { registerDefaultVariables } from 'jb-core/theme';
 export * from './types.js';
 export class JBPopoverWebComponent extends HTMLElement {
   #isOpen = false;
-  #JBID = Symbol();
-  elements: ElementsObject;
+  #JBID = Symbol("JBID");
+  elements!: ElementsObject;
   get JBID() {
     return this.#JBID;
   }
@@ -49,7 +49,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       serializable:true
     });
     registerDefaultVariables();
-    const html = `<style>${CSS} ${VariablesCSS}</style>\n${renderHTML()}`;
+    const html = `<style>${VariablesCSS} ${CSS}</style>\n${renderHTML()}`;
     const element = document.createElement("template");
     element.innerHTML = html;
     shadowRoot.appendChild(element.content.cloneNode(true));
@@ -151,7 +151,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       window.addEventListener("popstate", this.#onBrowserBack, { once: true });
     }
   }
-  #bindTarget: HTMLElement;
+  #bindTarget: HTMLElement| null = null;
   #bindTargetObserverController: AbortController | null = null;
   /**
    * will bind certain dom to the popover. when you bind something it get position fix and move base on target dom position on the page. it will solve overflow problem on some modal pr container with scroll.
@@ -160,11 +160,19 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.#bindTarget = element;
     this.#updatePos();
   }
+  /**
+   * will unbind bounded target by `bindTarget` method. 
+   */
+  unBindTarget(){
+    this.#bindTarget = null;
+    this.#bindTargetObserverController?.abort();
+    this.#updatePos();
+  }
   #observeBindTarget(){
      if (!this.#bindTarget || isMobile()) return;
      let lastPos = this.#bindTarget.getBoundingClientRect();
      const checkPosChange = ()=>{
-      const pos = this.#bindTarget.getBoundingClientRect();
+      const pos = this.#bindTarget!.getBoundingClientRect();
       if(lastPos.x !== pos.x || lastPos.y !== pos.y){
         this.#updatePos();
         lastPos = pos;
@@ -182,6 +190,10 @@ export class JBPopoverWebComponent extends HTMLElement {
       this.elements.componentWrapper.style.position = "fixed";
       this.elements.componentWrapper.style.top = `${boundary.bottom}px`;
       this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
+    }else{
+      this.elements.componentWrapper.style.removeProperty('position');
+      this.elements.componentWrapper.style.removeProperty('top');
+      this.elements.componentWrapper.style.removeProperty('insetInlineStart');
     }
   }
   #onBrowserBack = (_e: PopStateEvent) => {
