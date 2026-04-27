@@ -174,7 +174,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     let lastPos = this.#bindTarget.getBoundingClientRect();
     const checkPosChange = () => {
       const pos = this.#bindTarget!.getBoundingClientRect();
-      if (lastPos.x !== pos.x || lastPos.y !== pos.y) {
+      if (lastPos.x !== pos.x || lastPos.y !== pos.y || pos.width !== lastPos.width) {
         this.#updatePos();
         lastPos = pos;
       }
@@ -182,7 +182,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.#bindTargetObserverController = new AbortController();
     const scrollableParent = getScrollParent(this.#bindTarget);
     //init listeners
-    scrollableParent.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
+    scrollableParent?.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
     window.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
     window.addEventListener("resize", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
     //init observers

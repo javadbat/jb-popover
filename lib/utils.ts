@@ -3,7 +3,8 @@ export function getScrollParent(el:HTMLElement) {
   while (p) {
     const s = getComputedStyle(p);
     if (/(auto|scroll|overlay)/.test(s.overflow + s.overflowY + s.overflowX)) return p;
-    p = p.parentElement;
+    // we will also cross shadowRoot boundary to watch scrollable
+    p = p.parentElement??(p.getRootNode() as ShadowRoot|null)?.host.parentElement??null;
   }
-  return window;
+  return null;
 }
