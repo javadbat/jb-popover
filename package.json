@@ -3,9 +3,9 @@
   "description": "popover web component",
   "type": "module",
   "author": {
-		"name": "mohammad javad bathaei",
-		"email": "javadbat@gmail.com"
-	},
+    "name": "mohammad javad bathaei",
+    "email": "javadbat@gmail.com"
+  },
   "keywords": [
     "jb",
     "jb-popover",
@@ -13,22 +13,24 @@
     "bottomsheet",
     "web component"
   ],
-  "version": "1.7.1",
+  "version": "1.8.0",
   "bugs": "https://github.com/javadbat/jb-popover/issues",
   "license": "MIT",
   "files": [
     "LICENSE",
     "README.md",
     "lib/",
-    "dist/"
+    "dist/",
+    "react/",
+    "react/dist/"
   ],
   "main": "index.js",
   "types": "./dist/jb-popover.d.ts",
   "repository": {
-		"type": "git",
-		"url": "git@github.com:javadbat/jb-popover.git"
+    "type": "git",
+    "url": "git@github.com:javadbat/jb-popover.git"
   },
   "dependencies": {
-    "jb-core": ">=0.25.0"
+    "jb-core": ">=0.27.2"
   }
 }

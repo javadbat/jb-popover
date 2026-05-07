@@ -1,2 +1,2 @@
 # JBPopover React Component
-currently JBPopOver don't have any react component 
+currently we have React component but we don't document it to make sure it stable.

@@ -179,6 +179,7 @@ export class JBPopoverWebComponent extends HTMLElement {
         lastPos = pos;
       }
     }
+    
     this.#bindTargetObserverController = new AbortController();
     const scrollableParent = getScrollParent(this.#bindTarget);
     //init listeners
@@ -191,7 +192,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     });
     this.#bindTargetObserverController.signal.addEventListener("abort", () => resizeObserver.disconnect());
     resizeObserver.observe(this.#bindTarget, { box: "border-box" });
-    if (this.#bindTarget.parentElement) {
+    if (this.#bindTarget?.parentElement) {
       resizeObserver.observe(this.#bindTarget.parentElement, { box: "border-box" })
     }
   }

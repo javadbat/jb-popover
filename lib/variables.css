@@ -3,8 +3,7 @@
   --border-radius:var(--jb-popover-border-radius, var(--jb-radius-xl));
   /*padding also affect fixed position item (positioned by js in bindTarget)*/
   --margin-top:var(--jb-popover-margin-top,0);
-
-  --inset-block-start: var(--jb-popover-top, 4rem);
+  --inset-block-start: var(--jb-popover-top, 0);
   /*Colors*/
   --back-bg-color:var(--jb-popover-back-bg-color, oklch(from var(--jb-black) l c h / 0.5));
   --bg-color:var(--jb-popover-bg-color, #fff);

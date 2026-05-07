@@ -13,4 +13,19 @@ export const webComponentList: WebComponentBuildConfig[] = [
     umdName: "JBPopover",
   },
 ];
-export const reactComponentList: ReactComponentBuildConfig[] = [];
+export const reactComponentList: ReactComponentBuildConfig[] = [
+  {
+    name:"jb-popover-react",
+    path: "./react/lib/JBPopover.tsx",
+    outputPath: "./react/dist/JBPopover.js",
+    external: ["jb-popover", "react","jb-core", "jb-core/react"],
+    globals: {
+      react: "React",
+      "jb-popover":"JBPopover",
+      "jb-core": "JBCore",
+      "jb-core/react": "JBCoreReact",
+    },
+    umdName: "JBPopoverReact",
+    dir: "./react"
+  }
+];

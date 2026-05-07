@@ -1,0 +1,38 @@
+{
+  "name": "jb-popover-react",
+  "description": "popover react component",
+  "type": "module",
+  "author": {
+		"name": "mohammad javad bathaei",
+		"email": "javadbat@gmail.com"
+	},
+  "keywords": [
+    "jb",
+    "jb-popover",
+    "popover component",
+    "react",
+    "react popover",
+    "modal window",
+    "pop up"
+  ],
+  "version": "1.0.0",
+  "bugs": "https://github.com/javadbat/jb-popover/issues",
+  "license": "MIT",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib/",
+    "dist/"
+  ],
+  "main": "index.js",
+  "module": "index.js",
+  "types": "./dist/JBPopover.d.ts",
+  "repository": {
+		"type": "git",
+		"url": "git@github.com:javadbat/jb-popover.git"
+  },
+  "dependencies": {
+    "jb-popover": ">=1.8.0",
+    "jb-core":"^0.27.0"
+  }
+}
