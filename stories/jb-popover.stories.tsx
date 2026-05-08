@@ -18,7 +18,7 @@ const meta: Meta<Props> = {
       const [args, updateArgs] = useArgs();
     return(
       <div style={{paddingInline:`5rem`,paddingBlock:`5rem`,}}>
-        <JBButton ref={anchorRef} onClick={()=>{updateArgs({isOpen:true})}}>Click me</JBButton>
+        <JBButton ref={anchorRef} onClick={()=>{updateArgs({isOpen:!args.isOpen})}}>Click me</JBButton>
         <Story args={{...args,anchor:anchorRef, ref:popoverRef, onClose:()=>{updateArgs({isOpen:false})}}}/>
       </div>
     )
