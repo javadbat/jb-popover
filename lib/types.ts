@@ -7,4 +7,7 @@ export type ElementsObject = {
   contentWrapper:HTMLDivElement
 }
 
+export type PositionInlineArea = 'start' | 'end';
+export type PositionArea = {inline:PositionInlineArea};
+
 export type JBPopoverEventType<TEvent> = EventTypeWithTarget<TEvent,JBPopoverWebComponent>

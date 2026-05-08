@@ -3,13 +3,13 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import 'jb-popover';
 // eslint-disable-next-line no-duplicate-imports
-import type { JBPopoverWebComponent } from 'jb-popover';
+import type { JBPopoverWebComponent, PositionArea } from 'jb-popover';
 import { useEvents, type EventProps } from './events-hook.js';
 import type { JBElementStandardProps } from 'jb-core/react';
 import './module-declaration.js';
 export const JBPopover = (props: Props) => {
   const element = useRef<JBPopoverWebComponent>(null);
-  //id is in other props
+  //id, positionArea is in other props
   const { isOpen, anchor, children, onClose, onInit, ref, onLoad, ...otherProps } = props;
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <we need element to watch>
@@ -47,6 +47,7 @@ export const JBPopover = (props: Props) => {
 type PopoverProps = EventProps & React.PropsWithChildren<{
   isOpen?: boolean,
   anchor?: React.RefObject<HTMLElement | null>,
+  positionArea?:Partial<PositionArea>,
   ref?: React.ForwardedRef<JBPopoverWebComponent | null | undefined>
 }>
 export type Props = PopoverProps & JBElementStandardProps<JBPopoverWebComponent, keyof PopoverProps>

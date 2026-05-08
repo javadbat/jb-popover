@@ -1,7 +1,7 @@
 import CSS from "./jb-popover.css";
 import VariablesCSS from "./variables.css";
 import { renderHTML } from "./render";
-import type { ElementsObject } from "./types.js";
+import type { ElementsObject, PositionArea } from "./types.js";
 import { isMobile } from "jb-core";
 import { registerDefaultVariables } from 'jb-core/theme';
 import { getScrollParent } from "./utils";
@@ -21,6 +21,14 @@ export class JBPopoverWebComponent extends HTMLElement {
   get PopoverHashPath(): string | null {
     //this used to add # route to prevent back button in mobile. it only work if element have id
     return this.id ? `#${this.id}` : null;
+  }
+  #positionArea:PositionArea = {inline:'start'}
+  get positionArea(){
+    return this.#positionArea;
+  }
+  set positionArea(value:Partial<PositionArea>){
+    Object.assign(this.#positionArea,value);
+    this.#updatePos();
   }
   constructor() {
     super();
@@ -66,7 +74,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       this.onBackgroundClick.bind(this)
     );
     //we add popstate event listener
-    this.elements.contentWrapper.addEventListener('mouseenter', this.#fixCalendarContainerPos);
+    this.elements.contentWrapper.addEventListener('mouseenter', this.#fixContainerPos);
     this.elements.contentWrapper.addEventListener('mouseleave', this.#resetCalendarContainerPos);
   }
   checkInitialOpenness() {
@@ -203,7 +211,13 @@ export class JBPopoverWebComponent extends HTMLElement {
       const direction = style.direction;
       this.elements.componentWrapper.style.position = "fixed";
       this.elements.componentWrapper.style.top = `${boundary.bottom}px`;
-      this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
+      if(this.positionArea.inline == "start"){
+        this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
+        this.elements.componentWrapper.style.insetInlineEnd = "unset"
+      }else{
+        this.elements.componentWrapper.style.insetInlineStart = 'unset';
+        this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - boundary.right}px` : `${boundary.left}px`);
+      }
     } else {
       this.elements.componentWrapper.style.removeProperty('position');
       this.elements.componentWrapper.style.removeProperty('top');
@@ -225,7 +239,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       this.elements.contentWrapper.style.transform = `translateY(${0}px)`;
     }
   }
-  #fixCalendarContainerPos = () => {
+  #fixContainerPos = () => {
     if (this.overflowHandler == "SLIDE") {
       //bounding client rect
       const bcr = this.elements.contentWrapper.getBoundingClientRect();

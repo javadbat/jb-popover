@@ -63,6 +63,16 @@ const yourElement = document.querySelector("input")
 document.querySelector("jb-popover").bindTarget(yourElement);
 
 ```
+## anchor position
+when you bind some element as an anchor to the popover, popover will position itself base on anchor position.
+by default popover position itself in bottom and start of the anchor so in "ltr" left of the anchor = left of popover and in rtl right of popover = right of anchor.
+if you want to change that you can set `positionArea` property like this:
+
+```js
+// will adjust end of popover to end of anchor
+document.querySelector("jb-popover").positionArea = {inline:"end"}.
+```
+
 ## prevent close on mobile by back button
 
 in some cases you want to prevent popover from closing in mobile. for doing so, just add id attribute to the popover element

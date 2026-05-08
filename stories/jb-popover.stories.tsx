@@ -17,7 +17,7 @@ const meta: Meta<Props> = {
     const popoverRef = useRef<JBPopoverWebComponent>(null);
       const [args, updateArgs] = useArgs();
     return(
-      <div className='jb-modal-sample-background'>
+      <div style={{paddingInline:`5rem`,paddingBlock:`5rem`,}}>
         <JBButton ref={anchorRef} onClick={()=>{updateArgs({isOpen:true})}}>Click me</JBButton>
         <Story args={{...args,anchor:anchorRef, ref:popoverRef, onClose:()=>{updateArgs({isOpen:false})}}}/>
       </div>
@@ -32,5 +32,12 @@ export const Normal: Story = {
   args: {
     children: <div>Hello World</div>,
     isOpen:false
+  }
+};
+export const InlineEndPositionArea: Story = {
+  args: {
+    children: <div>Align on End of Box</div>,
+    isOpen:false,
+    positionArea:{inline:"end"},
   }
 };
