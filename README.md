@@ -7,12 +7,15 @@
 sometimes you need a to open a small window next to a element to show more detail or more available actions. jb-popover will be doing that for you with some benefits:
 
 - handle overflow if popover could not fit into it's designed place.
-- show popover as a small window next to element in desktop and show it as a bottom-sheet in mobile
-- handle animations in standard manner with overflow handler
+- show popover as a small window next to element in desktop and show it as a bottom-sheet in mobile.
+- handle animations in standard manner with overflow handler.
+- has positioning option to place popover base on another element location.
 
 ## demo
 
-jb-popover doesn't have any Demo right now but you can see it's usage in [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput) ot [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
+- standalone sample in [storybook](https://javadbat.github.io/design-system/?path=/story/components-jbpopover)
+
+- You can also see in use demo, inside others component like: [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput) ot [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
 
 ## usage
 
