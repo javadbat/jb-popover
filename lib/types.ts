@@ -8,6 +8,7 @@ export type ElementsObject = {
 }
 
 export type PositionInlineArea = 'start' | 'end';
-export type PositionArea = {inline:PositionInlineArea};
+export type PositionBlockArea = 'after' | 'before';
+export type PositionArea = {inline:PositionInlineArea, block:PositionBlockArea};
 
 export type JBPopoverEventType<TEvent> = EventTypeWithTarget<TEvent,JBPopoverWebComponent>

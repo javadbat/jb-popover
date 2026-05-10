@@ -70,7 +70,10 @@ if you want to change that you can set `positionArea` property like this:
 
 ```js
 // will adjust end of popover to end of anchor
-document.querySelector("jb-popover").positionArea = {inline:"end"}.
+document.querySelector("jb-popover").positionArea = {inline:"end"} // end, start
+document.querySelector("jb-popover").positionArea = {block:"before"} // before,after
+// or set both
+document.querySelector("jb-popover").positionArea = {block:"after",inline:"start"} // before,after
 ```
 
 ## prevent close on mobile by back button

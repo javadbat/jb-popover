@@ -22,7 +22,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     //this used to add # route to prevent back button in mobile. it only work if element have id
     return this.id ? `#${this.id}` : null;
   }
-  #positionArea:PositionArea = {inline:'start'}
+  #positionArea:PositionArea = {inline:'start',block:'after'}
   get positionArea(){
     return this.#positionArea;
   }
@@ -210,7 +210,15 @@ export class JBPopoverWebComponent extends HTMLElement {
       const style = getComputedStyle(this.#bindTarget);
       const direction = style.direction;
       this.elements.componentWrapper.style.position = "fixed";
-      this.elements.componentWrapper.style.top = `${boundary.bottom}px`;
+      // y pos
+      if(this.#positionArea.block == "after"){
+        this.elements.componentWrapper.style.insetBlockStart = `${boundary.bottom}px`;
+        this.elements.componentWrapper.style.insetBlockEnd = "unset";
+      }else{
+        this.elements.componentWrapper.style.insetBlockStart = "unset";
+        this.elements.componentWrapper.style.insetBlockEnd = `${window.innerHeight - boundary.top}px`;
+      }
+      // x pos
       if(this.positionArea.inline == "start"){
         this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
         this.elements.componentWrapper.style.insetInlineEnd = "unset"

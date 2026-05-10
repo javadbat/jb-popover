@@ -41,3 +41,10 @@ export const InlineEndPositionArea: Story = {
     positionArea:{inline:"end"},
   }
 };
+export const BlockBeforePositionArea: Story = {
+  args: {
+    children: <div>Align on End of Box</div>,
+    isOpen:false,
+    positionArea:{block:"before"},
+  }
+};
