@@ -22,12 +22,12 @@ export class JBPopoverWebComponent extends HTMLElement {
     //this used to add # route to prevent back button in mobile. it only work if element have id
     return this.id ? `#${this.id}` : null;
   }
-  #positionArea:PositionArea = {inline:'start',block:'after'}
-  get positionArea(){
+  #positionArea: PositionArea = { inline: 'start', block: 'after' }
+  get positionArea() {
     return this.#positionArea;
   }
-  set positionArea(value:Partial<PositionArea>){
-    Object.assign(this.#positionArea,value);
+  set positionArea(value: Partial<PositionArea>) {
+    Object.assign(this.#positionArea, value);
     this.#updatePos();
   }
   constructor() {
@@ -187,7 +187,7 @@ export class JBPopoverWebComponent extends HTMLElement {
         lastPos = pos;
       }
     }
-    
+
     this.#bindTargetObserverController = new AbortController();
     const scrollableParent = getScrollParent(this.#bindTarget);
     //init listeners
@@ -206,25 +206,41 @@ export class JBPopoverWebComponent extends HTMLElement {
   }
   #updatePos() {
     if (this.#bindTarget && !isMobile()) {
-      const boundary = this.#bindTarget.getBoundingClientRect();
+      const bindTargetBoundary = this.#bindTarget.getBoundingClientRect();
+      const popoverBoundary = this.#bindTarget.getBoundingClientRect();
       const style = getComputedStyle(this.#bindTarget);
       const direction = style.direction;
       this.elements.componentWrapper.style.position = "fixed";
       // y pos
-      if(this.#positionArea.block == "after"){
-        this.elements.componentWrapper.style.insetBlockStart = `${boundary.bottom}px`;
+      if (this.#positionArea.block == "after") {
+        this.elements.componentWrapper.style.insetBlockStart = `${bindTargetBoundary.bottom}px`;
         this.elements.componentWrapper.style.insetBlockEnd = "unset";
-      }else{
+      } else {
         this.elements.componentWrapper.style.insetBlockStart = "unset";
-        this.elements.componentWrapper.style.insetBlockEnd = `${window.innerHeight - boundary.top}px`;
+        this.elements.componentWrapper.style.insetBlockEnd = `${window.innerHeight - bindTargetBoundary.top}px`;
       }
       // x pos
-      if(this.positionArea.inline == "start"){
-        this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${boundary.left}px` : `${window.innerWidth - boundary.right}px`);
-        this.elements.componentWrapper.style.insetInlineEnd = "unset"
-      }else{
-        this.elements.componentWrapper.style.insetInlineStart = 'unset';
-        this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - boundary.right}px` : `${boundary.left}px`);
+      switch (this.positionArea.inline) {
+        case "start":
+          this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${bindTargetBoundary.left}px` : `${window.innerWidth - bindTargetBoundary.right}px`);
+          this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          break;
+        case "end":
+          this.elements.componentWrapper.style.insetInlineStart = 'unset';
+          this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
+          break;
+        case "center":
+          this.elements.componentWrapper.style.insetInlineStart = `${(bindTargetBoundary.right - (bindTargetBoundary.width / 2))- popoverBoundary.width}px`
+          this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          break;
+        case "center-before":
+          this.elements.componentWrapper.style.insetInlineStart = 'unset'
+          this.elements.componentWrapper.style.insetInlineEnd = `${(window.innerWidth - bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`;
+          break;
+        case "center-after":
+          this.elements.componentWrapper.style.insetInlineStart = `${bindTargetBoundary.right - (bindTargetBoundary.width / 2)}px`
+          this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          break;
       }
     } else {
       this.elements.componentWrapper.style.removeProperty('position');

@@ -17,7 +17,7 @@ const meta: Meta<Props> = {
     const popoverRef = useRef<JBPopoverWebComponent>(null);
       const [args, updateArgs] = useArgs();
     return(
-      <div style={{paddingInline:`5rem`,paddingBlock:`5rem`,}}>
+      <div style={{paddingInlineStart:`50dvw`,paddingBlockStart:`50dvh`}}>
         <JBButton ref={anchorRef} onClick={()=>{updateArgs({isOpen:!args.isOpen})}}>Click me</JBButton>
         <Story args={{...args,anchor:anchorRef, ref:popoverRef, onClose:()=>{updateArgs({isOpen:false})}}}/>
       </div>
@@ -39,6 +39,27 @@ export const InlineEndPositionArea: Story = {
     children: <div>Align on End of Box</div>,
     isOpen:false,
     positionArea:{inline:"end"},
+  }
+};
+export const InlineCenterPositionArea: Story = {
+  args: {
+    children: <div>Align on Center of Box</div>,
+    isOpen:false,
+    positionArea:{inline:"center"},
+  }
+};
+export const InlineCenterAfterPositionArea: Story = {
+  args: {
+    children: <div>Align on Center of Box</div>,
+    isOpen:false,
+    positionArea:{inline:"center-after"},
+  }
+};
+export const InlineCenterBeforePositionArea: Story = {
+  args: {
+    children: <div>Align on Center of Box</div>,
+    isOpen:false,
+    positionArea:{inline:"center-before"},
   }
 };
 export const BlockBeforePositionArea: Story = {

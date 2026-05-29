@@ -7,7 +7,7 @@ export type ElementsObject = {
   contentWrapper:HTMLDivElement
 }
 
-export type PositionInlineArea = 'start' | 'end';
+export type PositionInlineArea = 'start' | 'end' | 'center' | 'center-after' | 'center-before';
 export type PositionBlockArea = 'after' | 'before';
 export type PositionArea = {inline:PositionInlineArea, block:PositionBlockArea};
 
