@@ -236,8 +236,6 @@ export class JBPopoverWebComponent extends HTMLElement {
           this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
           break;
         case "center":
-          console.log("ss", popoverBoundary.width);
-
           this.elements.componentWrapper.style.insetInlineStart = `${((direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width/2}px`
             this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
@@ -247,7 +245,6 @@ export class JBPopoverWebComponent extends HTMLElement {
           break;
         case "center-after":
           this.elements.componentWrapper.style.insetInlineStart = `${(direction == "ltr"?bindTargetBoundary.left:(window.innerWidth-bindTargetBoundary.left)) + (bindTargetBoundary.width / 2)}px`
-          
           this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
       }
