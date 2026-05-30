@@ -37,6 +37,11 @@
         overflow-y: hidden;
     }
 
+    &.--fake-opened {
+        /*used to calculate width & height of element without showing it */
+        visibility: hidden;
+        display: grid;
+    }
     &.--opened {
         display: grid;
     }

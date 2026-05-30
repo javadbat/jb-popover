@@ -17,7 +17,7 @@ const meta: Meta<Props> = {
     const popoverRef = useRef<JBPopoverWebComponent>(null);
       const [args, updateArgs] = useArgs();
     return(
-      <div style={{paddingInlineStart:`50dvw`,paddingBlockStart:`50dvh`}}>
+      <div style={{paddingInlineStart:`10dvw`,paddingBlockStart:`10dvh`}}>
         <JBButton ref={anchorRef} onClick={()=>{updateArgs({isOpen:!args.isOpen})}}>Click me</JBButton>
         <Story args={{...args,anchor:anchorRef, ref:popoverRef, onClose:()=>{updateArgs({isOpen:false})}}}/>
       </div>
@@ -43,7 +43,11 @@ export const InlineEndPositionArea: Story = {
 };
 export const InlineCenterPositionArea: Story = {
   args: {
-    children: <div>Align on Center of Box</div>,
+    children: <div>
+      <div>Popover Will Align on Center of Box</div>
+      <div>center of the popover is in the center of the trigger button</div>
+      
+      </div>,
     isOpen:false,
     positionArea:{inline:"center"},
   }
@@ -57,7 +61,10 @@ export const InlineCenterAfterPositionArea: Story = {
 };
 export const InlineCenterBeforePositionArea: Story = {
   args: {
-    children: <div>Align on Center of Box</div>,
+    children: <div>
+        <div>Popover Will Align Before Center of Box</div>
+        <div>Test is Easy just change Page direction to see in every possible situation</div>
+      </div>,
     isOpen:false,
     positionArea:{inline:"center-before"},
   }

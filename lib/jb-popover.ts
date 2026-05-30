@@ -204,10 +204,16 @@ export class JBPopoverWebComponent extends HTMLElement {
       resizeObserver.observe(this.#bindTarget.parentElement, { box: "border-box" })
     }
   }
+  #getContentBoundary() {
+    this.elements.componentWrapper.classList.add("--fake-opened");
+    const popoverBoundary = this.elements.contentWrapper.getBoundingClientRect();
+    this.elements.componentWrapper.classList.remove("--fake-opened");
+    return popoverBoundary;
+  }
   #updatePos() {
     if (this.#bindTarget && !isMobile()) {
       const bindTargetBoundary = this.#bindTarget.getBoundingClientRect();
-      const popoverBoundary = this.#bindTarget.getBoundingClientRect();
+      const popoverBoundary = this.#getContentBoundary();
       const style = getComputedStyle(this.#bindTarget);
       const direction = style.direction;
       this.elements.componentWrapper.style.position = "fixed";
@@ -230,15 +236,18 @@ export class JBPopoverWebComponent extends HTMLElement {
           this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
           break;
         case "center":
-          this.elements.componentWrapper.style.insetInlineStart = `${((direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width}px`
-          this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          console.log("ss", popoverBoundary.width);
+
+          this.elements.componentWrapper.style.insetInlineStart = `${((direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width/2}px`
+            this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
         case "center-before":
           this.elements.componentWrapper.style.insetInlineStart = 'unset'
-          this.elements.componentWrapper.style.insetInlineEnd = `${direction == "ltr"?(window.innerWidth - bindTargetBoundary.left):bindTargetBoundary.left - (bindTargetBoundary.width / 2)}px`;
+          this.elements.componentWrapper.style.insetInlineEnd = `${(direction == "ltr"?(window.innerWidth - bindTargetBoundary.left):bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`;
           break;
         case "center-after":
-          this.elements.componentWrapper.style.insetInlineStart = `${direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`
+          this.elements.componentWrapper.style.insetInlineStart = `${(direction == "ltr"?bindTargetBoundary.left:(window.innerWidth-bindTargetBoundary.left)) + (bindTargetBoundary.width / 2)}px`
+          
           this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
       }
