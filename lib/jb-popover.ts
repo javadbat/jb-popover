@@ -230,15 +230,15 @@ export class JBPopoverWebComponent extends HTMLElement {
           this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
           break;
         case "center":
-          this.elements.componentWrapper.style.insetInlineStart = `${(bindTargetBoundary.right - (bindTargetBoundary.width / 2))- popoverBoundary.width}px`
+          this.elements.componentWrapper.style.insetInlineStart = `${((direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width}px`
           this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
         case "center-before":
           this.elements.componentWrapper.style.insetInlineStart = 'unset'
-          this.elements.componentWrapper.style.insetInlineEnd = `${(window.innerWidth - bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`;
+          this.elements.componentWrapper.style.insetInlineEnd = `${direction == "ltr"?(window.innerWidth - bindTargetBoundary.left):bindTargetBoundary.left - (bindTargetBoundary.width / 2)}px`;
           break;
         case "center-after":
-          this.elements.componentWrapper.style.insetInlineStart = `${bindTargetBoundary.right - (bindTargetBoundary.width / 2)}px`
+          this.elements.componentWrapper.style.insetInlineStart = `${direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`
           this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
       }
