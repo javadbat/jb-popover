@@ -55,7 +55,7 @@
     .popover-content-wrapper {
         background-color: var(--bg-color);
         border-radius: var(--border-radius);
-        padding: 16px;
+        padding: var(--padding);
         box-shadow:
             12px 12px 16px 0 rgba(0, 0, 0, 0.25),
             -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
@@ -68,10 +68,10 @@
         transition: transform 0.3s 0s ease;
         transform: translateY(0%);
         grid-template-columns: minmax(0, 1fr);
+        overflow: hidden;
         @media(--mobile-until) {
             border-radius: var(--border-radius) var(--border-radius) 0 0;
             grid-area: content-wrapper;
-            padding: 0;
             padding: 2rem 0;
 
             @starting-style {
