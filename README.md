@@ -2,7 +2,8 @@
 
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/jb-popover)
 [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://raw.githubusercontent.com/javadbat/jb-popover/main/LICENSE)
-[![NPM Version](hpopovere)](https://www.npmjs.com/package/jb-popover)
+[![NPM Version](https://img.shields.io/npm/v/jb-popover)](https://www.npmjs.com/package/jb-popover)
+![GitHub Created At](https://img.shields.io/github/created-at/javadbat/jb-popover)
 
 sometimes you need a to open a small window next to a element to show more detail or more available actions. jb-popover will be doing that for you with some benefits:
 
