@@ -10,7 +10,7 @@ sometimes you need a to open a small window next to a element to show more detai
 - handle overflow if popover could not fit into it's designed place.
 - show popover as a small window next to element in desktop and show it as a bottom-sheet in mobile.
 - handle animations in standard manner with overflow handler.
-- has positioning option to place popover base on another element location.
+- has positioning option to place popover based on another element location.
 
 ## demo
 
@@ -18,11 +18,19 @@ sometimes you need a to open a small window next to a element to show more detai
 
 - You can also see in use demo, inside others component like: [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput) ot [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
 
-## Using with JS frameworks
-
+## Using With JS Frameworks
 - [<img src="https://img.shields.io/badge/React.js-jb--popover%2Freact-000.svg?logo=react&logoColor=%2361DAFB" height="30" />](https://github.com/javadbat/jb-popover/tree/main/react)
 
-## usage
+## Usage
+
+## Attributes/Properties
+
+| name | type | description |
+| --- | --- | --- |
+| `open` | property | Opens or closes the popover. |
+| `bindTarget(element)` | method | Opens the popover relative to a target element. |
+| `placement` | property/attribute | Preferred popover placement. |
+| `close` | event | Fired when the popover closes. |
 
 install:
 
@@ -63,7 +71,7 @@ document.querySelector('jb-popover').overflowDom= document.querySelector('jb-mod
 ## Bind to element
 
 jb-popover use absolute positioning by default because it more performant and easier to manage. but in some scenario you may prefer `fixed` position with top & left over absolute like when popover open in a modal.    
-for this situation we have method called `bindTarget`. this method get an element and open popover base on that element position in page in `fixed` to make sure popover is always on top.
+for this situation we have method called `bindTarget`. this method get an element and open popover based on that element position in page in `fixed` to make sure popover is always on top.
 
 ```typescript
 
@@ -72,7 +80,7 @@ document.querySelector("jb-popover").bindTarget(yourElement);
 
 ```
 ## anchor position
-when you bind some element as an anchor to the popover, popover will position itself base on anchor position.
+when you bind some element as an anchor to the popover, popover will position itself based on anchor position.
 by default popover position itself in bottom and start of the anchor so in "ltr" left of the anchor = left of popover and in rtl right of popover = right of anchor.
 if you want to change that you can set `positionArea` property like this:
 
@@ -90,12 +98,14 @@ in some cases you want to prevent popover from closing in mobile. for doing so, 
 
 ## set custom style
 
-you can customize jb-popover styles by just set some css variable. here is the variable list:    
+you can customize jb-popover styles by just set some CSS variable. here is the variable list:    
 
-| css variable name                       | description                                                                     |
+| CSS variable name                       | description                                                                     |
 | -------------                           | -------------                                                                   |
 | --jb-popover-z-index                    | z-index of opened popover                                                       |
 | --jb-popover-bg-color                   | background color of popover content                                             |
 | --jb-popover-border-radius              | border-radius of popover (must be single like 24px and not 24px 24px 24px 24px) |
 | --jb-popover-top                        | top of the popover in desktop mode.                                             |
 | --jb-popover-padding                    | padding of popover content                                                      |
+| --jb-popover-back-bg-color | Customize back bg color. |
+| --jb-popover-margin-top | Customize margin top. |

@@ -13,8 +13,7 @@ this component is a React wrapper around `jb-popover` web-component.
 
 - You can also see in use demo, inside others component like: [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput) ot [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
 
-## usage
-
+## Usage
 install:
 
 ```sh
@@ -55,7 +54,7 @@ we can handle overflow by set 2 `overflowHandler`, `overflowDom` property
 ## Bind to element
 
 jb-popover use absolute positioning by default because it more performant and easier to manage. but in some scenario you may prefer `fixed` position with top & left over absolute like when popover open in a modal.    
-for this situation we have method called `bindTarget` in React we set `anchor` props to certain ref to call this method. this method get an element and open popover base on that element position in page in `fixed` to make sure popover is always on top.
+for this situation we have method called `bindTarget` in React we set `anchor` props to certain ref to call this method. this method get an element and open popover based on that element position in page in `fixed` to make sure popover is always on top.
 
 ```tsx
 const anchorRef = useRef<JBButtonWebComponent>(null);
@@ -68,7 +67,7 @@ return(
 
 ```
 ## anchor position
-when you bind some element as an anchor to the popover, popover will position itself base on anchor position.
+when you bind some element as an anchor to the popover, popover will position itself based on anchor position.
 by default popover position itself in bottom and start of the anchor so in "ltr" left of the anchor = left of popover and in rtl right of popover = right of anchor.
 if you want to change that you can set `positionArea` property like this:
 
@@ -84,3 +83,7 @@ in some cases you want to prevent popover from closing in mobile. for doing so, 
 ## set custom style
 
 see [`jb-popover`](https://www.npmjs.com/package/jb-popover) documentation to see variable list
+
+## Shared Documentation
+
+For web-component behavior, events, slots, and CSS variables, see [`jb-popover`](https://github.com/javadbat/jb-popover).
