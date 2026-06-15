@@ -18,6 +18,10 @@ sometimes you need a to open a small window next to a element to show more detai
 
 - You can also see in use demo, inside others component like: [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput) ot [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
 
+## Using with JS frameworks
+
+- [<img src="https://img.shields.io/badge/React.js-jb--popover%2Freact-000.svg?logo=react&logoColor=%2361DAFB" height="30" />](https://github.com/javadbat/jb-popover/tree/main/react)
+
 ## usage
 
 install:
