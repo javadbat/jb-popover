@@ -38,6 +38,7 @@ export class JBPopoverWebComponent extends HTMLElement {
     // standard web component event that called when all of dom is bound
     this.callOnLoadEvent();
     this.#registerEventListener();
+    this.checkInitialOpenness();
     this.callOnInitEvent();
   }
   disconnectedCallback() {
@@ -80,7 +81,7 @@ export class JBPopoverWebComponent extends HTMLElement {
   checkInitialOpenness() {
     //if page has modal url we open it automatically
     const location = window.location;
-    if (location.hash == `#${this.id}`) {
+    if (location.hash === `#${this.id}`) {
       this.triggerUrlOpenEvent();
       this.open();
     }
@@ -93,14 +94,14 @@ export class JBPopoverWebComponent extends HTMLElement {
   static get observedAttributes() {
     return ["is-open", "id"];
   }
-  attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
+  attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null) {
     // do something when an attribute has changed
     this.onAttributeChange(name, newValue);
   }
-  onAttributeChange(name: string, value: string) {
+  onAttributeChange(name: string, value: string | null) {
     switch (name) {
       case "is-open":
-        if (value == "true") {
+        if (value === "true") {
           if (!this.#isOpen) {
             this.open();
           }
@@ -111,7 +112,7 @@ export class JBPopoverWebComponent extends HTMLElement {
         }
         break;
       case "id":
-        this.id = value;
+        // The browser already synchronizes the id property with the attribute.
         break;
     }
   }
@@ -138,9 +139,9 @@ export class JBPopoverWebComponent extends HTMLElement {
     this.elements.componentWrapper.classList.remove("--opened");
     this.elements.componentWrapper.classList.add("--closed");
     // if we pushed state to the history but state doesn't popped yet we pop it.
-    if (window.history.state == "jb-popover-open" && this.PopoverHashPath !== null) {
+    if (window.history.state === "jb-popover-open" && this.PopoverHashPath !== null) {
       window.removeEventListener("popstate", this.#onBrowserBack);
-      if (window.location.hash == this.PopoverHashPath) {
+      if (window.location.hash === this.PopoverHashPath) {
         history.go(-1);
       }
     }
@@ -218,7 +219,7 @@ export class JBPopoverWebComponent extends HTMLElement {
       const direction = style.direction;
       this.elements.componentWrapper.style.position = "fixed";
       // y pos
-      if (this.#positionArea.block == "after") {
+      if (this.#positionArea.block === "after") {
         this.elements.componentWrapper.style.insetBlockStart = `${bindTargetBoundary.bottom}px`;
         this.elements.componentWrapper.style.insetBlockEnd = "unset";
       } else {
@@ -228,23 +229,23 @@ export class JBPopoverWebComponent extends HTMLElement {
       // x pos
       switch (this.positionArea.inline) {
         case "start":
-          this.elements.componentWrapper.style.insetInlineStart = (direction == "ltr" ? `${bindTargetBoundary.left}px` : `${window.innerWidth - bindTargetBoundary.right}px`);
+          this.elements.componentWrapper.style.insetInlineStart = (direction === "ltr" ? `${bindTargetBoundary.left}px` : `${window.innerWidth - bindTargetBoundary.right}px`);
           this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
         case "end":
           this.elements.componentWrapper.style.insetInlineStart = 'unset';
-          this.elements.componentWrapper.style.insetInlineEnd = (direction == "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
+          this.elements.componentWrapper.style.insetInlineEnd = (direction === "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
           break;
         case "center":
-          this.elements.componentWrapper.style.insetInlineStart = `${((direction == "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width/2}px`
+          this.elements.componentWrapper.style.insetInlineStart = `${((direction === "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width/2}px`
             this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
         case "center-before":
           this.elements.componentWrapper.style.insetInlineStart = 'unset'
-          this.elements.componentWrapper.style.insetInlineEnd = `${(direction == "ltr"?(window.innerWidth - bindTargetBoundary.left):bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`;
+          this.elements.componentWrapper.style.insetInlineEnd = `${(direction === "ltr"?(window.innerWidth - bindTargetBoundary.left):bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`;
           break;
         case "center-after":
-          this.elements.componentWrapper.style.insetInlineStart = `${(direction == "ltr"?bindTargetBoundary.left:(window.innerWidth-bindTargetBoundary.left)) + (bindTargetBoundary.width / 2)}px`
+          this.elements.componentWrapper.style.insetInlineStart = `${(direction === "ltr"?bindTargetBoundary.left:(window.innerWidth-bindTargetBoundary.left)) + (bindTargetBoundary.width / 2)}px`
           this.elements.componentWrapper.style.insetInlineEnd = "unset";
           break;
       }
@@ -265,12 +266,12 @@ export class JBPopoverWebComponent extends HTMLElement {
   overflowHandler: "NONE" | "SLIDE" = "NONE";
   overflowDom: HTMLElement | null = null;
   #resetCalendarContainerPos = () => {
-    if (this.overflowHandler == "SLIDE") {
+    if (this.overflowHandler === "SLIDE") {
       this.elements.contentWrapper.style.transform = `translateY(${0}px)`;
     }
   }
   #fixContainerPos = () => {
-    if (this.overflowHandler == "SLIDE") {
+    if (this.overflowHandler === "SLIDE") {
       //bounding client rect
       const bcr = this.elements.contentWrapper.getBoundingClientRect();
       const overflowSize = this.#getParentBottom() - bcr.bottom;

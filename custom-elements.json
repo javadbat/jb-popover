@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "README.md",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "lib/jb-popover.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Responsive popover web component for floating content next to an anchor element on desktop and showing it as a bottom sheet on mobile.",
+          "name": "JBPopoverWebComponent",
+          "tagName": "jb-popover",
+          "customElement": true,
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "attributes": [
+            {
+              "name": "is-open",
+              "description": "Opens the popover when set to true. Any other value closes it.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "id",
+              "description": "Element id. On mobile, an id enables URL hash state while the popover is open.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "isOpen",
+              "description": "Current open state.",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "positionArea",
+              "description": "Preferred anchor alignment used after bindTarget().",
+              "type": {
+                "text": "{ inline?: 'start' | 'end' | 'center' | 'center-before' | 'center-after'; block?: 'after' | 'before' }"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "overflowHandler",
+              "description": "Overflow handling mode. SLIDE moves the content upward when it overflows.",
+              "type": {
+                "text": "'NONE' | 'SLIDE'"
+              },
+              "default": "NONE"
+            },
+            {
+              "kind": "field",
+              "name": "overflowDom",
+              "description": "Element used as the overflow boundary. Defaults to the window height.",
+              "type": {
+                "text": "HTMLElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "PopoverHashPath",
+              "description": "Hash path generated from id, such as #actions-popover.",
+              "type": {
+                "text": "string | null"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "JBID",
+              "description": "Internal unique symbol for this popover instance.",
+              "type": {
+                "text": "symbol"
+              },
+              "readonly": true
+            }
+          ],
+          "methods": [
+            {
+              "name": "open",
+              "description": "Opens the popover, updates anchor position, and pushes mobile hash history when id is set."
+            },
+            {
+              "name": "close",
+              "description": "Closes the popover and removes anchor observers."
+            },
+            {
+              "name": "bindTarget",
+              "description": "Binds the popover to an anchor element and positions it with fixed positioning on desktop."
+            },
+            {
+              "name": "unBindTarget",
+              "description": "Removes the bound anchor and resets positioning."
+            },
+            {
+              "name": "checkInitialOpenness",
+              "description": "Opens the popover when the current URL hash matches its id."
+            }
+          ],
+          "events": [
+            {
+              "name": "load",
+              "description": "Dispatched from connectedCallback before event listeners are registered."
+            },
+            {
+              "name": "init",
+              "description": "Dispatched from connectedCallback after initialization."
+            },
+            {
+              "name": "urlOpen",
+              "description": "Dispatched when the popover opens itself because the current URL hash matches its id."
+            },
+            {
+              "name": "close",
+              "description": "Dispatched for backdrop clicks and mobile browser-back close attempts. detail.eventType can be BACKGROUND_CLICK, HISTORY_BACK_EVENT, OUTSIDE_CLICK, or CLOSE_BUTTON_CLICK."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Popover content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "content",
+              "description": "The popover content wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--jb-popover-z-index",
+              "description": "Z-index of the opened popover."
+            },
+            {
+              "name": "--jb-popover-bg-color",
+              "description": "Background color of the content wrapper."
+            },
+            {
+              "name": "--jb-popover-border-radius",
+              "description": "Border radius of the content wrapper."
+            },
+            {
+              "name": "--jb-popover-top",
+              "description": "Top position in desktop mode when not bound to an anchor."
+            },
+            {
+              "name": "--jb-popover-padding",
+              "description": "Padding of the content wrapper."
+            },
+            {
+              "name": "--jb-popover-back-bg-color",
+              "description": "Mobile backdrop background color."
+            },
+            {
+              "name": "--jb-popover-margin-top",
+              "description": "Desktop margin above the popover."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "JBPopoverWebComponent",
+          "declaration": {
+            "name": "JBPopoverWebComponent",
+            "module": "lib/jb-popover.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "jb-popover",
+          "declaration": {
+            "name": "JBPopoverWebComponent",
+            "module": "lib/jb-popover.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

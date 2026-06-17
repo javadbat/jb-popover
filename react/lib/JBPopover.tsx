@@ -9,8 +9,7 @@ import type { JBElementStandardProps } from 'jb-core/react';
 import './module-declaration.js';
 export const JBPopover = (props: Props) => {
   const element = useRef<JBPopoverWebComponent>(null);
-  //id, positionArea is in other props
-  const { isOpen, anchor, children, onClose, onInit, ref, onLoad, ...otherProps } = props;
+  const { isOpen, anchor, children, onClose, onInit, ref, onLoad, overflowDom, overflowHandler, positionArea, ...otherProps } = props;
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <we need element to watch>
   useImperativeHandle(
@@ -21,12 +20,30 @@ export const JBPopover = (props: Props) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <we need to react to ref>
   useEffect(() => {
-    if (isOpen == true) {
+    if (isOpen === true) {
       element.current?.open();
     } else {
       element.current?.close();
     }
   }, [isOpen, element.current]);
+
+  useEffect(() => {
+    if (element.current && positionArea) {
+      element.current.positionArea = positionArea;
+    }
+  }, [positionArea, element.current]);
+
+  useEffect(() => {
+    if (element.current && overflowHandler) {
+      element.current.overflowHandler = overflowHandler;
+    }
+  }, [overflowHandler, element.current]);
+
+  useEffect(() => {
+    if (element.current) {
+      element.current.overflowDom = overflowDom ?? null;
+    }
+  }, [overflowDom, element.current]);
 
   useEffect(() => {
     if (anchor?.current) {
@@ -48,6 +65,8 @@ type PopoverProps = EventProps & React.PropsWithChildren<{
   isOpen?: boolean,
   anchor?: React.RefObject<HTMLElement | null>,
   positionArea?:Partial<PositionArea>,
+  overflowHandler?: "NONE" | "SLIDE",
+  overflowDom?: HTMLElement | null,
   ref?: React.ForwardedRef<JBPopoverWebComponent | null | undefined>
 }>
 export type Props = PopoverProps & JBElementStandardProps<JBPopoverWebComponent, keyof PopoverProps>

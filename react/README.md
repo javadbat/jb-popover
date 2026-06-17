@@ -5,85 +5,150 @@
 [![NPM Version](https://img.shields.io/npm/v/jb-popover-react)](https://www.npmjs.com/package/jb-popover-react)
 ![GitHub Created At](https://img.shields.io/github/created-at/javadbat/jb-popover)
 
-this component is a React wrapper around `jb-popover` web-component.
+React wrapper for [`jb-popover`](https://github.com/javadbat/jb-popover). It imports and registers the underlying responsive popover web component.
 
-## demo
+## Demo
 
-- standalone sample in [storybook](https://javadbat.github.io/design-system/?path=/story/components-jbpopover)
+- [Storybook](https://javadbat.github.io/design-system/?path=/story/components-jbpopover)
+- Used inside components such as [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-), [jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput), and [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
 
-- You can also see in use demo, inside others component like: [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-) and[ jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput) ot [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
-
-## Usage
-install:
+## Installation
 
 ```sh
 npm i jb-popover
 ```
-usage:
-
-```js
-import {JBPopover} 'jb-popover/react'
-```
 
 ```jsx
+import { JBPopover } from 'jb-popover/react';
+
 <JBPopover>
-  <!-- put your content here   -->
-   <div>my custom content</div>
-<JBPopover>
+  <div>Popover content</div>
+</JBPopover>;
 ```
 
-## open & close popover
+## Props
 
-setOopen and close with isOpen
+| prop | type | description |
+| --- | --- | --- |
+| `isOpen` | `boolean` | Opens or closes the popover. |
+| `anchor` | `React.RefObject<HTMLElement \| null>` | Anchor element ref passed to `bindTarget()`. |
+| `positionArea` | `{ inline?: 'start' \| 'end' \| 'center' \| 'center-before' \| 'center-after'; block?: 'after' \| 'before' }` | Preferred anchor alignment. |
+| `overflowHandler` | `'NONE' \| 'SLIDE'` | Overflow handling mode. |
+| `overflowDom` | `HTMLElement \| null` | Element used as the overflow boundary. |
+| `id` | `string` | Enables mobile URL hash history behavior when set. |
+| `children` | `React.ReactNode` | Popover content. |
+
+## Events
+
+| prop | event | description |
+| --- | --- | --- |
+| `onLoad` | `load` | Called before event listeners are registered. |
+| `onInit` | `init` | Called after initialization. |
+| `onClose` | `close` | Called for backdrop clicks and mobile browser-back close attempts. |
+
+`onClose` receives `event.detail.eventType`, such as `BACKGROUND_CLICK` or `HISTORY_BACK_EVENT`.
+
+## Controlled open state
 
 ```jsx
-//  in mobile view we close popover on back click and prevent real back click event
-<JBPopover isOpen={isOpen} onClose={()=>{setIsOpen(false)}}>popover content</JBPopover>
+const [isOpen, setIsOpen] = useState(false);
+
+<JBPopover
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+>
+  <div>Popover content</div>
+</JBPopover>;
 ```
 
-
-## overflow
-we can handle overflow by set 2 `overflowHandler`, `overflowDom` property
-```jsx
-//popover will slide soothly up if it overflow the page or any other assigned container
-<JBPopover overflowHandler="SLIDE">popover content</JBPopover>
-// popover would check overflow status with window by default if you set overflowDom to any other DOM Element it will check overflow by it for example if ypu use it in a modal you can set it to modal dom. set this property is optional
-<JBPopover overflowHandler="SLIDE" overflowDom={someDomElement}>
-```
-
-## Bind to element
-
-jb-popover use absolute positioning by default because it more performant and easier to manage. but in some scenario you may prefer `fixed` position with top & left over absolute like when popover open in a modal.    
-for this situation we have method called `bindTarget` in React we set `anchor` props to certain ref to call this method. this method get an element and open popover based on that element position in page in `fixed` to make sure popover is always on top.
+## Bind to an anchor
 
 ```tsx
-const anchorRef = useRef<JBButtonWebComponent>(null);
-return(
-  <div style={{paddingInline:`5rem`,paddingBlock:`5rem`,}}>
-    <JBButton ref={anchorRef} >Click me</JBButton>
-    <JBPopover anchor={anchorRef} />
-  </div>
-)
+const anchorRef = useRef<HTMLButtonElement>(null);
 
+return (
+  <>
+    <button ref={anchorRef} onClick={() => setIsOpen(true)}>
+      Open
+    </button>
+    <JBPopover
+      anchor={anchorRef}
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+    >
+      <div>Actions</div>
+    </JBPopover>
+  </>
+);
 ```
-## anchor position
-when you bind some element as an anchor to the popover, popover will position itself based on anchor position.
-by default popover position itself in bottom and start of the anchor so in "ltr" left of the anchor = left of popover and in rtl right of popover = right of anchor.
-if you want to change that you can set `positionArea` property like this:
+
+## Anchor position
 
 ```jsx
-// will adjust end of popover to end of anchor
-<JBPopover anchor={anchorRef} positionArea={{block:"before",inline:"end"}}/>
+<JBPopover
+  anchor={anchorRef}
+  isOpen={isOpen}
+  positionArea={{ block: 'before', inline: 'end' }}
+>
+  <div>Aligned content</div>
+</JBPopover>;
 ```
 
-## prevent close on mobile by back button
+## Overflow handling
 
-in some cases you want to prevent popover from closing in mobile. for doing so, just add id attribute to the popover element
+```jsx
+<JBPopover
+  isOpen={isOpen}
+  anchor={anchorRef}
+  overflowHandler="SLIDE"
+  overflowDom={modalElement}
+>
+  <div>Popover content</div>
+</JBPopover>;
+```
 
-## set custom style
+## Mobile URL hash state
 
-see [`jb-popover`](https://www.npmjs.com/package/jb-popover) documentation to see variable list
+Set `id` when mobile browser back should close the popover before leaving the page.
+
+```jsx
+<JBPopover id="actions-popover" isOpen={isOpen}>
+  <div>Actions</div>
+</JBPopover>
+```
+
+## Styling
+
+The React component uses the same CSS variables and parts as the web component.
+
+```css
+.actions-popover {
+  --jb-popover-z-index: 1000;
+  --jb-popover-bg-color: #fff;
+  --jb-popover-border-radius: 16px;
+}
+```
+
+```jsx
+<JBPopover className="actions-popover">
+  <div>Actions</div>
+</JBPopover>
+```
 
 ## Shared Documentation
 
-For web-component behavior, events, slots, and CSS variables, see [`jb-popover`](https://github.com/javadbat/jb-popover).
+For web-component behavior, events, slots, URL hash behavior, and CSS variables, see [`jb-popover`](https://github.com/javadbat/jb-popover).
+
+## Related Docs
+
+- See [`jb-popover`](https://github.com/javadbat/jb-popover) if you want to use this component as a pure JavaScript web component.
+- See [All JB Design System Component List](https://javadbat.github.io/design-system/) for more components.
+- Use [Contribution Guide](https://github.com/javadbat/design-system/blob/main/docs/contribution-guide.md) if you want to contribute to this component.
+
+## AI agent notes
+
+- Import `JBPopover` from `jb-popover/react`; the wrapper imports and registers the underlying `jb-popover` web component.
+- Use `isOpen` for controlled open state.
+- Use `anchor={ref}` to position the popover relative to a trigger element.
+- Use `positionArea` as an object prop, not a string.
+- Use `onClose` to sync React state after backdrop or mobile browser-back close requests.
