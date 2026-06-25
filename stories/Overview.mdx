@@ -1,0 +1,18 @@
+import {Meta, Title, Story, Controls, Stories, Source} from '@storybook/blocks';
+import * as PopoverStories from './jb-popover.stories';
+
+<Meta of={PopoverStories}/>
+
+<Title>JB Popover</Title>
+
+Popover component for anchored floating content with configurable inline and block positioning.
+
+<Story of={PopoverStories.InlineCenterPositionArea}/>
+<Controls of={PopoverStories.InlineCenterPositionArea}/>
+<Source of={PopoverStories.InlineCenterPositionArea}/>
+
+## Basic usage
+<Story of={PopoverStories.Normal}/>
+
+## Other samples & variants
+<Stories/>
