@@ -5,11 +5,11 @@ import type { Meta } from "@storybook/react";
 import type { JBButtonWebComponent } from "jb-button";
 import { JBButton } from "jb-button/react";
 import type { JBPopoverWebComponent } from "jb-popover";
-import { JBPopover, type Props } from "jb-popover/react";
+import { JBPopover } from "jb-popover/react";
 import { useRef } from "react";
 import { useArgs } from 'storybook/preview-api';
 
-const meta: Meta<Props> = {
+const meta = {
   title: "Components/JBPopover",
   component: JBPopover,
   decorators: [(Story) =>{
@@ -24,9 +24,9 @@ const meta: Meta<Props> = {
     )
   }
 ],
-};
+} satisfies Meta<typeof JBPopover>;
 export default meta;
-type Story = StoryObj<typeof JBPopover>;
+type Story = StoryObj<typeof meta>;
 
 export const Normal: Story = {
   args: {
