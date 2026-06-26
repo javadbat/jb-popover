@@ -7,7 +7,7 @@ import { JBButton } from "jb-button/react";
 import type { JBPopoverWebComponent } from "jb-popover";
 import { JBPopover, type Props } from "jb-popover/react";
 import { useRef } from "react";
-import { useArgs } from 'storybook/internal/preview-api';
+import { useArgs } from 'storybook/preview-api';
 
 const meta: Meta<Props> = {
   title: "Components/JBPopover",
