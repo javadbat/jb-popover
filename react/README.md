@@ -26,6 +26,12 @@ import { JBPopover } from 'jb-popover/react';
 </JBPopover>;
 ```
 
+## When to use
+
+Use `JBPopover` for anchored floating content such as menus, pickers, filters, and small panels that need responsive placement, overflow handling, backdrop close behavior, or mobile browser-back support.
+
+Use `JBModal` for blocking dialogs that should take over the page flow.
+
 ## Props
 
 | prop | type | description |
@@ -60,6 +66,14 @@ const [isOpen, setIsOpen] = useState(false);
   <div>Popover content</div>
 </JBPopover>;
 ```
+
+## Open and close
+
+Control open state with `isOpen`. Use `onClose` to synchronize React state when the user closes the popover by backdrop click or mobile history back.
+
+## Slot
+
+React children render in the default slot of the underlying popover.
 
 ## Bind to an anchor
 
@@ -134,6 +148,14 @@ The React component uses the same CSS variables and parts as the web component.
   <div>Actions</div>
 </JBPopover>
 ```
+
+## CSS parts and variables
+
+Use the same CSS parts and variables as the web component. The `Styling` section above shows the React class-based pattern.
+
+## Accessibility notes
+
+Move focus intentionally when opening interactive popovers and return focus to the trigger when closing if the surrounding workflow needs it. Use `JBModal` instead for modal dialogs that require focus trapping.
 
 ## Shared Documentation
 
