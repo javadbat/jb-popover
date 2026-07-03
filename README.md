@@ -191,11 +191,11 @@ If the page loads with `#menu-popover`, the popover opens itself and dispatches 
 jb-popover {
   --jb-popover-z-index: 1000;
   --jb-popover-bg-color: #fff;
-  --jb-popover-border-radius: 16px;
+  --jb-popover-border-radius: 1rem;
 }
 
 jb-popover::part(content) {
-  min-width: 240px;
+  min-width: 15rem;
 }
 ```
 

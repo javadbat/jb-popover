@@ -139,7 +139,7 @@ The React component uses the same CSS variables and parts as the web component.
 .actions-popover {
   --jb-popover-z-index: 1000;
   --jb-popover-bg-color: #fff;
-  --jb-popover-border-radius: 16px;
+  --jb-popover-border-radius: 1rem;
 }
 ```
 
