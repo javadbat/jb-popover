@@ -14,7 +14,7 @@
     margin-block-start: var(--margin-top);
     inset-block-start: var(--inset-block-start);
     inset-inline-start: 0;
-    z-index: var(--jb-popover-z-index, 10);
+    z-index: var(--z-index);
     will-change: opacity;
     opacity: 1;
     transition: opacity 0.2s 0s ease;
