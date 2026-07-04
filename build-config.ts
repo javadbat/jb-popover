@@ -3,8 +3,9 @@ import type { ReactComponentBuildConfig, WebComponentBuildConfig } from "../../t
 export const webComponentList: WebComponentBuildConfig[] = [
   {
     name: "jb-popover",
-    path: "./lib/jb-popover.ts",
-    outputPath: "./dist/jb-popover.js",
+    path: "./web-component/lib/jb-popover.ts",
+    outputPath: "./web-component/dist/jb-popover.js",
+    tsConfigPath: "./web-component/tsconfig.json",
     external: ["jb-core", "jb-core/theme"],
     globals:{
       "jb-core":"JBCore",
