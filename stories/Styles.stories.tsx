@@ -162,6 +162,11 @@ export const Gallery: Story = {
   ),
 };
 
+export const Default: Story = {
+  name: "Default",
+  render: () => <PopoverStyleSample buttonClassName="" cardClassName="" popoverClassName="" themeClassName="" />,
+};
+
 export const Carbon: Story = {
   name: "Carbon",
   render: () => <PopoverStyleSample {...styleSamples[0]} />,
