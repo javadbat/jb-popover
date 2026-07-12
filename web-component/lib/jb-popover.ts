@@ -70,13 +70,10 @@ export class JBPopoverWebComponent extends HTMLElement {
     };
   }
   #registerEventListener() {
-    this.elements.background.addEventListener(
-      "click",
-      this.onBackgroundClick.bind(this)
-    );
+    this.elements.background.addEventListener("click",this.onBackgroundClick.bind(this),{passive:true});
     //we add popstate event listener
-    this.elements.contentWrapper.addEventListener('mouseenter', this.#fixContainerPos);
-    this.elements.contentWrapper.addEventListener('mouseleave', this.#resetCalendarContainerPos);
+    this.elements.contentWrapper.addEventListener('mouseenter', this.#fixContainerPos, {passive:true});
+    this.elements.contentWrapper.addEventListener('mouseleave', this.#resetContainerPos, {passive:true});
   }
   checkInitialOpenness() {
     //if page has modal url we open it automatically
@@ -265,7 +262,7 @@ export class JBPopoverWebComponent extends HTMLElement {
   }
   overflowHandler: "NONE" | "SLIDE" = "NONE";
   overflowDom: HTMLElement | null = null;
-  #resetCalendarContainerPos = () => {
+  #resetContainerPos = () => {
     if (this.overflowHandler === "SLIDE") {
       this.elements.contentWrapper.style.transform = `translateY(${0}px)`;
     }

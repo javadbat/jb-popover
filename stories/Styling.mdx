@@ -1,0 +1,326 @@
+import { Meta, Source, Story, Title } from '@storybook/addon-docs/blocks';
+import * as StyleStories from './Styles.stories';
+import antDesignThemeCss from '../../../docs/styles/ant-design.css?raw';
+import auroraThemeCss from '../../../docs/styles/aurora.css?raw';
+import bootstrapThemeCss from '../../../docs/styles/bootstrap.css?raw';
+import candyThemeCss from '../../../docs/styles/candy.css?raw';
+import carbonThemeCss from '../../../docs/styles/carbon.css?raw';
+import cupertinoThemeCss from '../../../docs/styles/cupertino.css?raw';
+import fluentThemeCss from '../../../docs/styles/fluent.css?raw';
+import forestThemeCss from '../../../docs/styles/forest.css?raw';
+import materialThemeCss from '../../../docs/styles/material.css?raw';
+import porcelainThemeCss from '../../../docs/styles/porcelain.css?raw';
+import sunsetThemeCss from '../../../docs/styles/sunset.css?raw';
+import terminalThemeCss from '../../../docs/styles/terminal.css?raw';
+import antDesignPopoverCss from './styles/style-ant-design.css?raw';
+import auroraPopoverCss from './styles/style-aurora.css?raw';
+import bootstrapPopoverCss from './styles/style-bootstrap.css?raw';
+import candyPopoverCss from './styles/style-candy.css?raw';
+import carbonPopoverCss from './styles/style-carbon.css?raw';
+import cupertinoPopoverCss from './styles/style-cupertino.css?raw';
+import fluentPopoverCss from './styles/style-fluent.css?raw';
+import forestPopoverCss from './styles/style-forest.css?raw';
+import materialPopoverCss from './styles/style-material.css?raw';
+import porcelainPopoverCss from './styles/style-porcelain.css?raw';
+import sunsetPopoverCss from './styles/style-sunset.css?raw';
+import terminalPopoverCss from './styles/style-terminal.css?raw';
+
+<Meta title="Components/JBPopover/Styling" />
+
+<Title>Styling</Title>
+
+`JBPopover` exposes a compact styling API for anchored popovers and mobile bottom sheets. Use variables for the shell and backdrop, then use the official `content` part for borders, shadows, and the visible content surface.
+
+## Live Gallery
+
+<Story of={StyleStories.Gallery} />
+
+<Source of={StyleStories.Gallery} />
+
+## Common Design Tokens
+
+Use the core theme docs as the source of truth for shared design-system variables:
+
+- [Theme Colors](../../jb-core/theme/stories/colors.mdx) explains the general color palette variables, default colors, customization approaches, and color generation helpers.
+- [Theme Sizes](../../jb-core/theme/stories/sizes.mdx) explains shared size and radius variables.
+- [Theme Custom Galleries](https://javadbat.github.io/design-system/?path=/docs/theme-custom-material--docs) gathers the shared custom style recipes across components.
+
+Popover recipes should use those common tokens where possible, then map them into `--jb-popover-*` variables only where the overlay needs a component-specific value.
+
+## Styling Model
+
+Use four layers when styling popover examples:
+
+- Common design tokens are documented in [Theme Colors](../../jb-core/theme/stories/colors.mdx) and [Theme Sizes](../../jb-core/theme/stories/sizes.mdx).
+- Reusable example theme packs live in [`docs/styles`](https://github.com/javadbat/design-system/tree/main/docs/styles) and can be shared across components.
+- Component recipe files live in [`modules/jb-popover/stories/styles`](https://github.com/javadbat/design-system/tree/main/modules/jb-popover/stories/styles).
+- Trigger buttons in these examples reuse [JBButton Styling](../../jb-button/stories/Styling.mdx); the popover recipe only owns the overlay shell and content surface.
+
+Each example uses one shared example theme pack from [`docs/styles`](https://github.com/javadbat/design-system/tree/main/docs/styles) and one popover-specific recipe from [`modules/jb-popover/stories/styles`](https://github.com/javadbat/design-system/tree/main/modules/jb-popover/stories/styles). The style story applies the theme class to the demo shell and the popover class directly to `JBPopover`.
+
+## Recommended Customization Path
+
+1. Use `--jb-popover-*` variables first for background, radius, padding, mobile backdrop, margin, and z-index.
+2. Use `jb-popover::part(content)` for the visible surface: border, shadow, minimum width, overflow, and backdrop filter.
+3. Style slotted content with normal CSS classes in the parent document.
+4. Reuse [JBButton Styling](../../jb-button/stories/Styling.mdx) for trigger buttons instead of copying button variables into popover recipes.
+5. Use common theme variables from [Theme Colors](../../jb-core/theme/stories/colors.mdx) and [Theme Sizes](../../jb-core/theme/stories/sizes.mdx) when the style should align with the design system.
+6. Put reusable theme-pack values in [`docs/styles`](https://github.com/javadbat/design-system/tree/main/docs/styles) only when they should be shared by multiple component demos.
+7. Add a new popover variable only when a needed internal surface cannot be customized with current public variables or official parts.
+
+## Parts And States
+
+<table>
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Element</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>content</code></td><td>Popover content wrapper</td><td>Use for the visible panel surface, including width, border, shadow, overflow, and surface effects.</td></tr>
+  </tbody>
+</table>
+
+`JBPopover` does not currently expose custom CSS states. Use the public `isOpen` property or `is-open` attribute for behavior, and style the open surface through variables and `::part(content)`.
+
+## CSS Variables
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Category</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>--jb-popover-border-radius</code></td><td>Size</td><td>Radius of the content wrapper and mobile sheet top corners.</td></tr>
+    <tr><td><code>--jb-popover-padding</code></td><td>Size</td><td>Padding of the content wrapper.</td></tr>
+    <tr><td><code>--jb-popover-bg-color</code></td><td>Theme/Color</td><td>Background color of the content wrapper.</td></tr>
+    <tr><td><code>--jb-popover-box-shadow</code></td><td>Theme/Color</td><td>Box shadow of the content wrapper.</td></tr>
+    <tr><td><code>--jb-popover-back-bg-color</code></td><td>Theme/Color</td><td>Mobile backdrop background color.</td></tr>
+    <tr><td><code>--jb-popover-z-index</code></td><td>Other</td><td>Z-index of the opened popover.</td></tr>
+    <tr><td><code>--jb-popover-top</code></td><td>Other</td><td>Top position in desktop mode when the popover is not bound to an anchor.</td></tr>
+    <tr><td><code>--jb-popover-margin-top</code></td><td>Other</td><td>Desktop margin above the popover after positioning.</td></tr>
+  </tbody>
+</table>
+
+## Starter Recipe
+
+Use this minimal recipe when a product only needs brand alignment for the popover shell.
+
+```css
+jb-popover.brand-popover {
+  --jb-popover-bg-color: #ffffff;
+  --jb-popover-border-radius: 1rem;
+  --jb-popover-padding: 0;
+  --jb-popover-margin-top: 0.5rem;
+  --jb-popover-back-bg-color: rgb(15 23 42 / 0.45);
+  --jb-popover-z-index: 1000;
+}
+
+jb-popover.brand-popover::part(content) {
+  min-width: 16rem;
+  overflow: hidden;
+  border: 1px solid #dbe3ef;
+  box-shadow: 0 0.75rem 1.75rem rgb(15 23 42 / 0.14);
+}
+```
+
+## Style Recipes
+
+### Carbon
+
+<Story of={StyleStories.Carbon} />
+
+<Source of={StyleStories.Carbon} />
+
+#### Shared Tokens
+
+<Source code={carbonThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={carbonPopoverCss} language="css" />
+
+### Aurora
+
+<Story of={StyleStories.Aurora} />
+
+<Source of={StyleStories.Aurora} />
+
+#### Shared Tokens
+
+<Source code={auroraThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={auroraPopoverCss} language="css" />
+
+### Forest
+
+<Story of={StyleStories.Forest} />
+
+<Source of={StyleStories.Forest} />
+
+#### Shared Tokens
+
+<Source code={forestThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={forestPopoverCss} language="css" />
+
+### Sunset
+
+<Story of={StyleStories.Sunset} />
+
+<Source of={StyleStories.Sunset} />
+
+#### Shared Tokens
+
+<Source code={sunsetThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={sunsetPopoverCss} language="css" />
+
+### Porcelain
+
+<Story of={StyleStories.Porcelain} />
+
+<Source of={StyleStories.Porcelain} />
+
+#### Shared Tokens
+
+<Source code={porcelainThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={porcelainPopoverCss} language="css" />
+
+### Candy
+
+<Story of={StyleStories.Candy} />
+
+<Source of={StyleStories.Candy} />
+
+#### Shared Tokens
+
+<Source code={candyThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={candyPopoverCss} language="css" />
+
+### Terminal
+
+<Story of={StyleStories.Terminal} />
+
+<Source of={StyleStories.Terminal} />
+
+#### Shared Tokens
+
+<Source code={terminalThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={terminalPopoverCss} language="css" />
+
+### Material
+
+<Story of={StyleStories.Material} />
+
+<Source of={StyleStories.Material} />
+
+#### Shared Tokens
+
+<Source code={materialThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={materialPopoverCss} language="css" />
+
+### Fluent
+
+<Story of={StyleStories.Fluent} />
+
+<Source of={StyleStories.Fluent} />
+
+#### Shared Tokens
+
+<Source code={fluentThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={fluentPopoverCss} language="css" />
+
+### Bootstrap
+
+<Story of={StyleStories.Bootstrap} />
+
+<Source of={StyleStories.Bootstrap} />
+
+#### Shared Tokens
+
+<Source code={bootstrapThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={bootstrapPopoverCss} language="css" />
+
+### Cupertino
+
+<Story of={StyleStories.Cupertino} />
+
+<Source of={StyleStories.Cupertino} />
+
+#### Shared Tokens
+
+<Source code={cupertinoThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={cupertinoPopoverCss} language="css" />
+
+### Ant Design
+
+<Story of={StyleStories.AntDesign} />
+
+<Source of={StyleStories.AntDesign} />
+
+#### Shared Tokens
+
+<Source code={antDesignThemeCss} language="css" />
+
+#### Popover CSS
+
+<Source code={antDesignPopoverCss} language="css" />
+
+## Theme File Pattern
+
+Use [Theme Colors](../../jb-core/theme/stories/colors.mdx) and [Theme Sizes](../../jb-core/theme/stories/sizes.mdx) as the common design-token guides. Theme-pack files should keep reusable demo variables in [`docs/styles`](https://github.com/javadbat/design-system/tree/main/docs/styles), then each component should keep its own style CSS in its story [`styles`](https://github.com/javadbat/design-system/tree/main/modules/jb-popover/stories/styles) folder.
+
+```css
+/* https://github.com/javadbat/design-system/blob/main/docs/styles/carbon.css */
+.theme-name-style {
+  /* shared design-system variables */
+}
+
+/* https://github.com/javadbat/design-system/blob/main/modules/jb-popover/stories/styles/style-carbon.css */
+jb-popover.theme-name-popover {
+  /* popover host variables */
+}
+
+jb-popover.theme-name-popover::part(content) {
+  /* official content surface */
+}
+
+.theme-name-popover-card {
+  /* slotted demo content */
+}
+```
+
+This keeps common theme tokens reusable while making the official `JBPopover` styling API visible in one page.

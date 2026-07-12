@@ -1,0 +1,41 @@
+jb-popover.porcelain-style {
+  --jb-popover-bg-color: var(--jb-surface);
+  --jb-popover-border-radius: 0.75rem;
+  --jb-popover-padding: 0;
+  --jb-popover-margin-top: 0.625rem;
+  --jb-popover-back-bg-color: rgb(28 48 69 / 0.34);
+  --jb-popover-z-index: 1000;
+}
+
+jb-popover.porcelain-style::part(content) {
+  min-width: 18rem;
+  overflow: hidden;
+  border: 1px solid var(--jb-border-color);
+  box-shadow: 0 0.625rem 1.5rem rgb(47 128 237 / 0.14);
+}
+
+.porcelain-popover-card {
+  display: grid;
+  gap: 0.625rem;
+  color: var(--jb-text-primary);
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+.porcelain-popover-card strong {
+  color: var(--jb-focus-color);
+  font-size: 1rem;
+}
+
+.porcelain-popover-card .popover-action-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.porcelain-popover-card button {
+  border: 1px solid #b9d7f2;
+  border-radius: 0.5rem;
+  background: #edf6ff;
+  color: var(--jb-focus-color);
+  padding: 0.4rem 0.75rem;
+}

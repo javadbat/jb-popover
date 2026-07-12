@@ -1,0 +1,43 @@
+jb-popover.terminal-style {
+  --jb-popover-bg-color: #020617;
+  --jb-popover-border-radius: 0;
+  --jb-popover-padding: 0;
+  --jb-popover-margin-top: 0.5rem;
+  --jb-popover-back-bg-color: rgb(2 6 23 / 0.72);
+  --jb-popover-z-index: 1000;
+}
+
+jb-popover.terminal-style::part(content) {
+  min-width: 18rem;
+  overflow: hidden;
+  border: 1px solid #22c55e;
+  box-shadow: 0 0 0 1px #22c55e, 0 0.5rem 0.75rem rgb(0 0 0 / 0.32);
+}
+
+.terminal-popover-card {
+  display: grid;
+  gap: 0.75rem;
+  color: #86efac;
+  padding: 1rem;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.875rem;
+}
+
+.terminal-popover-card strong {
+  color: #22c55e;
+  font-size: 1rem;
+}
+
+.terminal-popover-card .popover-action-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminal-popover-card button {
+  border: 1px solid #22c55e;
+  border-radius: 0;
+  background: #052e16;
+  color: #bbf7d0;
+  padding: 0.4rem 0.75rem;
+  font: inherit;
+}

@@ -1,0 +1,41 @@
+jb-popover.forest-style {
+  --jb-popover-bg-color: var(--jb-surface);
+  --jb-popover-border-radius: 1rem;
+  --jb-popover-padding: 0;
+  --jb-popover-margin-top: 0.625rem;
+  --jb-popover-back-bg-color: rgb(22 48 36 / 0.62);
+  --jb-popover-z-index: 1000;
+}
+
+jb-popover.forest-style::part(content) {
+  min-width: 18rem;
+  overflow: hidden;
+  border: 1px solid rgb(246 211 101 / 0.28);
+  box-shadow: 0 1rem 2.5rem rgb(20 83 45 / 0.24);
+}
+
+.forest-popover-card {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--jb-text-primary);
+  padding: 1.125rem;
+  font-size: 0.9rem;
+}
+
+.forest-popover-card strong {
+  color: var(--jb-focus-color);
+  font-size: 1.05rem;
+}
+
+.forest-popover-card .popover-action-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.forest-popover-card button {
+  border: 1px solid rgb(246 211 101 / 0.42);
+  border-radius: 0.75rem;
+  background: #2b4638;
+  color: var(--jb-text-primary);
+  padding: 0.4rem 0.75rem;
+}

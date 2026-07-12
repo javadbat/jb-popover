@@ -1,7 +1,7 @@
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
-import type { StoryObj } from "@storybook/react";
-import type { Meta } from "@storybook/react";
+import type { StoryObj } from "@storybook/react-vite";
+import type { Meta } from "@storybook/react-vite";
 import type { JBButtonWebComponent } from "jb-button";
 import { JBButton } from "jb-button/react";
 import type { JBPopoverWebComponent } from "jb-popover";

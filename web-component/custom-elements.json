@@ -165,6 +165,10 @@
             {
               "name": "--jb-popover-margin-top",
               "description": "Desktop margin above the popover."
+            },
+            {
+              "name": "--jb-popover-box-shadow",
+              "description": "Box shadow of the popover content wrapper."
             }
           ]
         }

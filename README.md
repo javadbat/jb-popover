@@ -173,6 +173,8 @@ If the page loads with `#menu-popover`, the popover opens itself and dispatches 
 
 ## CSS parts and variables
 
+For complete styling guidance, live examples, and copyable style recipes, see [Styling](https://javadbat.github.io/design-system/?path=/docs/components-jbpopover-styling).
+
 | part | description |
 | --- | --- |
 | `content` | The popover content wrapper. |

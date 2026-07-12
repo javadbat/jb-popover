@@ -10,4 +10,7 @@
   --bg-color:var(--jb-popover-bg-color, #fff);
   /* Other */
   --z-index: var(--jb-popover-z-index, 10);
+  --box-shadow: var(--jb-popover-box-shadow,
+    0.75rem 0.75rem 1rem 0 rgba(0, 0, 0, 0.25),
+    -0.5rem -0.5rem 0.75rem 0 rgba(255, 255, 255, 0.3));
 }

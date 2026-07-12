@@ -1,0 +1,41 @@
+jb-popover.candy-style {
+  --jb-popover-bg-color: var(--jb-background);
+  --jb-popover-border-radius: 1.5rem;
+  --jb-popover-padding: 0;
+  --jb-popover-margin-top: 0.625rem;
+  --jb-popover-back-bg-color: rgb(131 24 67 / 0.36);
+  --jb-popover-z-index: 1000;
+}
+
+jb-popover.candy-style::part(content) {
+  min-width: 18rem;
+  overflow: hidden;
+  border: 2px solid var(--jb-border-color);
+  box-shadow: 0 1rem 2rem rgb(236 72 153 / 0.22);
+}
+
+.candy-popover-card {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--jb-text-primary);
+  padding: 1.125rem;
+  font-size: 0.9rem;
+}
+
+.candy-popover-card strong {
+  color: var(--jb-focus-color);
+  font-size: 1.05rem;
+}
+
+.candy-popover-card .popover-action-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.candy-popover-card button {
+  border: 1px solid #f9a8d4;
+  border-radius: 999px;
+  background: var(--jb-surface-hover);
+  color: #831843;
+  padding: 0.4rem 0.75rem;
+}

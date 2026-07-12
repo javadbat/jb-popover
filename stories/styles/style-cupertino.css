@@ -1,0 +1,41 @@
+jb-popover.cupertino-style {
+  --jb-popover-bg-color: rgb(255 255 255 / 0.92);
+  --jb-popover-border-radius: 1rem;
+  --jb-popover-padding: 0;
+  --jb-popover-margin-top: 0.625rem;
+  --jb-popover-back-bg-color: rgb(29 29 31 / 0.36);
+  --jb-popover-z-index: 1000;
+}
+
+jb-popover.cupertino-style::part(content) {
+  min-width: 17rem;
+  overflow: hidden;
+  border: 1px solid rgb(60 60 67 / 0.18);
+  box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16);
+  backdrop-filter: blur(0.75rem);
+}
+
+.cupertino-popover-card {
+  display: grid;
+  gap: 0.625rem;
+  color: var(--jb-text-primary);
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+.cupertino-popover-card strong {
+  font-size: 1rem;
+}
+
+.cupertino-popover-card .popover-action-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cupertino-popover-card button {
+  border: 0;
+  border-radius: 0.625rem;
+  background: var(--jb-surface-hover);
+  color: var(--jb-focus-color);
+  padding: 0.45rem 0.75rem;
+}
