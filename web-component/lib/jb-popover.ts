@@ -9,6 +9,7 @@ import { getScrollParent } from "./utils";
 export * from './types.js';
 export class JBPopoverWebComponent extends HTMLElement {
   #isOpen = false;
+  #internals?: ElementInternals;
   #JBID = Symbol("JBID");
   elements!: ElementsObject;
   get JBID() {
@@ -32,6 +33,10 @@ export class JBPopoverWebComponent extends HTMLElement {
   }
   constructor() {
     super();
+    if (typeof this.attachInternals == "function") {
+      this.#internals = this.attachInternals();
+      this.#internals.ariaHidden = "true";
+    }
     this.initWebComponent();
   }
   connectedCallback() {
@@ -130,6 +135,8 @@ export class JBPopoverWebComponent extends HTMLElement {
    */
   close() {
     this.#isOpen = false;
+    if (this.#internals) this.#internals.ariaHidden = "true";
+    this.#internals?.states?.delete("open");
     /* remove place observer when menu closed */
     this.#bindTargetObserverController?.abort();
     this.#bindTargetObserverController = null;
@@ -149,6 +156,8 @@ export class JBPopoverWebComponent extends HTMLElement {
    */
   open() {
     this.#isOpen = true;
+    if (this.#internals) this.#internals.ariaHidden = "false";
+    this.#internals?.states?.add("open");
     this.#updatePos();
     this.#observeBindTarget();
     this.elements.componentWrapper.classList.remove("--closed");
