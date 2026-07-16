@@ -27,6 +27,17 @@
   ],
   "main": "index.js",
   "types": "./web-component/dist/jb-popover.d.ts",
+  "exports": {
+    ".": {
+      "types": "./web-component/dist/jb-popover.d.ts",
+      "default": "./index.js"
+    },
+    "./react": {
+      "types": "./react/dist/JBPopover.d.ts",
+      "default": "./react/index.js"
+    },
+    "./*": "./*"
+  },
   "customElements": "web-component/custom-elements.json",
   "repository": {
     "type": "git",
