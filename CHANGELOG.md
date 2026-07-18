@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [1.13.0] 2.26-07-18
 
 ### Added
 
