@@ -1,6 +1,6 @@
 jb-popover.candy-style {
   --jb-popover-bg-color: var(--jb-background);
-  --jb-popover-border-radius: 1.5rem;
+  --jb-popover-border-radius: 1.25rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.625rem;
   --jb-popover-back-bg-color: rgb(131 24 67 / 0.36);
@@ -10,8 +10,8 @@ jb-popover.candy-style {
 jb-popover.candy-style::part(content) {
   min-width: 18rem;
   overflow: hidden;
-  border: 2px solid var(--jb-border-color);
-  box-shadow: 0 1rem 2rem rgb(236 72 153 / 0.22);
+  border: 1px solid var(--jb-border-color);
+  box-shadow: 0 0.75rem 1.75rem rgb(236 72 153 / 0.18);
 }
 
 .candy-popover-card {

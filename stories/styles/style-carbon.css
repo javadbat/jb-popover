@@ -11,7 +11,7 @@ jb-popover.carbon-style::part(content) {
   min-width: 17rem;
   overflow: hidden;
   border: 1px solid var(--jb-border-color);
-  box-shadow: 0 0.75rem 1.5rem rgb(0 0 0 / 0.28);
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 0.28);
 }
 
 .carbon-popover-card {

@@ -1,6 +1,6 @@
 jb-popover.aurora-style {
   --jb-popover-bg-color: var(--jb-surface);
-  --jb-popover-border-radius: 1.25rem;
+  --jb-popover-border-radius: 1rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.625rem;
   --jb-popover-back-bg-color: rgb(8 13 28 / 0.68);
@@ -14,7 +14,7 @@ jb-popover.aurora-style {
 jb-popover.aurora-style::part(content) {
   min-width: 18rem;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 0.14);
+  border: 1px solid rgb(255 255 255 / 0.18);
 }
 
 .aurora-popover-card {

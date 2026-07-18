@@ -11,7 +11,7 @@ jb-popover.fluent-style::part(content) {
   min-width: 17rem;
   overflow: hidden;
   border: 1px solid var(--jb-surface-hover);
-  box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 0.14);
+  box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.12);
 }
 
 .fluent-popover-card {
