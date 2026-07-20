@@ -7,6 +7,7 @@ import { registerDefaultVariables } from 'jb-core/theme';
 import { getScrollParent } from "./utils";
 
 export * from './types.js';
+// TODO: in mobile ut should prevent background scroll (jb-time-input works really bad in this situation)
 export class JBPopoverWebComponent extends HTMLElement {
   #isOpen = false;
   #internals?: ElementInternals;
