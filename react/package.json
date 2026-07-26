@@ -32,7 +32,7 @@
 		"url": "git@github.com:javadbat/jb-popover.git"
   },
   "dependencies": {
-    "jb-popover": ">=1.8.0",
+    "jb-popover": "^1.8.0",
     "jb-core":"^0.27.0"
   }
 }
