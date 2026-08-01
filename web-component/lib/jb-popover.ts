@@ -2,7 +2,7 @@ import CSS from "./jb-popover.css";
 import VariablesCSS from "./variables.css";
 import { renderHTML } from "./render";
 import type { ElementsObject, PositionArea } from "./types.js";
-import { isMobile } from "jb-core";
+import { isMobile, parseBooleanAttribute } from "jb-core";
 import { registerDefaultVariables } from 'jb-core/theme';
 import { getScrollParent } from "./utils";
 
@@ -104,7 +104,7 @@ export class JBPopoverWebComponent extends HTMLElement {
   onAttributeChange(name: string, value: string | null) {
     switch (name) {
       case "is-open":
-        if (value === "true") {
+        if (parseBooleanAttribute(value)) {
           if (!this.#isOpen) {
             this.open();
           }
