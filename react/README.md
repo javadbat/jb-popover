@@ -9,7 +9,7 @@ React wrapper for [`jb-popover`](https://github.com/javadbat/jb-popover). It imp
 
 ## Demo
 
-- [Storybook](https://javadbat.github.io/design-system/?path=/story/components-jbpopover)
+Explore the [React popover examples](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-react-readme--docs), including [anchored positioning](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal), [controlled open and close](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close), and [overflow handling](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide).
 - Used inside components such as [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-), [jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput), and [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
 
 ## Installation
@@ -28,7 +28,7 @@ import { JBPopover } from 'jb-popover/react';
 
 ## When to use
 
-Use `JBPopover` for anchored floating content such as menus, pickers, filters, and small panels that need responsive placement, overflow handling, backdrop close behavior, or mobile browser-back support.
+Use `JBPopover` for anchored floating content such as menus, pickers, filters, and small panels that need responsive placement, overflow handling, backdrop close behavior, or mobile browser-back support. See the [anchored demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) for the default interaction.
 
 Use `JBModal` for blocking dialogs that should take over the page flow.
 
@@ -36,21 +36,21 @@ Use `JBModal` for blocking dialogs that should take over the page flow.
 
 | prop | type | description |
 | --- | --- | --- |
-| `isOpen` | `boolean` | Opens or closes the popover. |
-| `anchor` | `React.RefObject<HTMLElement \| null>` | Anchor element ref passed to `bindTarget()`. |
-| `positionArea` | `{ inline?: 'start' \| 'end' \| 'center' \| 'center-before' \| 'center-after'; block?: 'after' \| 'before' }` | Preferred anchor alignment. |
-| `overflowHandler` | `'NONE' \| 'SLIDE'` | Overflow handling mode. |
-| `overflowDom` | `HTMLElement \| null` | Element used as the overflow boundary. |
-| `id` | `string` | Enables mobile URL hash history behavior when set. |
-| `children` | `React.ReactNode` | Popover content. |
+| `isOpen` | `boolean` | Opens or closes the popover; see the [controlled interaction](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
+| `anchor` | `React.RefObject<HTMLElement \| null>` | Anchor element ref passed to `bindTarget()`; see the [anchored demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal). |
+| `positionArea` | `{ inline?: 'start' \| 'end' \| 'center' \| 'center-before' \| 'center-after'; block?: 'after' \| 'before' }` | Preferred anchor alignment; compare [position variants](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area). |
+| `overflowHandler` | `'NONE' \| 'SLIDE'` | Overflow handling mode; see the [overflow example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide). |
+| `overflowDom` | `HTMLElement \| null` | Element used as the overflow boundary; see [overflow handling](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide). |
+| `id` | `string` | Enables mobile URL hash history behavior when set; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
+| `children` | `React.ReactNode` | Popover content rendered in the default slot; see the [content demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal). |
 
 ## Events
 
 | prop | event | description |
 | --- | --- | --- |
-| `onLoad` | `load` | Called before event listeners are registered. |
-| `onInit` | `init` | Called after initialization. |
-| `onClose` | `close` | Called for backdrop clicks and mobile browser-back close attempts. |
+| `onLoad` | `load` | Called before event listeners are registered; see the [events demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
+| `onInit` | `init` | Called after initialization; see the [events demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
+| `onClose` | `close` | Called for backdrop clicks and mobile browser-back close attempts; see the [events demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
 
 `onClose` receives `event.detail.eventType`, such as `BACKGROUND_CLICK` or `HISTORY_BACK_EVENT`.
 
@@ -69,13 +69,15 @@ const [isOpen, setIsOpen] = useState(false);
 
 ## Open and close
 
-Control open state with `isOpen`. Use `onClose` to synchronize React state when the user closes the popover by backdrop click or mobile history back.
+Control open state with `isOpen`. Use `onClose` to synchronize React state when the user closes the popover by backdrop click or mobile history back. The [controlled open/close demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close) shows the flow.
 
 ## Slot
 
-React children render in the default slot of the underlying popover.
+React children render in the default slot of the underlying popover; see the [content demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal).
 
 ## Bind to an anchor
+
+The `anchor` ref binds the popover to a trigger; see the [anchored example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal).
 
 ```tsx
 const anchorRef = useRef<HTMLButtonElement>(null);
@@ -98,6 +100,8 @@ return (
 
 ## Anchor position
 
+The `positionArea` prop controls the anchor alignment. Compare the [center](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area), [end](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-end-position-area), and [before](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--block-before-position-area) examples.
+
 ```jsx
 <JBPopover
   anchor={anchorRef}
@@ -109,6 +113,8 @@ return (
 ```
 
 ## Overflow handling
+
+`overflowHandler="SLIDE"` keeps content visible when it would overflow the viewport or `overflowDom`; try the [overflow demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide).
 
 ```jsx
 <JBPopover
@@ -123,7 +129,7 @@ return (
 
 ## Mobile URL hash state
 
-Set `id` when mobile browser back should close the popover before leaving the page.
+Set `id` when mobile browser back should close the popover before leaving the page. See the [mobile hash demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state).
 
 ```jsx
 <JBPopover id="actions-popover" isOpen={isOpen}>
@@ -133,7 +139,7 @@ Set `id` when mobile browser back should close the popover before leaving the pa
 
 ## Styling
 
-The React component uses the same CSS variables and parts as the web component.
+The React component uses the same CSS variables and parts as the web component. See the shared [web-component styling guidance](../README.md#css-parts-and-variables) and the [style gallery](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-style--gallery).
 
 ```css
 .actions-popover {
@@ -151,11 +157,11 @@ The React component uses the same CSS variables and parts as the web component.
 
 ## CSS parts and variables
 
-Use the same CSS parts and variables as the web component. The `Styling` section above shows the React class-based pattern.
+Use the same CSS parts and variables as the web component. The `Styling` section above shows the React class-based pattern; the [style gallery](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-style--gallery) demonstrates the available treatments.
 
 ## Accessibility notes
 
-Move focus intentionally when opening interactive popovers and return focus to the trigger when closing if the surrounding workflow needs it. Use `JBModal` instead for modal dialogs that require focus trapping.
+Move focus intentionally when opening interactive popovers and return focus to the trigger when closing if the surrounding workflow needs it. See the [interactive example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) when adding keyboard handling around slotted content. Use `JBModal` instead for modal dialogs that require focus trapping.
 
 ## Shared Documentation
 

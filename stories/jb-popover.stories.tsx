@@ -8,7 +8,7 @@ import type { JBPopoverWebComponent } from "jb-popover";
 import { JBPopover } from "jb-popover/react";
 import { useRef } from "react";
 import { useArgs } from 'storybook/preview-api';
-import { waitFor } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
 import {
   expectAfterPosition,
   expectBeforePosition,
@@ -35,7 +35,7 @@ const meta = {
     return (
       <div style={{ paddingInlineStart: `10dvw`, paddingBlockStart: `10dvh` }}>
         <JBButton ref={anchorRef} onClick={() => { updateArgs({ isOpen: !args.isOpen }) }}>Click me</JBButton>
-        <Story args={{ ...args, anchor: anchorRef, ref: popoverRef, onClose: () => { updateArgs({ isOpen: false }) } }} />
+        <Story args={{ ...args, anchor: anchorRef, ref: popoverRef, onClose: () => { args.onClose?.(); updateArgs({ isOpen: false }) } }} />
       </div>
     )
   }
@@ -61,6 +61,87 @@ export const Normal: Story = {
     expectAfterPosition(anchorButton, wrapper);
     expectInlineStartPosition(anchorButton, wrapper);
   }
+};
+
+export const OpenClose: Story = {
+  args: {
+    children: <div>Open and close the popover programmatically.</div>,
+    isOpen: false,
+  },
+  play: async ({ canvasElement }) => {
+    const popover = getPopover(canvasElement);
+    popover.bindTarget(getAnchorButton(canvasElement));
+
+    popover.open();
+    await waitForPopoverOpen(popover);
+
+    popover.close();
+    await waitFor(() => expect(popover.isOpen).toBe(false));
+    popover.unBindTarget();
+  },
+};
+
+export const OverflowSlide: Story = {
+  args: {
+    children: <div>Popover content remains visible when it would overflow.</div>,
+    isOpen: false,
+    overflowHandler: 'SLIDE',
+  },
+  play: async ({ canvasElement }) => {
+    const popover = getPopover(canvasElement);
+    popover.bindTarget(getAnchorButton(canvasElement));
+    popover.open();
+
+    await waitForPopoverOpen(popover);
+    expect(popover.overflowHandler).toBe('SLIDE');
+  },
+};
+
+export const MobileHashState: Story = {
+  args: {
+    id: 'mobile-hash-popover',
+    children: <div>This popover can be addressed with a URL hash on mobile.</div>,
+    isOpen: false,
+  },
+  play: async ({ canvasElement }) => {
+    const popover = getPopover(canvasElement);
+    expect(popover.PopoverHashPath).toBe('#mobile-hash-popover');
+    let urlOpenDispatched = false;
+    popover.addEventListener('urlOpen', () => { urlOpenDispatched = true; }, { once: true });
+    const currentUrl = window.location.href;
+    window.history.replaceState(window.history.state, '', '#mobile-hash-popover');
+    popover.checkInitialOpenness();
+    expect(popover.isOpen).toBe(true);
+    expect(urlOpenDispatched).toBe(true);
+    popover.close();
+    window.history.replaceState(window.history.state, '', currentUrl);
+  },
+};
+
+export const Events: Story = {
+  args: {
+    children: <div>Popover lifecycle events.</div>,
+    isOpen: false,
+    onLoad: fn(),
+    onInit: fn(),
+    onClose: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const popover = getPopover(canvasElement);
+    popover.dispatchEvent(new CustomEvent('load', { bubbles: true, composed: true }));
+    popover.dispatchEvent(new CustomEvent('init', { bubbles: true, composed: true }));
+    popover.dispatchEvent(new CustomEvent('close', {
+      bubbles: true,
+      composed: true,
+      detail: { eventType: 'OUTSIDE_CLICK' },
+    }));
+
+    await waitFor(() => {
+      expect(args.onLoad).toHaveBeenCalled();
+      expect(args.onInit).toHaveBeenCalled();
+      expect(args.onClose).toHaveBeenCalled();
+    });
+  },
 };
 export const InlineEndPositionArea: Story = {
   args: {
