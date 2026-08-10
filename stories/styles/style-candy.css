@@ -1,5 +1,5 @@
 jb-popover.candy-style {
-  --jb-popover-bg-color: var(--jb-background);
+  --jb-popover-bg-color: var(--jb-surface-secondary);
   --jb-popover-border-radius: 1.25rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.625rem;
@@ -17,7 +17,7 @@ jb-popover.candy-style::part(content) {
 .candy-popover-card {
   display: grid;
   gap: 0.75rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1.125rem;
   font-size: 0.9rem;
 }

@@ -1,5 +1,5 @@
 jb-popover.sunset-style {
-  --jb-popover-bg-color: var(--jb-surface);
+  --jb-popover-bg-color: var(--jb-surface-primary);
   --jb-popover-border-radius: 1.25rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.625rem;
@@ -17,7 +17,7 @@ jb-popover.sunset-style::part(content) {
 .sunset-popover-card {
   display: grid;
   gap: 0.75rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1.125rem;
   font-size: 0.9rem;
 }
@@ -36,6 +36,6 @@ jb-popover.sunset-style::part(content) {
   border: 1px solid rgb(255 209 102 / 0.46);
   border-radius: 999px;
   background: rgb(255 209 102 / 0.14);
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 0.4rem 0.75rem;
 }

@@ -1,5 +1,5 @@
 jb-popover.fluent-style {
-  --jb-popover-bg-color: var(--jb-text-inverse);
+  --jb-popover-bg-color: var(--jb-content-inverse);
   --jb-popover-border-radius: 0.25rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.5rem;
@@ -17,7 +17,7 @@ jb-popover.fluent-style::part(content) {
 .fluent-popover-card {
   display: grid;
   gap: 0.625rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1rem;
   font-size: 0.875rem;
 }
@@ -34,7 +34,7 @@ jb-popover.fluent-style::part(content) {
 .fluent-popover-card button {
   border: 1px solid #8a8886;
   border-radius: 0.125rem;
-  background: var(--jb-text-inverse);
+  background: var(--jb-content-inverse);
   color: var(--jb-focus-color);
   padding: 0.375rem 0.75rem;
 }

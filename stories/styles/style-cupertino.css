@@ -18,7 +18,7 @@ jb-popover.cupertino-style::part(content) {
 .cupertino-popover-card {
   display: grid;
   gap: 0.625rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1rem;
   font-size: 0.95rem;
 }

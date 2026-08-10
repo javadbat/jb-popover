@@ -1,5 +1,5 @@
 jb-popover.carbon-style {
-  --jb-popover-bg-color: var(--jb-surface);
+  --jb-popover-bg-color: var(--jb-surface-primary);
   --jb-popover-border-radius: 0;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.5rem;
@@ -17,7 +17,7 @@ jb-popover.carbon-style::part(content) {
 .carbon-popover-card {
   display: grid;
   gap: 0.75rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1rem;
   font-size: 0.9rem;
 }
@@ -36,6 +36,6 @@ jb-popover.carbon-style::part(content) {
   border: 1px solid var(--jb-text-disabled);
   border-radius: 0;
   background: var(--jb-surface-hover);
-  color: var(--jb-text-inverse);
+  color: var(--jb-content-inverse);
   padding: 0.4rem 0.75rem;
 }

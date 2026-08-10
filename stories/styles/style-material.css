@@ -17,7 +17,7 @@ jb-popover.material-style::part(content) {
 .material-popover-card {
   display: grid;
   gap: 0.625rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1.125rem;
   font-size: 0.9rem;
 }

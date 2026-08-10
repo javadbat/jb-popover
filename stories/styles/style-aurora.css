@@ -1,5 +1,5 @@
 jb-popover.aurora-style {
-  --jb-popover-bg-color: var(--jb-surface);
+  --jb-popover-bg-color: var(--jb-surface-primary);
   --jb-popover-border-radius: 1rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.625rem;
@@ -20,7 +20,7 @@ jb-popover.aurora-style::part(content) {
 .aurora-popover-card {
   display: grid;
   gap: 0.75rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1.125rem;
   font-size: 0.9rem;
 }

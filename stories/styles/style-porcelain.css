@@ -1,5 +1,5 @@
 jb-popover.porcelain-style {
-  --jb-popover-bg-color: var(--jb-surface);
+  --jb-popover-bg-color: var(--jb-surface-primary);
   --jb-popover-border-radius: 0.75rem;
   --jb-popover-padding: 0;
   --jb-popover-margin-top: 0.625rem;
@@ -17,7 +17,7 @@ jb-popover.porcelain-style::part(content) {
 .porcelain-popover-card {
   display: grid;
   gap: 0.625rem;
-  color: var(--jb-text-primary);
+  color: var(--jb-content-primary);
   padding: 1rem;
   font-size: 0.9rem;
 }
