@@ -36,6 +36,6 @@ jb-popover.carbon-style::part(content) {
   border: 1px solid var(--jb-text-disabled);
   border-radius: 0;
   background: var(--jb-surface-hover);
-  color: var(--jb-text-contrast);
+  color: var(--jb-text-inverse);
   padding: 0.4rem 0.75rem;
 }
