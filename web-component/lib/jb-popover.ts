@@ -300,3 +300,9 @@ export class JBPopoverWebComponent extends JBBaseComponent {
   }
 }
 defineWebComponent("jb-popover", JBPopoverWebComponent);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "jb-popover": JBPopoverWebComponent;
+  }
+}
