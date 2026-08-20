@@ -1,14 +1,14 @@
+import { defineWebComponent, JBBaseComponent, isMobile, parseBooleanAttribute } from "jb-core";
 import CSS from "./jb-popover.css";
 import VariablesCSS from "./variables.css";
 import { renderHTML } from "./render";
 import type { ElementsObject, PositionArea } from "./types.js";
-import { isMobile, parseBooleanAttribute } from "jb-core";
 import { registerDefaultVariables } from 'jb-core/theme';
 import { getScrollParent } from "./utils";
 
 export * from './types.js';
 // TODO: in mobile ut should prevent background scroll (jb-time-input works really bad in this situation)
-export class JBPopoverWebComponent extends HTMLElement {
+export class JBPopoverWebComponent extends JBBaseComponent {
   #isOpen = false;
   #internals?: ElementInternals;
   #JBID = Symbol("JBID");
@@ -299,7 +299,4 @@ export class JBPopoverWebComponent extends HTMLElement {
     return window.innerHeight;
   }
 }
-const myElementNotExists = !customElements.get("jb-popover");
-if (myElementNotExists) {
-  window.customElements.define("jb-popover", JBPopoverWebComponent);
-}
+defineWebComponent("jb-popover", JBPopoverWebComponent);
