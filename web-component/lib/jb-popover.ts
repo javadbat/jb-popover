@@ -212,52 +212,112 @@ export class JBPopoverWebComponent extends JBBaseComponent {
       resizeObserver.observe(this.#bindTarget.parentElement, { box: "border-box" })
     }
   }
-  #getContentBoundary() {
-    this.elements.componentWrapper.classList.add("--fake-opened");
-    const popoverBoundary = this.elements.contentWrapper.getBoundingClientRect();
-    this.elements.componentWrapper.classList.remove("--fake-opened");
-    return popoverBoundary;
+  #getComposedParent(element: Element): Element | null {
+    if (element.assignedSlot) return element.assignedSlot;
+    if (element.parentElement) return element.parentElement;
+    const root = element.getRootNode();
+    return root instanceof ShadowRoot ? root.host : null;
+  }
+  #createsFixedContainingBlock(style: CSSStyleDeclaration) {
+    const hasEffect = (value: string) => value !== "" && value !== "none";
+    const willChange = style.willChange.split(',').map((value) => value.trim());
+    const contain = style.contain.split(' ');
+    return hasEffect(style.transform)
+      || hasEffect(style.translate)
+      || hasEffect(style.rotate)
+      || hasEffect(style.scale)
+      || hasEffect(style.perspective)
+      || hasEffect(style.filter)
+      || hasEffect(style.backdropFilter)
+      || hasEffect(style.getPropertyValue('-webkit-backdrop-filter'))
+      || willChange.some((value) => ["transform", "translate", "rotate", "scale", "perspective", "filter", "backdrop-filter"].includes(value))
+      || contain.some((value) => ["layout", "paint", "strict", "content"].includes(value))
+      || style.contentVisibility === "auto";
+  }
+  /**
+   * Fixed elements normally use the viewport, but transformed/filtering ancestors
+   * (including modal animation wrappers) establish a local containing block.
+   */
+  #getFixedContainingBlockBoundary() {
+    let ancestor = this.#getComposedParent(this.elements.componentWrapper);
+    while (ancestor) {
+      if (ancestor instanceof HTMLElement && this.#createsFixedContainingBlock(getComputedStyle(ancestor))) {
+        const boundary = ancestor.getBoundingClientRect();
+        const left = boundary.left + ancestor.clientLeft;
+        const top = boundary.top + ancestor.clientTop;
+        return {
+          left,
+          top,
+          right: left + ancestor.clientWidth,
+          bottom: top + ancestor.clientHeight,
+        };
+      }
+      ancestor = this.#getComposedParent(ancestor);
+    }
+    return { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
   }
   #updatePos() {
     if (this.#bindTarget && !isMobile()) {
       const bindTargetBoundary = this.#bindTarget.getBoundingClientRect();
-      const popoverBoundary = this.#getContentBoundary();
+      const containingBlockBoundary = this.#getFixedContainingBlockBoundary();
       const style = getComputedStyle(this.#bindTarget);
       const direction = style.direction;
+      const wrapperDirection = getComputedStyle(this.elements.componentWrapper).direction;
+      const setInlinePosition = (side: "left" | "right", value: number) => {
+        const useInlineStart = (side === "left" && wrapperDirection === "ltr")
+          || (side === "right" && wrapperDirection === "rtl");
+        this.elements.componentWrapper.style.insetInlineStart = useInlineStart ? `${value}px` : "unset";
+        this.elements.componentWrapper.style.insetInlineEnd = useInlineStart ? "unset" : `${value}px`;
+      };
+      const anchorCenter = bindTargetBoundary.left + (bindTargetBoundary.width / 2);
       this.elements.componentWrapper.style.position = "fixed";
+      this.elements.componentWrapper.style.transform = "none";
       // y pos
       if (this.#positionArea.block === "after") {
-        this.elements.componentWrapper.style.insetBlockStart = `${bindTargetBoundary.bottom}px`;
+        this.elements.componentWrapper.style.insetBlockStart = `${bindTargetBoundary.bottom - containingBlockBoundary.top}px`;
         this.elements.componentWrapper.style.insetBlockEnd = "unset";
       } else {
         this.elements.componentWrapper.style.insetBlockStart = "unset";
-        this.elements.componentWrapper.style.insetBlockEnd = `${window.innerHeight - bindTargetBoundary.top}px`;
+        this.elements.componentWrapper.style.insetBlockEnd = `${containingBlockBoundary.bottom - bindTargetBoundary.top}px`;
       }
       // x pos
       switch (this.positionArea.inline) {
         case "start":
-          this.elements.componentWrapper.style.insetInlineStart = (direction === "ltr" ? `${bindTargetBoundary.left}px` : `${window.innerWidth - bindTargetBoundary.right}px`);
-          this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          if (direction === "ltr") {
+            setInlinePosition("left", bindTargetBoundary.left - containingBlockBoundary.left);
+          } else {
+            setInlinePosition("right", containingBlockBoundary.right - bindTargetBoundary.right);
+          }
           break;
         case "end":
-          this.elements.componentWrapper.style.insetInlineStart = 'unset';
-          this.elements.componentWrapper.style.insetInlineEnd = (direction === "ltr" ? `${window.innerWidth - bindTargetBoundary.right}px` : `${bindTargetBoundary.left}px`);
+          if (direction === "ltr") {
+            setInlinePosition("right", containingBlockBoundary.right - bindTargetBoundary.right);
+          } else {
+            setInlinePosition("left", bindTargetBoundary.left - containingBlockBoundary.left);
+          }
           break;
         case "center":
-          this.elements.componentWrapper.style.insetInlineStart = `${((direction === "ltr"?bindTargetBoundary.right:(window.innerWidth-bindTargetBoundary.left)) - (bindTargetBoundary.width / 2))- popoverBoundary.width/2}px`
-            this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          setInlinePosition("left", anchorCenter - containingBlockBoundary.left);
+          this.elements.componentWrapper.style.transform = "translateX(-50%)";
           break;
         case "center-before":
-          this.elements.componentWrapper.style.insetInlineStart = 'unset'
-          this.elements.componentWrapper.style.insetInlineEnd = `${(direction === "ltr"?(window.innerWidth - bindTargetBoundary.left):bindTargetBoundary.left) - (bindTargetBoundary.width / 2)}px`;
+          if (direction === "ltr") {
+            setInlinePosition("right", containingBlockBoundary.right - anchorCenter);
+          } else {
+            setInlinePosition("left", anchorCenter - containingBlockBoundary.left);
+          }
           break;
         case "center-after":
-          this.elements.componentWrapper.style.insetInlineStart = `${(direction === "ltr"?bindTargetBoundary.left:(window.innerWidth-bindTargetBoundary.left)) + (bindTargetBoundary.width / 2)}px`
-          this.elements.componentWrapper.style.insetInlineEnd = "unset";
+          if (direction === "ltr") {
+            setInlinePosition("left", anchorCenter - containingBlockBoundary.left);
+          } else {
+            setInlinePosition("right", containingBlockBoundary.right - anchorCenter);
+          }
           break;
       }
     } else {
       this.elements.componentWrapper.style.removeProperty('position');
+      this.elements.componentWrapper.style.removeProperty('transform');
       this.elements.componentWrapper.style.removeProperty('top');
       this.elements.componentWrapper.style.removeProperty('insetInlineStart');
     }

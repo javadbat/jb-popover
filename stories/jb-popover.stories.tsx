@@ -4,14 +4,16 @@ import type { StoryObj } from "@storybook/react-vite";
 import type { Meta } from "@storybook/react-vite";
 import type { JBButtonWebComponent } from "jb-button";
 import { JBButton } from "jb-button/react";
+import { JBModal } from "jb-modal/react";
 import type { JBPopoverWebComponent } from "jb-popover";
 import { JBPopover } from "jb-popover/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useArgs } from 'storybook/preview-api';
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import {
   expectAfterPosition,
   expectBeforePosition,
+  expectCloseTo,
   expectInlineCenterAfterPosition,
   expectInlineCenterBeforePosition,
   expectInlineCenterPosition,
@@ -19,6 +21,7 @@ import {
   expectInlineEndPosition,
   expectInlineStartPosition,
   getAnchorButton,
+  getNativeButton,
   getPopover,
   getPopoverContent,
   getPopoverWrapper,
@@ -61,6 +64,126 @@ export const Normal: Story = {
     expectAfterPosition(anchorButton, wrapper);
     expectInlineStartPosition(anchorButton, wrapper);
   }
+};
+
+export const TransformedContainer: Story = {
+  args: {
+    children: <div>Positioned inside a transformed modal container.</div>,
+    isOpen: false,
+  },
+  play: async ({ canvasElement }) => {
+    const anchorButton = getAnchorButton(canvasElement);
+    const popover = getPopover(canvasElement);
+    const wrapper = getPopoverWrapper(popover);
+    const modalHost = popover.parentElement!;
+
+    // Match a modal's shadow-DOM slot and transformed animation wrapper.
+    const modalRoot = modalHost.attachShadow({ mode: 'open' });
+    const modalWrapper = document.createElement('div');
+    const modalSlot = document.createElement('slot');
+    modalWrapper.style.transform = 'translate(6rem, 4rem)';
+    modalWrapper.append(modalSlot);
+    modalRoot.append(modalWrapper);
+    popover.bindTarget(anchorButton);
+    popover.open();
+    await waitForPopoverOpen(popover);
+
+    await waitFor(() => {
+      const anchorRect = anchorButton.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
+      expectCloseTo(wrapperRect.left, anchorRect.left);
+      expectCloseTo(wrapperRect.top, anchorRect.bottom);
+    });
+  },
+};
+
+const modalOverflowRows = Array.from({ length: 36 }, (_, index) => `Overflow content row ${index + 1}`);
+
+export const InsideScrollableModal: Story = {
+  render: () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const anchorRef = useRef<JBButtonWebComponent>(null);
+
+    return (
+      <div>
+        <JBButton data-testid="open-modal" onClick={() => setIsModalOpen(true)}>
+          Open modal
+        </JBButton>
+        <JBModal
+          isOpen={isModalOpen}
+          label="Scrollable modal with popover"
+          onClose={() => {
+            setIsPopoverOpen(false);
+            setIsModalOpen(false);
+          }}
+        >
+          <div slot="header">Popover inside an overflowing modal</div>
+          <div
+            slot="content"
+            data-testid="modal-overflow-content"
+            style={{ display: 'grid', gap: '0.75rem' }}
+          >
+            {modalOverflowRows.slice(0, 12).map((row) => <div key={row}>{row}</div>)}
+            <JBButton
+              ref={anchorRef}
+              data-testid="open-modal-popover"
+              onClick={() => setIsPopoverOpen((value) => !value)}
+            >
+              Open fixed popover
+            </JBButton>
+            <JBPopover
+              data-testid="modal-popover"
+              anchor={anchorRef}
+              isOpen={isPopoverOpen}
+              onClose={() => setIsPopoverOpen(false)}
+            >
+              <div>Popover anchored inside the modal</div>
+            </JBPopover>
+            {modalOverflowRows.slice(12).map((row) => <div key={row}>{row}</div>)}
+          </div>
+          <div slot="footer">
+            <JBButton color="light" onClick={() => setIsModalOpen(false)}>Close modal</JBButton>
+          </div>
+        </JBModal>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const modalOpener = canvasElement.querySelector<JBButtonWebComponent>('[data-testid="open-modal"]')!;
+    await userEvent.click(getNativeButton(modalOpener));
+
+    const modal = canvasElement.querySelector('jb-modal')!;
+    const overflowContent = canvasElement.querySelector<HTMLElement>('[data-testid="modal-overflow-content"]')!;
+    const popoverOpener = canvasElement.querySelector<JBButtonWebComponent>('[data-testid="open-modal-popover"]')!;
+    const popover = canvasElement.querySelector<JBPopoverWebComponent>('[data-testid="modal-popover"]')!;
+    const wrapper = getPopoverWrapper(popover);
+
+    await waitFor(() => {
+      expect(modal.isOpen).toBe(true);
+      expect(overflowContent.scrollHeight).toBeGreaterThan(overflowContent.clientHeight);
+    });
+
+    popoverOpener.scrollIntoView({ block: 'center' });
+    await userEvent.click(getNativeButton(popoverOpener));
+
+    await waitFor(() => {
+      const anchorRect = popoverOpener.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
+      expect(popover.isOpen).toBe(true);
+      expect(wrapper.style.position).toBe('fixed');
+      expectCloseTo(wrapperRect.left, anchorRect.left);
+      expectCloseTo(wrapperRect.top, anchorRect.bottom);
+    });
+
+    overflowContent.scrollTop += 24;
+    await waitFor(() => {
+      const anchorRect = popoverOpener.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
+      expectCloseTo(wrapperRect.left, anchorRect.left);
+      expectCloseTo(wrapperRect.top, anchorRect.bottom);
+    });
+  },
 };
 
 export const OpenClose: Story = {

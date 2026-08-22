@@ -79,19 +79,21 @@ export function expectInlineEndPosition(anchor: HTMLElement, wrapper: HTMLElemen
 export function expectInlineCenterPosition(anchor: HTMLElement, wrapper: HTMLElement, content: HTMLElement) {
   const anchorRect = anchor.getBoundingClientRect();
   const contentRect = content.getBoundingClientRect();
-  const expected = anchorRect.left + anchorRect.width / 2 - contentRect.width / 2;
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const anchorCenter = anchorRect.left + anchorRect.width / 2;
+  const popoverCenter = wrapperRect.left + contentRect.width / 2;
 
-  expectCloseTo(parseFloat(wrapper.style.insetInlineStart), expected);
-  expect(wrapper.style.insetInlineEnd).toBe('unset');
+  expectCloseTo(popoverCenter, anchorCenter);
 }
 
 export function expectInlineCenterRtlPosition(anchor: HTMLElement, wrapper: HTMLElement, content: HTMLElement) {
   const anchorRect = anchor.getBoundingClientRect();
   const contentRect = content.getBoundingClientRect();
-  const expected = (window.innerWidth - anchorRect.left) - anchorRect.width / 2 - contentRect.width / 2;
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const anchorCenter = anchorRect.left + anchorRect.width / 2;
+  const popoverCenter = wrapperRect.left + contentRect.width / 2;
 
-  expectCloseTo(parseFloat(wrapper.style.insetInlineStart), expected);
-  expect(wrapper.style.insetInlineEnd).toBe('unset');
+  expectCloseTo(popoverCenter, anchorCenter);
 }
 
 export function expectInlineCenterAfterPosition(anchor: HTMLElement, wrapper: HTMLElement) {
