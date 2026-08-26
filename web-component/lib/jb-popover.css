@@ -1,16 +1,20 @@
-/*30rem*/
-@custom-media --mobile-until (max-width: 30rem);
+@import "jb-core/style/media.css";
 
 :host{
     width: max-content;
-    display: block;
-    @media(--mobile-until) {
+    display: none;
+    /*both tablet & mobile*/
+    @media(--jb-viewport-md-to) {
         width: 100vw;
     }
 }
+:host(:state(open)){
+    
+    display: block;
+}
 .jb-popover-web-component {
     position: absolute;
-    display: none;
+    display: grid;
     margin-block-start: var(--margin-top);
     inset-block-start: var(--inset-block-start);
     inset-inline-start: 0;
@@ -19,7 +23,7 @@
     opacity: 1;
     transition: opacity 0.2s 0s ease;
     width: inherit;
-    @media(--mobile-until) {
+    @media(--jb-viewport-sm-to) {
         margin-block-start: 0;
         inset-block-start: 0;
         inset-inline-start: 0;
@@ -29,28 +33,32 @@
         height: 100dvh;
         background-color: var(--back-bg-color);
         backdrop-filter: blur(5px);
-        display: none;
+        display: grid;
         grid-template-rows: 1fr auto;
         grid-template-columns: 1fr;
         grid-template-areas: "." "content-wrapper";
         overflow-x: hidden;
         overflow-y: hidden;
+        opacity: 1;
     }
-
-    &.--fake-opened {
-        /*used to calculate width & height of element without showing it */
-        visibility: hidden;
+    @media (--jb-viewport-sm-from) and (--jb-viewport-md-to)   {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100dvh;
+        margin: 0;
+        background-color: var(--back-bg-color);
+        backdrop-filter: blur(5px);
         display: grid;
-    }
-    &.--opened {
-        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas: "content-wrapper";
+        overflow: hidden;
     }
 
     @starting-style {
         opacity: 0;
     }
-
-    .popover-background {}
 
     .popover-content-wrapper {
         background: var(--bg-color);
@@ -62,19 +70,28 @@
         justify-content: center;
         box-sizing: border-box;
         /*animation to handle overflow move*/
-        will-change: transform;
-        transition: transform 0.3s 0s ease;
-        transform: translateY(0%);
         grid-template-columns: minmax(0, 1fr);
         overflow: hidden;
-        @media(--mobile-until) {
+        @media(--jb-viewport-sm-to) {
+            transition: transform 0.3s 0s ease;
             border-radius: var(--border-radius) var(--border-radius) 0 0;
             grid-area: content-wrapper;
             padding: 2rem 0;
+            transform: translateY(0%);
+            will-change: transform;
 
             @starting-style {
                 transform: translateY(100%);
             }
+        }
+        @media (--jb-viewport-sm-from) and (--jb-viewport-md-to) {
+            padding: 2rem 0;
+            grid-area: content-wrapper;
+            justify-self: center;
+            align-self: center;
+            width: 80dvw;
+            max-width: calc(100vw - 2rem);
+            max-height: calc(100dvh - 2rem);
         }
     }
 }

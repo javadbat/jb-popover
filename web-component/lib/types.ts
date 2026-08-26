@@ -3,7 +3,6 @@ import type { JBPopoverWebComponent } from "./jb-popover"
 
 export type ElementsObject = {
   componentWrapper:HTMLDivElement,
-  background:HTMLDivElement,
   contentWrapper:HTMLDivElement
 }
 

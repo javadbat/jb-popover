@@ -1,12 +1,12 @@
-import { defineWebComponent, JBBaseComponent, isMobile, parseBooleanAttribute } from "jb-core";
+import { defineWebComponent, JBBaseComponent, parseBooleanAttribute } from "jb-core";
 import CSS from "./jb-popover.css";
 import VariablesCSS from "./variables.css";
 import { renderHTML } from "./render";
 import type { ElementsObject, PositionArea } from "./types.js";
-import { registerDefaultVariables } from 'jb-core/theme';
+import { breakPoints, registerDefaultVariables } from "jb-core/theme";
 import { getScrollParent } from "./utils";
 
-export * from './types.js';
+export * from "./types.js";
 // TODO: in mobile ut should prevent background scroll (jb-time-input works really bad in this situation)
 export class JBPopoverWebComponent extends JBBaseComponent {
   #isOpen = false;
@@ -24,13 +24,16 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     //this used to add # route to prevent back button in mobile. it only work if element have id
     return this.id ? `#${this.id}` : null;
   }
-  #positionArea: PositionArea = { inline: 'start', block: 'after' }
+  #positionArea: PositionArea = { inline: "start", block: "after" };
   get positionArea() {
     return this.#positionArea;
   }
   set positionArea(value: Partial<PositionArea>) {
     Object.assign(this.#positionArea, value);
     this.#updatePos();
+  }
+  get isMobileMode() {
+    return window.matchMedia(`(max-width: ${breakPoints.md / 16}rem)`).matches;
   }
   constructor() {
     super();
@@ -62,7 +65,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     const shadowRoot = this.attachShadow({
       mode: "open",
       clonable: true,
-      serializable: true
+      serializable: true,
     });
     registerDefaultVariables();
     const html = `<style>${VariablesCSS} ${CSS}</style>\n${renderHTML()}`;
@@ -71,15 +74,14 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     shadowRoot.appendChild(element.content.cloneNode(true));
     this.elements = {
       componentWrapper: shadowRoot.querySelector(".jb-popover-web-component")!,
-      background: shadowRoot.querySelector(".popover-background")!,
       contentWrapper: shadowRoot.querySelector(".popover-content-wrapper")!,
     };
   }
   #registerEventListener() {
-    this.elements.background.addEventListener("click",this.onBackgroundClick.bind(this),{passive:true});
+    this.elements.componentWrapper.addEventListener("click", this.onBackgroundClick.bind(this), { passive: true });
     //we add popstate event listener
-    this.elements.contentWrapper.addEventListener('mouseenter', this.#fixContainerPos, {passive:true});
-    this.elements.contentWrapper.addEventListener('mouseleave', this.#resetContainerPos, {passive:true});
+    this.elements.contentWrapper.addEventListener("mouseenter", this.#fixContainerPos, { passive: true });
+    this.elements.contentWrapper.addEventListener("mouseleave", this.#resetContainerPos, { passive: true });
   }
   checkInitialOpenness() {
     //if page has modal url we open it automatically
@@ -119,10 +121,12 @@ export class JBPopoverWebComponent extends JBBaseComponent {
         break;
     }
   }
-  onBackgroundClick() {
-    this.#dispatchCloseEvent("BACKGROUND_CLICK");
-    if (this.#autoCloseOnBackgroundClick) {
-      this.close();
+  onBackgroundClick(e:MouseEvent) {
+    if (this.isMobileMode && !e.composedPath().includes(this.elements.contentWrapper)) {
+      this.#dispatchCloseEvent("BACKGROUND_CLICK");
+      if (this.#autoCloseOnBackgroundClick) {
+        this.close();
+      }
     }
   }
   #dispatchCloseEvent(type: "BACKGROUND_CLICK" | "HISTORY_BACK_EVENT" | "OUTSIDE_CLICK" | "CLOSE_BUTTON_CLICK") {
@@ -141,8 +145,6 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     /* remove place observer when menu closed */
     this.#bindTargetObserverController?.abort();
     this.#bindTargetObserverController = null;
-    this.elements.componentWrapper.classList.remove("--opened");
-    this.elements.componentWrapper.classList.add("--closed");
     // if we pushed state to the history but state doesn't popped yet we pop it.
     if (window.history.state === "jb-popover-open" && this.PopoverHashPath !== null) {
       window.removeEventListener("popstate", this.#onBrowserBack);
@@ -161,10 +163,8 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     this.#internals?.states?.add("open");
     this.#updatePos();
     this.#observeBindTarget();
-    this.elements.componentWrapper.classList.remove("--closed");
-    this.elements.componentWrapper.classList.add("--opened");
-    if (isMobile() && this.PopoverHashPath !== null) {
-      window.history.pushState('jb-popover-open', "", this.PopoverHashPath);
+    if (this.isMobileMode && this.PopoverHashPath !== null) {
+      window.history.pushState("jb-popover-open", "", this.PopoverHashPath);
       window.addEventListener("popstate", this.#onBrowserBack, { once: true });
     }
   }
@@ -178,7 +178,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     this.#updatePos();
   }
   /**
-   * will unbind bounded target by `bindTarget` method. 
+   * will unbind bounded target by `bindTarget` method.
    */
   unBindTarget() {
     this.#bindTarget = null;
@@ -186,7 +186,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     this.#updatePos();
   }
   #observeBindTarget() {
-    if (!this.#bindTarget || isMobile()) return;
+    if (!this.#bindTarget || this.isMobileMode) return;
     let lastPos = this.#bindTarget.getBoundingClientRect();
     const checkPosChange = () => {
       const pos = this.#bindTarget!.getBoundingClientRect();
@@ -194,14 +194,14 @@ export class JBPopoverWebComponent extends JBBaseComponent {
         this.#updatePos();
         lastPos = pos;
       }
-    }
+    };
 
     this.#bindTargetObserverController = new AbortController();
     const scrollableParent = getScrollParent(this.#bindTarget);
     //init listeners
-    scrollableParent?.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
-    window.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
-    window.addEventListener("resize", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true })
+    scrollableParent?.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true });
+    window.addEventListener("scroll", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true });
+    window.addEventListener("resize", checkPosChange, { signal: this.#bindTargetObserverController.signal, passive: true });
     //init observers
     const resizeObserver = new ResizeObserver(() => {
       checkPosChange();
@@ -209,7 +209,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     this.#bindTargetObserverController.signal.addEventListener("abort", () => resizeObserver.disconnect());
     resizeObserver.observe(this.#bindTarget, { box: "border-box" });
     if (this.#bindTarget?.parentElement) {
-      resizeObserver.observe(this.#bindTarget.parentElement, { box: "border-box" })
+      resizeObserver.observe(this.#bindTarget.parentElement, { box: "border-box" });
     }
   }
   #getComposedParent(element: Element): Element | null {
@@ -220,19 +220,21 @@ export class JBPopoverWebComponent extends JBBaseComponent {
   }
   #createsFixedContainingBlock(style: CSSStyleDeclaration) {
     const hasEffect = (value: string) => value !== "" && value !== "none";
-    const willChange = style.willChange.split(',').map((value) => value.trim());
-    const contain = style.contain.split(' ');
-    return hasEffect(style.transform)
-      || hasEffect(style.translate)
-      || hasEffect(style.rotate)
-      || hasEffect(style.scale)
-      || hasEffect(style.perspective)
-      || hasEffect(style.filter)
-      || hasEffect(style.backdropFilter)
-      || hasEffect(style.getPropertyValue('-webkit-backdrop-filter'))
-      || willChange.some((value) => ["transform", "translate", "rotate", "scale", "perspective", "filter", "backdrop-filter"].includes(value))
-      || contain.some((value) => ["layout", "paint", "strict", "content"].includes(value))
-      || style.contentVisibility === "auto";
+    const willChange = style.willChange.split(",").map(value => value.trim());
+    const contain = style.contain.split(" ");
+    return (
+      hasEffect(style.transform) ||
+      hasEffect(style.translate) ||
+      hasEffect(style.rotate) ||
+      hasEffect(style.scale) ||
+      hasEffect(style.perspective) ||
+      hasEffect(style.filter) ||
+      hasEffect(style.backdropFilter) ||
+      hasEffect(style.getPropertyValue("-webkit-backdrop-filter")) ||
+      willChange.some(value => ["transform", "translate", "rotate", "scale", "perspective", "filter", "backdrop-filter"].includes(value)) ||
+      contain.some(value => ["layout", "paint", "strict", "content"].includes(value)) ||
+      style.contentVisibility === "auto"
+    );
   }
   /**
    * Fixed elements normally use the viewport, but transformed/filtering ancestors
@@ -257,19 +259,18 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     return { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
   }
   #updatePos() {
-    if (this.#bindTarget && !isMobile()) {
+    if (this.#bindTarget && this.isMobileMode) {
       const bindTargetBoundary = this.#bindTarget.getBoundingClientRect();
       const containingBlockBoundary = this.#getFixedContainingBlockBoundary();
       const style = getComputedStyle(this.#bindTarget);
       const direction = style.direction;
       const wrapperDirection = getComputedStyle(this.elements.componentWrapper).direction;
       const setInlinePosition = (side: "left" | "right", value: number) => {
-        const useInlineStart = (side === "left" && wrapperDirection === "ltr")
-          || (side === "right" && wrapperDirection === "rtl");
+        const useInlineStart = (side === "left" && wrapperDirection === "ltr") || (side === "right" && wrapperDirection === "rtl");
         this.elements.componentWrapper.style.insetInlineStart = useInlineStart ? `${value}px` : "unset";
         this.elements.componentWrapper.style.insetInlineEnd = useInlineStart ? "unset" : `${value}px`;
       };
-      const anchorCenter = bindTargetBoundary.left + (bindTargetBoundary.width / 2);
+      const anchorCenter = bindTargetBoundary.left + bindTargetBoundary.width / 2;
       this.elements.componentWrapper.style.position = "fixed";
       this.elements.componentWrapper.style.transform = "none";
       // y pos
@@ -316,27 +317,26 @@ export class JBPopoverWebComponent extends JBBaseComponent {
           break;
       }
     } else {
-      this.elements.componentWrapper.style.removeProperty('position');
-      this.elements.componentWrapper.style.removeProperty('transform');
-      this.elements.componentWrapper.style.removeProperty('top');
-      this.elements.componentWrapper.style.removeProperty('insetInlineStart');
+      this.elements.componentWrapper.style.removeProperty("position");
+      this.elements.componentWrapper.style.removeProperty("transform");
+      this.elements.componentWrapper.style.removeProperty("top");
+      this.elements.componentWrapper.style.removeProperty("insetInlineStart");
     }
   }
   #onBrowserBack = (_e: PopStateEvent) => {
-    if (this.isOpen && isMobile()) {
+    if (this.isOpen && this.isMobileMode) {
       //we will push state when modal get open
       this.close();
       this.#dispatchCloseEvent("HISTORY_BACK_EVENT");
-
     }
-  }
+  };
   overflowHandler: "NONE" | "SLIDE" = "NONE";
   overflowDom: HTMLElement | null = null;
   #resetContainerPos = () => {
     if (this.overflowHandler === "SLIDE") {
       this.elements.contentWrapper.style.transform = `translateY(${0}px)`;
     }
-  }
+  };
   #fixContainerPos = () => {
     if (this.overflowHandler === "SLIDE") {
       //bounding client rect
@@ -346,8 +346,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
         this.elements.contentWrapper.style.transform = `translateY(${overflowSize}px)`;
       }
     }
-
-  }
+  };
   /**
    * @description return height of element that we want to calc our overflow based on.
    */

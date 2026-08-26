@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.15.0] - 2026-08-26
+
+### Added
+
+- Add Tablet Mode
+
 ## [1.14.0] - 2026-08-22
 
 ### Changed

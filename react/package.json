@@ -29,7 +29,7 @@
   "types": "./dist/JBPopover.d.ts",
   "repository": {
 		"type": "git",
-		"url": "git@github.com:javadbat/jb-popover.git"
+		"url": "https://github.com/javadbat/jb-popover.git"
   },
   "dependencies": {
     "jb-popover": "^1.8.0",
