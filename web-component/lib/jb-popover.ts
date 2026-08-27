@@ -259,7 +259,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     return { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
   }
   #updatePos() {
-    if (this.#bindTarget && this.isMobileMode) {
+    if (this.#bindTarget && !this.isMobileMode) {
       const bindTargetBoundary = this.#bindTarget.getBoundingClientRect();
       const containingBlockBoundary = this.#getFixedContainingBlockBoundary();
       const style = getComputedStyle(this.#bindTarget);

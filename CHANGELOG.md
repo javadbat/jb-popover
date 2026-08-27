@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.15.1] - 2026-08-26
+
+### Fixed
+
+- fix mobile overflow problem
+
 ## [1.15.0] - 2026-08-26
 
 ### Added
