@@ -67,6 +67,7 @@
         box-shadow: var(--box-shadow);
         display: grid;
         align-items: center;
+        justify-items: center;
         justify-content: center;
         box-sizing: border-box;
         /*animation to handle overflow move*/
