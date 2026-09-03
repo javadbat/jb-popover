@@ -229,13 +229,13 @@ export const MobileHashState: Story = {
   play: async ({ canvasElement }) => {
     const popover = getPopover(canvasElement);
     expect(popover.PopoverHashPath).toBe('#mobile-hash-popover');
-    let urlOpenDispatched = false;
-    popover.addEventListener('urlOpen', () => { urlOpenDispatched = true; }, { once: true });
+    let urlEventDispatched = false;
+    popover.addEventListener('url-open', () => { urlEventDispatched = true; }, { once: true });
     const currentUrl = window.location.href;
     window.history.replaceState(window.history.state, '', '#mobile-hash-popover');
     popover.checkInitialOpenness();
     expect(popover.isOpen).toBe(true);
-    expect(urlOpenDispatched).toBe(true);
+    expect(urlEventDispatched).toBe(true);
     popover.close();
     window.history.replaceState(window.history.state, '', currentUrl);
   },

@@ -84,7 +84,7 @@ import 'jb-popover';
 | --- | --- | --- |
 | `load` | none | Dispatched from `connectedCallback` before event listeners are registered; see the [event example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
 | `init` | none | Dispatched from `connectedCallback` after initialization; see the [event example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
-| `urlOpen` | none | Dispatched when the popover opens itself because the current URL hash matches its id; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
+| `url-open` | none | Dispatched when the popover opens itself because the current URL hash matches its id; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
 | `close` | `{ eventType }` | Dispatched for backdrop clicks and mobile browser-back close attempts; see the [event example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
 
 `close` event `event.detail.eventType` can be:
@@ -161,7 +161,7 @@ When the popover has an `id`, mobile `open()` pushes `#id` to browser history. P
 </jb-popover>
 ```
 
-If the page loads with `#menu-popover`, the popover opens itself and dispatches `urlOpen`.
+If the page loads with `#menu-popover`, the popover opens itself and dispatches `url-open`.
 
 ## Slot
 

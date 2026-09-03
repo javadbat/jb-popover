@@ -28,7 +28,7 @@ export function getPopoverWrapper(popover: JBPopoverWebComponent) {
 }
 
 export function getPopoverContent(popover: JBPopoverWebComponent) {
-  const content = popover.shadowRoot?.querySelector<HTMLElement>('.popover-content-wrapper');
+  const content = popover.shadowRoot?.querySelector<HTMLElement>('.popover-content');
   expect(content).toBeTruthy();
   return content!;
 }

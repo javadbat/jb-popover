@@ -74,7 +74,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     shadowRoot.appendChild(element.content.cloneNode(true));
     this.elements = {
       componentWrapper: shadowRoot.querySelector(".jb-popover-web-component")!,
-      contentWrapper: shadowRoot.querySelector(".popover-content-wrapper")!,
+      contentWrapper: shadowRoot.querySelector(".popover-content")!,
     };
   }
   #registerEventListener() {
@@ -93,7 +93,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
   }
   triggerUrlOpenEvent() {
     //when modal open itself because url contain modal id
-    const event = new CustomEvent("urlOpen", { bubbles: true, composed: true });
+    const event = new CustomEvent("url-open", { bubbles: true, composed: true });
     this.dispatchEvent(event);
   }
   static get observedAttributes() {

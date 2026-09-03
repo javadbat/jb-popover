@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0] - 2026-09-03
+
+### Changed
+
+- Breaking: updated the popover content part to the shared `content` contract.
+- Breaking: renamed the public `urlOpen` event to `url-open`; the old event name is removed. The React handler remains `onUrlOpen`.
+
 ## [1.15.1] - 2026-08-26
 
 ### Fixed
