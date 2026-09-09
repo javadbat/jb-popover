@@ -1,16 +1,6 @@
 # JBPopover React Component
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/jb-popover)
-[![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://raw.githubusercontent.com/javadbat/jb-popover/main/LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/jb-popover-react)](https://www.npmjs.com/package/jb-popover-react)
-![GitHub Created At](https://img.shields.io/github/created-at/javadbat/jb-popover)
-
-React wrapper for [`jb-popover`](https://github.com/javadbat/jb-popover). It imports and registers the underlying responsive popover web component.
-
-## Demo
-
-Explore the [React popover examples](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-react-readme--docs), including [anchored positioning](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal), [controlled open and close](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close), and [overflow handling](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide).
-- Used inside components such as [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-), [jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput), and [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
+React wrapper for [jb-popover](../README.md). The wrapper registers the web component and applies options and anchor binding before opening.
 
 ## Installation
 
@@ -18,165 +8,130 @@ Explore the [React popover examples](https://javadbat.github.io/design-system/?p
 npm i jb-popover
 ```
 
-```jsx
+```tsx
+import { useRef, useState } from 'react';
 import { JBPopover } from 'jb-popover/react';
 
-<JBPopover>
-  <div>Popover content</div>
-</JBPopover>;
-```
-
-## When to use
-
-Use `JBPopover` for anchored floating content such as menus, pickers, filters, and small panels that need responsive placement, overflow handling, backdrop close behavior, or mobile browser-back support. See the [anchored demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) for the default interaction.
-
-Use `JBModal` for blocking dialogs that should take over the page flow.
-
-## Props
-
-| prop | type | description |
-| --- | --- | --- |
-| `isOpen` | `boolean` | Opens or closes the popover; see the [controlled interaction](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
-| `anchor` | `React.RefObject<HTMLElement \| null>` | Anchor element ref passed to `bindTarget()`; see the [anchored demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal). |
-| `positionArea` | `{ inline?: 'start' \| 'end' \| 'center' \| 'center-before' \| 'center-after'; block?: 'after' \| 'before' }` | Preferred anchor alignment; compare [position variants](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area). |
-| `overflowHandler` | `'NONE' \| 'SLIDE'` | Overflow handling mode; see the [overflow example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide). |
-| `overflowDom` | `HTMLElement \| null` | Element used as the overflow boundary; see [overflow handling](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide). |
-| `id` | `string` | Enables mobile URL hash history behavior when set; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
-| `children` | `React.ReactNode` | Popover content rendered in the default slot; see the [content demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal). |
-
-## Events
-
-| prop | event | description |
-| --- | --- | --- |
-| `onLoad` | `load` | Called before event listeners are registered; see the [events demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
-| `onInit` | `init` | Called after initialization; see the [events demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
-| `onClose` | `close` | Called for backdrop clicks and mobile browser-back close attempts; see the [events demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
-
-`onClose` receives `event.detail.eventType`, such as `BACKGROUND_CLICK` or `HISTORY_BACK_EVENT`.
-
-## Controlled open state
-
-```jsx
-const [isOpen, setIsOpen] = useState(false);
-
-<JBPopover
-  isOpen={isOpen}
-  onClose={() => setIsOpen(false)}
->
-  <div>Popover content</div>
-</JBPopover>;
-```
-
-## Open and close
-
-Control open state with `isOpen`. Use `onClose` to synchronize React state when the user closes the popover by backdrop click or mobile history back. The [controlled open/close demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close) shows the flow.
-
-## Slot
-
-React children render in the default slot of the underlying popover; see the [content demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal).
-
-## Bind to an anchor
-
-The `anchor` ref binds the popover to a trigger; see the [anchored example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal).
-
-```tsx
-const anchorRef = useRef<HTMLButtonElement>(null);
-
-return (
-  <>
-    <button ref={anchorRef} onClick={() => setIsOpen(true)}>
-      Open
-    </button>
-    <JBPopover
-      anchor={anchorRef}
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-    >
-      <div>Actions</div>
+function Example() {
+  const anchor = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  return <>
+    <button ref={anchor} onClick={() => setOpen(true)}>Choose a value</button>
+    <JBPopover anchor={anchor} isOpen={open} aria-label="Choose a value"
+      onClose={event => { if (!event.defaultPrevented) setOpen(false); }}>
+      <div>Content</div>
     </JBPopover>
-  </>
-);
-```
-
-## Anchor position
-
-The `positionArea` prop controls the anchor alignment. Compare the [center](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area), [end](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-end-position-area), and [before](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--block-before-position-area) examples.
-
-```jsx
-<JBPopover
-  anchor={anchorRef}
-  isOpen={isOpen}
-  positionArea={{ block: 'before', inline: 'end' }}
->
-  <div>Aligned content</div>
-</JBPopover>;
-```
-
-## Overflow handling
-
-`overflowHandler="SLIDE"` keeps content visible when it would overflow the viewport or `overflowDom`; try the [overflow demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide).
-
-```jsx
-<JBPopover
-  isOpen={isOpen}
-  anchor={anchorRef}
-  overflowHandler="SLIDE"
-  overflowDom={modalElement}
->
-  <div>Popover content</div>
-</JBPopover>;
-```
-
-## Mobile URL hash state
-
-Set `id` when mobile browser back should close the popover before leaving the page. See the [mobile hash demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state).
-
-```jsx
-<JBPopover id="actions-popover" isOpen={isOpen}>
-  <div>Actions</div>
-</JBPopover>
-```
-
-## Styling
-
-The React component uses the same CSS variables and parts as the web component. See the shared [web-component styling guidance](../README.md#css-parts-and-variables) and the [style gallery](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-style--gallery).
-
-```css
-.actions-popover {
-  --jb-popover-z-index: 1000;
-  --jb-popover-bg-color: #fff;
-  --jb-popover-border-radius: 1rem;
+  </>;
 }
 ```
 
-```jsx
-<JBPopover className="actions-popover">
-  <div>Actions</div>
+## Props
+
+| Prop | Type | Default | Meaning |
+| --- | --- | --- | --- |
+| `isOpen` | `boolean` | `false` | Requested open state. False starts dismissal. |
+| `anchor` | `React.RefObject<HTMLElement \| null>` | none | Desktop anchor; binding and observation update when its target changes on render. |
+| `positionArea` | `Partial<PositionArea>` | start/after | Preferred alignment; omitted fields use defaults. |
+| `autoPlacement` | `boolean` | `true` | Flip and shift near viewport edges. Set false for exact placement. |
+| `modal` | `boolean` or `'auto'` | `'auto'` | Auto makes mobile/tablet modal while desktop stays non-modal. |
+| `closeOnEscape` | `boolean` | `true` | Escape requests dismissal of the topmost popover. |
+| `restoreFocus` | `boolean` | `false` | Restore previous focus on close; opt in only for triggers that do not open on focus. |
+| `autoCloseOnBackgroundClick` | `boolean` | `true` | Automatically close after an allowed backdrop request. |
+| `swipeToClose` | `boolean` | `true` | Enable bottom-sheet handle/backdrop dragging. |
+| `dragFromContent` | `boolean` | `false` | Also allow eligible content gestures at their scroll boundary. |
+| `overflowHandler` | `'NONE'` or `'SLIDE'` | `'NONE'` | Legacy desktop hover correction. |
+| `overflowDom` | `HTMLElement \| null` | `null` | Boundary for legacy overflow correction. |
+| `id` | `string` | none | Enables owned mobile/tablet URL hash history. |
+| `aria-label` | `string` | none | Accessible name of the modal dialog. |
+| `ref` | `React.Ref<JBPopoverWebComponent>` | none | Imperative access to `open()`, `close()`, and read-only state. |
+| `children` | `React.ReactNode` | none | Content in the default slot. |
+
+## Events
+
+| Prop | Event | Meaning |
+| --- | --- | --- |
+| `onLoad` | `load` | Connection started; can occur before React effects attach. |
+| `onInit` | `init` | Connection initialization completed; can occur before React effects attach. |
+| `onUrlOpen` | `url-open` | Opening from a matching hash; initial connection can precede effect attachment. |
+| `onBeforeClose` | `before-close` | Cancelable swipe/backdrop/Escape request. |
+| `onClose` | `close` | Allowed dismissal request, or a browser-back notification. |
+| `onClosed` | `closed` | The exit animation finished and the element's `isOpen` is false. |
+
+`onBeforeClose` and `onClose` use `JBPopoverCloseEvent`. `event.detail.eventType` identifies `SWIPE_DOWN`, `BACKGROUND_CLICK`, `ESCAPE_KEY`, or (onClose only) `HISTORY_BACK_EVENT`. `OUTSIDE_CLICK` and `CLOSE_BUTTON_CLICK` are reserved legacy reasons.
+
+## Controlled open state
+
+Use `onClose` to synchronize requested state after user dismissal. Keep the component mounted during exit. `onClosed` reports completion for programmatic and user closes. Calling `open()` during dismissal cancels that animation.
+
+```tsx
+<JBPopover isOpen={open} onClosed={() => console.log('Exit finished')}
+  onClose={event => { if (!event.defaultPrevented) setOpen(false); }}>
+  <div>Content</div>
 </JBPopover>
 ```
 
+## Preventing dismissal
+
+```tsx
+<JBPopover isOpen={open} aria-label="Edit filters"
+  onBeforeClose={event => {
+    if (hasUnsavedChanges) event.preventDefault();
+    console.log(event.detail.eventType);
+  }}
+  onClose={event => { if (!event.defaultPrevented) setOpen(false); }}>
+  <div>Your form</div>
+</JBPopover>
+```
+
+Cancellation must be synchronous. For asynchronous confirmation, prevent first and set `isOpen` to false after confirmation. Browser-back is not cancelable through `onBeforeClose`.
+
+## Anchor position
+
+```tsx
+<JBPopover anchor={anchor} isOpen={open}
+  positionArea={{ inline: 'end', block: 'before' }} autoPlacement={false}>
+  <div>Exactly aligned content</div>
+</JBPopover>
+```
+
+`autoPlacement` is enabled by default. Inline values are `start`, `end`, `center`, `center-before`, and `center-after`; block values are `before` and `after`. Removing optional configuration props restores their defaults.
+
+## Mobile swipe dismissal
+
+Bottom sheets (up to 40rem) follow the finger, fade the backdrop, and dismiss by distance or a downward flick. Short or rejected swipes return smoothly and can be grabbed during the return animation. `swipeToClose={false}` disables all dragging. Tablet centered panels and desktop popovers do not drag.
+
+Content dragging is opt-in. Scrollable ancestors must already be at the top when touch starts; reaching the top while scrolling requires a new gesture. Interactive controls, horizontal gestures, and `data-jb-popover-no-drag` regions are excluded.
+
+```tsx
+<JBPopover isOpen={open} dragFromContent aria-label="Choose a date">
+  <div data-jb-popover-no-drag>Place a calendar or swiper here.</div>
+  <div>Other content can start a sheet drag at its scroll boundary.</div>
+</JBPopover>
+```
+
+## Accessibility and modal behavior
+
+`modal="auto"` enables scroll locking, background inertness, focus containment, and dialog semantics on mobile/tablet. Supply `aria-label`. Initial focus goes to the first focusable content element with the `autofocus` attribute, falling back to the content container. Use `restoreFocus` to opt into restoring previous focus on close; it defaults to false to support triggers that open on focus. Set `modal={false}` for pickers that must keep focus in their input, or `modal` to make desktop modal too.
+
+Escape requests dismissal unless `closeOnEscape={false}`. Modal popovers coordinate their scroll locks and topmost Escape behavior. Safe areas, oversized content, and visual-viewport changes are handled by the underlying component.
+
+## Mobile URL hash state
+
+Set `id` to enable mobile/tablet history. Entering mobile mode while already open creates an owned entry, preserving router state. The entry remains owned after resizing back to desktop. Existing matching deep links do not create duplicate entries. See [history details](../README.md#mobile-url-hash-state).
+
+## Overflow handling
+
+Prefer `autoPlacement` for viewport edges. `overflowHandler="SLIDE"` and optional `overflowDom` retain the legacy desktop hover correction.
+
 ## CSS parts and variables
 
-Use the same CSS parts and variables as the web component. The `Styling` section above shows the React class-based pattern; the [style gallery](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-style--gallery) demonstrates the available treatments.
+The wrapper supports the same [CSS parts and variables](../README.md#css-parts-and-variables).
 
-## Accessibility notes
+```css
+.my-popover::part(backdrop) {
+  background: rgb(0 0 0 / 40%);
+  backdrop-filter: blur(8px);
+}
+```
 
-Move focus intentionally when opening interactive popovers and return focus to the trigger when closing if the surrounding workflow needs it. See the [interactive example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) when adding keyboard handling around slotted content. Use `JBModal` instead for modal dialogs that require focus trapping.
-
-## Shared Documentation
-
-For web-component behavior, events, slots, URL hash behavior, and CSS variables, see [`jb-popover`](https://github.com/javadbat/jb-popover).
-
-## Related Docs
-
-- See [`jb-popover`](https://github.com/javadbat/jb-popover) if you want to use this component as a pure JavaScript web component.
-- See [All JB Design System Component List](https://javadbat.github.io/design-system/) for more components.
-- Use [Contribution Guide](https://github.com/javadbat/design-system/blob/main/docs/contribution-guide.md) if you want to contribute to this component.
-
-## AI agent notes
-
-- Import `JBPopover` from `jb-popover/react`; the wrapper imports and registers the underlying `jb-popover` web component.
-- Use `isOpen` for controlled open state.
-- Use `anchor={ref}` to position the popover relative to a trigger element.
-- Use `positionArea` as an object prop, not a string.
-- Use `onClose` to sync React state after backdrop or mobile browser-back close requests.
+Apply it with `<JBPopover className="my-popover">...</JBPopover>`.

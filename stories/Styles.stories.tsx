@@ -1,44 +1,45 @@
-import React, { useRef, useState } from 'react';
-import { JBButton } from 'jb-button/react';
-import type { JBButtonWebComponent } from 'jb-button';
-import { JBPopover } from 'jb-popover/react';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import '../../../docs/styles/ant-design.css';
-import '../../../docs/styles/aurora.css';
-import '../../../docs/styles/bootstrap.css';
-import '../../../docs/styles/candy.css';
-import '../../../docs/styles/carbon.css';
-import '../../../docs/styles/cupertino.css';
-import '../../../docs/styles/fluent.css';
-import '../../../docs/styles/forest.css';
-import '../../../docs/styles/material.css';
-import '../../../docs/styles/porcelain.css';
-import '../../../docs/styles/sunset.css';
-import '../../../docs/styles/terminal.css';
-import '../../jb-button/stories/styles/style-ant-design.css';
-import '../../jb-button/stories/styles/style-aurora.css';
-import '../../jb-button/stories/styles/style-bootstrap.css';
-import '../../jb-button/stories/styles/style-candy.css';
-import '../../jb-button/stories/styles/style-carbon.css';
-import '../../jb-button/stories/styles/style-cupertino.css';
-import '../../jb-button/stories/styles/style-fluent.css';
-import '../../jb-button/stories/styles/style-forest.css';
-import '../../jb-button/stories/styles/style-material.css';
-import '../../jb-button/stories/styles/style-porcelain.css';
-import '../../jb-button/stories/styles/style-sunset.css';
-import '../../jb-button/stories/styles/style-terminal.css';
-import './styles/style-ant-design.css';
-import './styles/style-aurora.css';
-import './styles/style-bootstrap.css';
-import './styles/style-candy.css';
-import './styles/style-carbon.css';
-import './styles/style-cupertino.css';
-import './styles/style-fluent.css';
-import './styles/style-forest.css';
-import './styles/style-material.css';
-import './styles/style-porcelain.css';
-import './styles/style-sunset.css';
-import './styles/style-terminal.css';
+// biome-ignore lint/correctness/noUnusedImports: Storybook uses the classic JSX transform.
+import React, { useRef, useState } from "react";
+import { JBButton } from "jb-button/react";
+import type { JBButtonWebComponent } from "jb-button";
+import { JBPopover } from "jb-popover/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import "../../../docs/styles/ant-design.css";
+import "../../../docs/styles/aurora.css";
+import "../../../docs/styles/bootstrap.css";
+import "../../../docs/styles/candy.css";
+import "../../../docs/styles/carbon.css";
+import "../../../docs/styles/cupertino.css";
+import "../../../docs/styles/fluent.css";
+import "../../../docs/styles/forest.css";
+import "../../../docs/styles/material.css";
+import "../../../docs/styles/porcelain.css";
+import "../../../docs/styles/sunset.css";
+import "../../../docs/styles/terminal.css";
+import "../../jb-button/stories/styles/style-ant-design.css";
+import "../../jb-button/stories/styles/style-aurora.css";
+import "../../jb-button/stories/styles/style-bootstrap.css";
+import "../../jb-button/stories/styles/style-candy.css";
+import "../../jb-button/stories/styles/style-carbon.css";
+import "../../jb-button/stories/styles/style-cupertino.css";
+import "../../jb-button/stories/styles/style-fluent.css";
+import "../../jb-button/stories/styles/style-forest.css";
+import "../../jb-button/stories/styles/style-material.css";
+import "../../jb-button/stories/styles/style-porcelain.css";
+import "../../jb-button/stories/styles/style-sunset.css";
+import "../../jb-button/stories/styles/style-terminal.css";
+import "./styles/style-ant-design.css";
+import "./styles/style-aurora.css";
+import "./styles/style-bootstrap.css";
+import "./styles/style-candy.css";
+import "./styles/style-carbon.css";
+import "./styles/style-cupertino.css";
+import "./styles/style-fluent.css";
+import "./styles/style-forest.css";
+import "./styles/style-material.css";
+import "./styles/style-porcelain.css";
+import "./styles/style-sunset.css";
+import "./styles/style-terminal.css";
 
 const meta = {
   title: "Components/JBPopover/Style",
@@ -53,13 +54,43 @@ const styleSamples = [
   { name: "Aurora", themeClassName: "aurora-style", popoverClassName: "aurora-style", buttonClassName: "aurora-style aurora-style", cardClassName: "aurora-popover-card" },
   { name: "Forest", themeClassName: "forest-style", popoverClassName: "forest-style", buttonClassName: "forest-style forest-style", cardClassName: "forest-popover-card" },
   { name: "Sunset", themeClassName: "sunset-style", popoverClassName: "sunset-style", buttonClassName: "sunset-style sunset-style", cardClassName: "sunset-popover-card" },
-  { name: "Porcelain", themeClassName: "porcelain-style", popoverClassName: "porcelain-style", buttonClassName: "porcelain-style porcelain-style", cardClassName: "porcelain-popover-card" },
+  {
+    name: "Porcelain",
+    themeClassName: "porcelain-style",
+    popoverClassName: "porcelain-style",
+    buttonClassName: "porcelain-style porcelain-style",
+    cardClassName: "porcelain-popover-card",
+  },
   { name: "Candy", themeClassName: "candy-style", popoverClassName: "candy-style", buttonClassName: "candy-style candy-style", cardClassName: "candy-popover-card" },
-  { name: "Terminal", themeClassName: "terminal-style", popoverClassName: "terminal-style", buttonClassName: "terminal-style terminal-style", cardClassName: "terminal-popover-card" },
-  { name: "Material", themeClassName: "material-style", popoverClassName: "material-style", buttonClassName: "material-style material-style", cardClassName: "material-popover-card" },
+  {
+    name: "Terminal",
+    themeClassName: "terminal-style",
+    popoverClassName: "terminal-style",
+    buttonClassName: "terminal-style terminal-style",
+    cardClassName: "terminal-popover-card",
+  },
+  {
+    name: "Material",
+    themeClassName: "material-style",
+    popoverClassName: "material-style",
+    buttonClassName: "material-style material-style",
+    cardClassName: "material-popover-card",
+  },
   { name: "Fluent", themeClassName: "fluent-style", popoverClassName: "fluent-style", buttonClassName: "fluent-style fluent-style", cardClassName: "fluent-popover-card" },
-  { name: "Bootstrap", themeClassName: "bootstrap-style", popoverClassName: "bootstrap-style", buttonClassName: "bootstrap-style bootstrap-style", cardClassName: "bootstrap-popover-card" },
-  { name: "Cupertino", themeClassName: "cupertino-style", popoverClassName: "cupertino-style", buttonClassName: "cupertino-style cupertino-style", cardClassName: "cupertino-popover-card" },
+  {
+    name: "Bootstrap",
+    themeClassName: "bootstrap-style",
+    popoverClassName: "bootstrap-style",
+    buttonClassName: "bootstrap-style bootstrap-style",
+    cardClassName: "bootstrap-popover-card",
+  },
+  {
+    name: "Cupertino",
+    themeClassName: "cupertino-style",
+    popoverClassName: "cupertino-style",
+    buttonClassName: "cupertino-style cupertino-style",
+    cardClassName: "cupertino-popover-card",
+  },
   { name: "Ant Design", themeClassName: "ant-design-style", popoverClassName: "ant-design-style", buttonClassName: "ant-design-style", cardClassName: "ant-popover-card" },
 ];
 
@@ -83,12 +114,7 @@ function PopoverPanel({ cardClassName }: { cardClassName: string }) {
   );
 }
 
-function PopoverStyleSample({
-  buttonClassName,
-  cardClassName,
-  popoverClassName,
-  themeClassName,
-}: PopoverStyleSampleProps) {
+function PopoverStyleSample({ buttonClassName, cardClassName, popoverClassName, themeClassName }: PopoverStyleSampleProps) {
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<JBButtonWebComponent | null>(null);
 
@@ -104,16 +130,10 @@ function PopoverStyleSample({
         gap: "0.75rem",
       }}
     >
-      <JBButton ref={anchorRef} className={buttonClassName} onClick={() => setIsOpen((value) => !value)}>
+      <JBButton ref={anchorRef} className={buttonClassName} onClick={() => setIsOpen(value => !value)}>
         Open popover
       </JBButton>
-      <JBPopover
-        anchor={anchorRef}
-        className={popoverClassName}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        positionArea={{ inline: "start", block: "after" }}
-      >
+      <JBPopover anchor={anchorRef} className={popoverClassName} isOpen={isOpen} onClose={() => setIsOpen(false)} positionArea={{ inline: "start", block: "after" }}>
         <PopoverPanel cardClassName={cardClassName} />
       </JBPopover>
     </div>
@@ -123,14 +143,16 @@ function PopoverStyleSample({
 export const Gallery: Story = {
   name: "Gallery",
   render: () => (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(21rem, 1fr))",
-      gap: "1.25rem",
-      alignItems: "start",
-      width: "min(100%, 82rem)",
-    }}>
-      {styleSamples.map((sample) => (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(21rem, 1fr))",
+        gap: "1.25rem",
+        alignItems: "start",
+        width: "min(100%, 82rem)",
+      }}
+    >
+      {styleSamples.map(sample => (
         <section
           key={sample.popoverClassName}
           className={sample.themeClassName}
@@ -145,14 +167,16 @@ export const Gallery: Story = {
             boxShadow: "0 0.75rem 1.75rem oklch(0% 0 0 / 0.08)",
           }}
         >
-          <div style={{
-            width: "100%",
-            color: "var(--jb-content-primary, #334155)",
-            fontSize: "0.875rem",
-            fontWeight: 700,
-            lineHeight: 1.4,
-            textAlign: "center",
-          }}>
+          <div
+            style={{
+              width: "100%",
+              color: "var(--jb-content-primary, #334155)",
+              fontSize: "0.875rem",
+              fontWeight: 700,
+              lineHeight: 1.4,
+              textAlign: "center",
+            }}
+          >
             {sample.name}
           </div>
           <PopoverStyleSample {...sample} />

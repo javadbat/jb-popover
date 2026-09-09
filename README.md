@@ -1,35 +1,8 @@
 # jb-popover
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/jb-popover)
-[![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://raw.githubusercontent.com/javadbat/jb-popover/main/LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/jb-popover)](https://www.npmjs.com/package/jb-popover)
-![GitHub Created At](https://img.shields.io/github/created-at/javadbat/jb-popover)
+Responsive web component: an anchored popover on desktop, a centered tablet panel, and a draggable bottom sheet on mobile.
 
-Responsive popover web component for floating content next to an element on desktop and showing the same content as a bottom sheet on mobile.
-
-- Positions content near an anchor element with `bindTarget()`.
-- Supports start, end, center, before, and after anchor alignment.
-- Handles mobile bottom-sheet presentation with backdrop.
-- Can push a URL hash on mobile so browser back closes the popover first.
-- Supports overflow slide adjustment when content reaches the viewport or another container.
-- Provides a default slot for any custom popover content.
-
-## When to use
-
-Use `jb-popover` for contextual actions, menus, picker panels, detail previews, and compact overlays that should stay attached to a trigger element on desktop. See the [interactive overview](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) for a representative anchored popover.
-
-Use `jb-modal` when the content should be a blocking dialog. Use inline content when the information should always remain visible in the document flow.
-
-## Demo
-
-- Explore the [popover examples](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overview), including [positioning](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area), [programmatic open and close](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close), and [overflow handling](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide).
-- Used inside components such as [jb-date-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbdateinput-), [jb-time-input](https://javadbat.github.io/design-system/?path=/docs/components-form-elements-inputs-jbtimeinput), and [jb-select](https://javadbat.github.io/design-system/?path=/story/components-form-elements-jbselect)
-
-## Using With JS Frameworks
-
-<a href="https://github.com/javadbat/jb-popover/tree/main/react" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/React.js-jb--popover%2Freact-000.svg?logo=react&logoColor=%2361DAFB" height="30" /></a>
-
-Other integrations: <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#angular" target="_blank" rel="noopener noreferrer">Angular</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#vue" target="_blank" rel="noopener noreferrer">Vue</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#nuxt" target="_blank" rel="noopener noreferrer">Nuxt</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#svelte" target="_blank" rel="noopener noreferrer">Svelte</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#sveltekit" target="_blank" rel="noopener noreferrer">SvelteKit</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#solidjs" target="_blank" rel="noopener noreferrer">SolidJS</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#lit" target="_blank" rel="noopener noreferrer">Lit</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#nextjs" target="_blank" rel="noopener noreferrer">Next.js</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#astro" target="_blank" rel="noopener noreferrer">Astro</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#blazor" target="_blank" rel="noopener noreferrer">Blazor</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#server-rendered-templates" target="_blank" rel="noopener noreferrer">Server-rendered templates</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#wordpress" target="_blank" rel="noopener noreferrer">WordPress</a> · <a href="https://javadbat.github.io/design-system/?path=/docs/getting-started-framework-integration--docs#alpinejs-and-htmx" target="_blank" rel="noopener noreferrer">Alpine.js and HTMX</a>
+[Examples](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) | [React wrapper](./react/README.md) | [Styling](https://javadbat.github.io/design-system/?path=/docs/components-jbpopover-styling)
 
 ## Installation
 
@@ -39,191 +12,176 @@ npm i jb-popover
 
 ```js
 import 'jb-popover';
+
+const popover = document.querySelector('jb-popover');
+popover.bindTarget(document.querySelector('#trigger'));
+popover.open();
 ```
 
 ```html
-<button id="trigger">Open</button>
-<jb-popover id="actions-popover">
-  <div>Popover content</div>
+<button id="trigger">Choose a value</button>
+<jb-popover aria-label="Choose a value">
+  <div>Your content</div>
 </jb-popover>
 ```
 
 ## API reference
 
+Options are JavaScript properties, not HTML attributes, unless listed as attributes below.
+
 ### Attributes
 
-| name | type | default | description |
-| --- | --- | --- | --- |
-| `is-open` | `boolean` | `false` | Opens the popover when set to `"true"`. Any other value closes it. See [open and close](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
-| `id` | `string` | `""` | Element id. On mobile, an id enables URL hash state while the popover is open; see the [mobile hash example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
+| Attribute | Meaning |
+| --- | --- |
+| `is-open` | Boolean attribute parsed by jb-core; opens or requests an animated close. |
+| `id` | Enables an owned URL hash entry when opened in mobile/tablet mode. |
+| `aria-label` | Accessible label for the internal dialog when modal behavior is active. |
 
 ### Properties
 
-| name | type | readonly | description |
+| Property | Type | Default | Meaning |
 | --- | --- | --- | --- |
-| `isOpen` | `boolean` | yes | Current open state. See the [open/close interaction](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
-| `positionArea` | `{ inline?: 'start' \| 'end' \| 'center' \| 'center-before' \| 'center-after'; block?: 'after' \| 'before' }` | no | Preferred anchor alignment used after `bindTarget()`; compare [position variants](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area). |
-| `overflowHandler` | `'NONE' \| 'SLIDE'` | no | Overflow handling mode. `SLIDE` moves the content upward when it overflows; see the [overflow example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide). |
-| `overflowDom` | `HTMLElement \| null` | no | Element used as the overflow boundary. Defaults to the window height; see [overflow handling](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide). |
-| `PopoverHashPath` | `string \| null` | yes | Hash path generated from `id`, such as `#actions-popover`; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
-| `JBID` | `symbol` | yes | Internal unique symbol for this popover instance. |
+| `isOpen` | `boolean` (read-only) | `false` | Remains true through dismissal; false when the `closed` event fires. |
+| `isMobileMode` | `boolean` (read-only) | viewport | True at widths up to 48rem, including tablets. |
+| `isBottomSheet` | `boolean` (read-only) | viewport | True at widths up to 40rem. |
+| `positionArea` | `{ inline?, block? }` | `{ inline: 'start', block: 'after' }` | Preferred desktop anchor alignment; partial assignments preserve other fields. |
+| `autoPlacement` | `boolean` | `true` | Flip above/below when the opposite side has more room and shift inside the viewport with an 8px margin. |
+| `swipeToClose` | `boolean` | `true` | Allow downward dismissal from the handle or backdrop on bottom sheets. |
+| `dragFromContent` | `boolean` | `false` | Also allow eligible gestures starting in content. |
+| `modal` | `boolean` or `'auto'` | `'auto'` | Auto enables modal behavior on mobile/tablet and leaves desktop non-modal. |
+| `closeOnEscape` | `boolean` | `true` | Allow Escape to request dismissal of the topmost popover. |
+| `restoreFocus` | `boolean` | `false` | Restore previous focus on close; opt in only for triggers that do not open on focus. |
+| `autoCloseOnBackgroundClick` | `boolean` | `true` | Automatically close after an allowed backdrop-click request. |
+| `overflowHandler` | `'NONE'` or `'SLIDE'` | `'NONE'` | Legacy desktop hover correction. Prefer automatic placement for viewport collisions. |
+| `overflowDom` | `HTMLElement` or `null` | `null` | Boundary for legacy overflow correction; otherwise uses the viewport. |
+| `PopoverHashPath` | `string` or `null` (read-only) | from `id` | Hash path for this instance. |
+| `JBID` | `symbol` (read-only) | unique | Instance identifier. |
 
 ### Methods
 
-| name | returns | description |
-| --- | --- | --- |
-| `open()` | `void` | Opens the popover, updates anchor position, and pushes mobile hash history when `id` is set. See [open and close](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
-| `close()` | `void` | Closes the popover and removes anchor observers; see the [open/close interaction](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
-| `bindTarget(element)` | `void` | Binds the popover to an anchor element and positions it with `position: fixed` on desktop; see the [anchored example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal). |
-| `unBindTarget()` | `void` | Removes the bound anchor and resets positioning; see the [open/close demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close). |
-| `checkInitialOpenness()` | `void` | Opens the popover when the current URL hash matches its `id`; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
+| Method | Behavior |
+| --- | --- |
+| `open()` | Opens, positions, activates observers, and applies modal/history behavior. Interrupts an in-progress dismissal. |
+| `close()` | Animates dismissal without dispatching a close request. Emits `closed` on completion. |
+| `bindTarget(element)` | Bind or replace the desktop anchor, including while already open. |
+| `unBindTarget()` | Remove the anchor and its observers. |
+| `checkInitialOpenness()` | Check whether the URL hash addresses this popover; called on connection. |
 
 ### Events
 
-| event | detail | description |
+| Event | Detail | Behavior |
 | --- | --- | --- |
-| `load` | none | Dispatched from `connectedCallback` before event listeners are registered; see the [event example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
-| `init` | none | Dispatched from `connectedCallback` after initialization; see the [event example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
-| `url-open` | none | Dispatched when the popover opens itself because the current URL hash matches its id; see [mobile hash state](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state). |
-| `close` | `{ eventType }` | Dispatched for backdrop clicks and mobile browser-back close attempts; see the [event example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--events). |
+| `load` | none | Component connected, before internal listeners are registered. |
+| `init` | none | Connection initialization completed. |
+| `url-open` | none | The current URL hash caused opening. |
+| `before-close` | `{ eventType }` | Cancelable request for swipe, backdrop, or Escape dismissal. |
+| `close` | `{ eventType }` | Follows an allowed request; also cancelable for swipe/backdrop/Escape. Browser-back dispatches a notification. |
+| `closed` | none | Non-cancelable completion event after any animated close, including programmatic close. |
 
-`close` event `event.detail.eventType` can be:
+Dismissal events bubble and cross shadow boundaries. The `close` event is a request/notification, not animation completion.
 
-| value | meaning |
+`event.detail.eventType` identifies the trigger:
+
+| Value | Trigger |
 | --- | --- |
-| `BACKGROUND_CLICK` | The mobile backdrop was clicked. |
-| `HISTORY_BACK_EVENT` | Browser back/popstate was received while the mobile popover was open. |
-| `OUTSIDE_CLICK` | Reserved close type for outside-click flows. |
-| `CLOSE_BUTTON_CLICK` | Reserved close type for close button flows. |
+| `SWIPE_DOWN` | A downward drag or flick crossed the dismissal threshold. |
+| `BACKGROUND_CLICK` | The mobile/tablet backdrop was clicked. |
+| `ESCAPE_KEY` | Escape was pressed while this was the topmost popover. |
+| `HISTORY_BACK_EVENT` | Navigation left this instance's owned history entry. |
+| `OUTSIDE_CLICK`, `CLOSE_BUTTON_CLICK` | Reserved legacy reasons. |
+
+Use `event.preventDefault()` synchronously to reject a request. A rejected swipe returns smoothly. For asynchronous confirmation, prevent first and call `close()` after confirmation.
+
+```js
+popover.addEventListener('before-close', event => {
+  if (hasUnsavedChanges) event.preventDefault();
+  console.log(event.detail.eventType);
+});
+popover.addEventListener('closed', () => {
+  console.log('Dismissal animation finished');
+});
+```
 
 ## Open and close
 
-Use `open()` and `close()` for imperative control when trigger logic lives outside the component. See the [open and close demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--open-close).
-
 ```js
-const popover = document.querySelector('jb-popover');
-
 popover.open();
-console.log(popover.isOpen);
-popover.close();
+popover.close(); // starts the exit animation
 ```
 
-```html
-<jb-popover is-open="true">
-  <div>Initially open</div>
-</jb-popover>
-```
-
-## Bind to an anchor
-
-Use `bindTarget()` when the popover should follow a trigger element on desktop; the [anchored demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) shows the default behavior.
-
-```js
-const trigger = document.querySelector('#trigger');
-const popover = document.querySelector('jb-popover');
-
-popover.bindTarget(trigger);
-popover.open();
-```
-
-Call `unBindTarget()` when the popover should stop tracking the anchor.
+`isOpen` remains true until exit completes. Calling `open()` during exit cancels the dismissal. Reduced-motion preferences remove timed movement. Do not remove the element before `closed` if you want its exit animation to finish.
 
 ## Anchor position
 
-By default, the popover opens after the anchor and aligns to the inline start edge. In LTR, inline start is left; in RTL, inline start is right. Compare the [center](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-center-position-area), [end](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--inline-end-position-area), and [before](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--block-before-position-area) variants.
+Supported inline values: `start`, `end`, `center`, `center-before`, `center-after`.
+Supported block values: `before`, `after`. Inline alignment follows the anchor's text direction.
 
 ```js
-const popover = document.querySelector('jb-popover');
-
-popover.positionArea = { inline: 'end' };
-popover.positionArea = { block: 'before' };
-popover.positionArea = { block: 'after', inline: 'center' };
+popover.positionArea = { inline: 'end', block: 'before' };
+popover.autoPlacement = false; // use the requested alignment exactly
 ```
+
+Anchor height/width changes, nested scroll containers, and shadow-root scroll ancestors are observed while open. Rebinding or reconnecting restores observation. Transformed containing blocks are included in coordinate calculations. Scroll-driven work is batched before repaint; closed popovers do not measure anchors on resize.
 
 ## Overflow handling
 
-`overflowHandler = 'SLIDE'` moves the content upward when it overflows the viewport or `overflowDom`. Try the [overflow demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--overflow-slide).
+`autoPlacement` adjusts placement against the viewport. The legacy `overflowHandler = 'SLIDE'` shifts content upward on desktop mouse enter, using `overflowDom` when supplied; mouse leave restores it.
 
-```js
-const popover = document.querySelector('jb-popover');
+## Mobile swipe dismissal
 
-popover.overflowHandler = 'SLIDE';
-popover.overflowDom = document.querySelector('jb-modal');
+At widths up to 40rem, drag from the handle, non-content sheet area, or anywhere on the backdrop. Drag beyond 30% of sheet height or flick downward to close. Content and backdrop follow the finger. A returning sheet can be grabbed again without jumping to its origin.
+
+`dragFromContent` is disabled by default. If enabled, every scrollable ancestor must already be at the top when the touch starts. Reaching the top by scrolling requires a new gesture. Interactive controls and horizontal gestures are excluded.
+
+```html
+<jb-popover aria-label="Choose a date">
+  <div data-jb-popover-no-drag>Place a calendar or swiper here.</div>
+</jb-popover>
 ```
+
+`data-jb-popover-no-drag` excludes the marked content region and its descendants. `swipeToClose = false` disables all sheet dragging. Tablet and desktop layouts do not use touch dismissal.
+
+## Modal behavior and accessibility
+
+With `modal = 'auto'`, mobile and tablet overlays lock page scrolling, make surrounding content inert, contain keyboard focus, and expose an internal `role="dialog"` with `aria-modal="true"`. Supply `aria-label` to name the dialog. Initial focus goes to the first focusable content element with `autofocus`, or the content container when none exists, before the background becomes inert. Set `restoreFocus = true` to restore previous focus on close. It defaults to false so focus-triggered pickers do not reopen after selection.
+
+Set `modal = false` for non-modal pickers that need to retain input focus, or `modal = true` to opt into these behaviors on desktop. Desktop is non-modal by default. Escape targets the topmost popover; nested modal popovers keep scrolling locked until the final modal closes. These popovers coordinate with each other, not an application's independent overlay manager.
+
+The sheet accounts for safe-area insets and visual-viewport height/offset changes, including space taken by a virtual keyboard. Oversized mobile content remains scrollable.
 
 ## Mobile URL hash state
 
-When the popover has an `id`, mobile `open()` pushes `#id` to browser history. Pressing browser back closes the popover and dispatches `close` with `eventType: "HISTORY_BACK_EVENT"` instead of immediately leaving the page. See the [mobile hash demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--mobile-hash-state).
+An `id` enables a history entry when an open popover enters mobile/tablet mode. Router state fields are preserved. Once created, the entry remains owned through a resize back to desktop, so browser back still dismisses it. An existing matching deep link is not pushed again.
 
-```html
-<jb-popover id="menu-popover">
-  <div>Menu content</div>
-</jb-popover>
-```
-
-If the page loads with `#menu-popover`, the popover opens itself and dispatches `url-open`.
-
-## Slot
-
-| slot | description |
-| --- | --- |
-| default | Popover content; see the [content slot demo](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal). |
-
-```html
-<jb-popover>
-  <div>Custom content</div>
-</jb-popover>
-```
+Closing consumes only the current entry owned by this instance. Disconnecting restores the previous URL/state for a current owned entry without navigating away. Avoid assigning the same id to multiple popovers. Browser-back remains a notification and does not use `before-close`.
 
 ## CSS parts and variables
 
-For complete styling guidance, live examples, and copyable style recipes, see [Styling](https://javadbat.github.io/design-system/?path=/docs/components-jbpopover-styling) and the [style gallery](https://javadbat.github.io/design-system/?path=/story/components-jbpopover-style--gallery).
-
-| part | description |
+| Part | Purpose |
 | --- | --- |
-| `content` | The popover content wrapper. |
+| `content` | Sheet/panel content container. |
+| `drag-handle` | Bottom-sheet drag area. |
+| `backdrop` | Independent overlay background, blur, and fade. |
 
-| CSS variable name | description |
+| CSS variable | Purpose |
 | --- | --- |
-| `--jb-popover-z-index` | Z-index of the opened popover. |
-| `--jb-popover-bg-color` | Background color of the content wrapper. |
-| `--jb-popover-border-radius` | Border radius of the content wrapper. |
-| `--jb-popover-top` | Top position in desktop mode when not bound to an anchor. |
-| `--jb-popover-padding` | Padding of the content wrapper. |
-| `--jb-popover-back-bg-color` | Mobile backdrop background color. |
-| `--jb-popover-margin-top` | Desktop margin above the popover. |
+| `--jb-popover-z-index` | Stacking order. |
+| `--jb-popover-bg-color` | Content background. |
+| `--jb-popover-back-bg-color` | Backdrop background. |
+| `--jb-popover-handle-color` | Drag indicator color. |
+| `--jb-popover-border-radius` | Content corner radius. |
+| `--jb-popover-padding` | Desktop content padding. |
+| `--jb-popover-box-shadow` | Content shadow. |
+| `--jb-popover-top` | Unanchored desktop top position. |
+| `--jb-popover-margin-top` | Desktop top margin. |
 
 ```css
-jb-popover {
-  --jb-popover-z-index: 1000;
-  --jb-popover-bg-color: #fff;
-  --jb-popover-border-radius: 1rem;
-}
-
-jb-popover::part(content) {
-  min-width: 15rem;
+jb-popover::part(backdrop) {
+  background: rgb(0 0 0 / 40%);
+  backdrop-filter: blur(8px);
 }
 ```
 
-## Accessibility notes
+## Tests
 
-- The component does not manage focus trapping or Escape-key close behavior. Review the [interactive popover example](https://javadbat.github.io/design-system/?path=/story/components-jbpopover--normal) when adding keyboard handling around slotted content.
-- Add appropriate roles, labels, and keyboard handling inside the slotted content for menus, listboxes, or dialogs.
-- On mobile, backdrop click dispatches `close` and closes the popover.
-
-## Related Docs
-
-- See [`jb-popover/react`](https://github.com/javadbat/jb-popover/tree/main/react) if you want to use this component in React.
-- See [All JB Design System Component List](https://javadbat.github.io/design-system/) for more components.
-- Use [Contribution Guide](https://github.com/javadbat/design-system/blob/main/docs/contribution-guide.md) if you want to contribute to this component.
-
-## AI agent notes
-
-- Import `jb-popover` once before using `<jb-popover>`.
-- Use `open()` and `close()` for imperative control.
-- Use `bindTarget(element)` to anchor the popover to a trigger element on desktop.
-- Use `positionArea` as a JavaScript property, not as a string HTML attribute.
-- Use `id` only when mobile URL hash/history integration is desired.
-- Listen to `close` and inspect `event.detail.eventType` for backdrop and browser-back close requests.
-- This package includes [`custom-elements.json`](./custom-elements.json) and points to it with the package.json `customElements` field. The field is documented by the Custom Elements Manifest project in [Referencing manifests from npm packages](https://github.com/webcomponents/custom-elements-manifest#referencing-manifests-from-npm-packages).
-- In `custom-elements.json`, `exports.kind: "js"` describes JavaScript/TypeScript exports and `exports.kind: "custom-element-definition"` maps the `jb-popover` tag name to `JBPopoverWebComponent`.
+From the design-system repository root, run `deno task test --name=jb-popover`. This builds the package, checks formatting/types, and runs the popover Storybook and browser suites. See [test details](./tests/README.md).

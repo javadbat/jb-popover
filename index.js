@@ -1,1 +1,1 @@
-export {JBPopoverWebComponent} from './web-component/dist/jb-popover.js';
+export * from "./web-component/dist/jb-popover.js";

@@ -1,34 +1,34 @@
-import type { JBButtonWebComponent } from 'jb-button';
-import type { JBPopoverWebComponent } from 'jb-popover';
-import { expect, waitFor } from 'storybook/test';
+import type { JBButtonWebComponent } from "jb-button";
+import type { JBPopoverWebComponent } from "jb-popover";
+import { expect, waitFor } from "storybook/test";
 
 export function getAnchorButton(canvasElement: HTMLElement) {
-  const button = canvasElement.querySelector<JBButtonWebComponent>('jb-button');
+  const button = canvasElement.querySelector<JBButtonWebComponent>("jb-button");
   expect(button).toBeTruthy();
   return button!;
 }
 
 export function getNativeButton(button: JBButtonWebComponent) {
-  const nativeButton = button.shadowRoot?.querySelector<HTMLButtonElement>('button');
+  const nativeButton = button.shadowRoot?.querySelector<HTMLButtonElement>("button");
   expect(nativeButton).toBeTruthy();
   return nativeButton!;
 }
 
 export function getPopover(canvasElement: HTMLElement) {
-  const popover = canvasElement.querySelector<JBPopoverWebComponent>('jb-popover');
+  const popover = canvasElement.querySelector<JBPopoverWebComponent>("jb-popover");
   expect(popover).toBeTruthy();
   expect(popover!.shadowRoot).toBeTruthy();
   return popover!;
 }
 
 export function getPopoverWrapper(popover: JBPopoverWebComponent) {
-  const wrapper = popover.shadowRoot?.querySelector<HTMLElement>('.jb-popover-web-component');
+  const wrapper = popover.shadowRoot?.querySelector<HTMLElement>(".jb-popover-web-component");
   expect(wrapper).toBeTruthy();
   return wrapper!;
 }
 
 export function getPopoverContent(popover: JBPopoverWebComponent) {
-  const content = popover.shadowRoot?.querySelector<HTMLElement>('.popover-content');
+  const content = popover.shadowRoot?.querySelector<HTMLElement>(".popover-content");
   expect(content).toBeTruthy();
   return content!;
 }
@@ -38,7 +38,8 @@ export async function waitForPopoverOpen(popover: JBPopoverWebComponent) {
 
   await waitFor(() => {
     expect(popover.isOpen).toBe(true);
-    expect(wrapper.classList.contains('--opened')).toBe(true);
+    expect(popover.matches(":state(open)")).toBe(true);
+    expect(getComputedStyle(wrapper).display).not.toBe("none");
   });
 }
 
@@ -49,16 +50,16 @@ export function expectCloseTo(actual: number, expected: number) {
 export function expectAfterPosition(anchor: HTMLElement, wrapper: HTMLElement) {
   const anchorRect = anchor.getBoundingClientRect();
 
-  expect(wrapper.style.position).toBe('fixed');
+  expect(wrapper.style.position).toBe("fixed");
   expectCloseTo(parseFloat(wrapper.style.insetBlockStart), anchorRect.bottom);
-  expect(wrapper.style.insetBlockEnd).toBe('unset');
+  expect(wrapper.style.insetBlockEnd).toBe("unset");
 }
 
 export function expectBeforePosition(anchor: HTMLElement, wrapper: HTMLElement) {
   const anchorRect = anchor.getBoundingClientRect();
 
-  expect(wrapper.style.position).toBe('fixed');
-  expect(wrapper.style.insetBlockStart).toBe('unset');
+  expect(wrapper.style.position).toBe("fixed");
+  expect(wrapper.style.insetBlockStart).toBe("unset");
   expectCloseTo(parseFloat(wrapper.style.insetBlockEnd), window.innerHeight - anchorRect.top);
 }
 
@@ -66,13 +67,13 @@ export function expectInlineStartPosition(anchor: HTMLElement, wrapper: HTMLElem
   const anchorRect = anchor.getBoundingClientRect();
 
   expectCloseTo(parseFloat(wrapper.style.insetInlineStart), anchorRect.left);
-  expect(wrapper.style.insetInlineEnd).toBe('unset');
+  expect(wrapper.style.insetInlineEnd).toBe("unset");
 }
 
 export function expectInlineEndPosition(anchor: HTMLElement, wrapper: HTMLElement) {
   const anchorRect = anchor.getBoundingClientRect();
 
-  expect(wrapper.style.insetInlineStart).toBe('unset');
+  expect(wrapper.style.insetInlineStart).toBe("unset");
   expectCloseTo(parseFloat(wrapper.style.insetInlineEnd), window.innerWidth - anchorRect.right);
 }
 
@@ -101,13 +102,13 @@ export function expectInlineCenterAfterPosition(anchor: HTMLElement, wrapper: HT
   const expected = anchorRect.left + anchorRect.width / 2;
 
   expectCloseTo(parseFloat(wrapper.style.insetInlineStart), expected);
-  expect(wrapper.style.insetInlineEnd).toBe('unset');
+  expect(wrapper.style.insetInlineEnd).toBe("unset");
 }
 
 export function expectInlineCenterBeforePosition(anchor: HTMLElement, wrapper: HTMLElement) {
   const anchorRect = anchor.getBoundingClientRect();
   const expected = window.innerWidth - anchorRect.left - anchorRect.width / 2;
 
-  expect(wrapper.style.insetInlineStart).toBe('unset');
+  expect(wrapper.style.insetInlineStart).toBe("unset");
   expectCloseTo(parseFloat(wrapper.style.insetInlineEnd), expected);
 }

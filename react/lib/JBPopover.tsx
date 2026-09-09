@@ -1,58 +1,70 @@
-'use client';
-// biome-ignore lint/style/useImportType: <we need React import for some intra>
-import React, { useEffect, useImperativeHandle, useRef } from 'react';
-import 'jb-popover';
-// eslint-disable-next-line no-duplicate-imports
-import type { JBPopoverWebComponent, PositionArea } from 'jb-popover';
-import { useEvents, type EventProps } from './events-hook.js';
-import type { JBElementStandardProps } from 'jb-core/react';
-import './module-declaration.js';
+"use client";
+// biome-ignore lint/style/useImportType: This package uses the classic JSX transform.
+import React from "react";
+import { useEffect, useImperativeHandle, useRef } from "react";
+import "jb-popover";
+import type { JBPopoverWebComponent, PositionArea } from "jb-popover";
+import { useEvents, type EventProps } from "./events-hook.js";
+import type { JBElementStandardProps } from "jb-core/react";
+import "./module-declaration.js";
+
 export const JBPopover = (props: Props) => {
   const element = useRef<JBPopoverWebComponent>(null);
-  const { isOpen, anchor, children, onClose, onInit, ref, onLoad, overflowDom, overflowHandler, positionArea, ...otherProps } = props;
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <we need element to watch>
-  useImperativeHandle(
+  const lastAnchor = useRef<HTMLElement | null>(null);
+  const {
+    isOpen,
+    anchor,
+    children,
+    onClose,
+    onBeforeClose,
+    onClosed,
+    onUrlOpen,
+    onInit,
+    onLoad,
     ref,
-    () => (element?.current ?? undefined),
-    [element],
-  );
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <we need to react to ref>
-  useEffect(() => {
-    if (isOpen === true) {
-      element.current?.open();
-    } else {
-      element.current?.close();
-    }
-  }, [isOpen, element.current]);
-
-  useEffect(() => {
-    if (element.current && positionArea) {
-      element.current.positionArea = positionArea;
-    }
-  }, [positionArea, element.current]);
+    swipeToClose = true,
+    dragFromContent = false,
+    autoPlacement = true,
+    modal = "auto",
+    closeOnEscape = true,
+    restoreFocus = false,
+    autoCloseOnBackgroundClick = true,
+    overflowDom,
+    overflowHandler = "NONE",
+    positionArea,
+    ...otherProps
+  } = props;
+  const inline = positionArea?.inline ?? "start";
+  const block = positionArea?.block ?? "after";
+  useImperativeHandle(ref, () => element.current!, []);
+  useEvents(element, { onClose, onBeforeClose, onClosed, onUrlOpen, onInit, onLoad });
 
   useEffect(() => {
-    if (element.current && overflowHandler) {
-      element.current.overflowHandler = overflowHandler;
-    }
-  }, [overflowHandler, element.current]);
+    if (!element.current) return;
+    Object.assign(element.current, { swipeToClose, dragFromContent, autoPlacement, modal, closeOnEscape, restoreFocus, autoCloseOnBackgroundClick, overflowHandler });
+    element.current.overflowDom = overflowDom ?? null;
+    element.current.positionArea = { inline, block };
+  }, [swipeToClose, dragFromContent, autoPlacement, modal, closeOnEscape, restoreFocus, autoCloseOnBackgroundClick, overflowHandler, overflowDom, inline, block]);
 
+  // A stable ref object can point to a different DOM element after a render.
   useEffect(() => {
-    if (element.current) {
-      element.current.overflowDom = overflowDom ?? null;
-    }
-  }, [overflowDom, element.current]);
-
+    const target = anchor?.current ?? null;
+    if (lastAnchor.current === target) return;
+    lastAnchor.current = target;
+    if (target) element.current?.bindTarget(target);
+    else element.current?.unBindTarget();
+  });
   useEffect(() => {
-    if (anchor?.current) {
-      element.current?.bindTarget(anchor.current)
-    }
-    return (() => element.current?.unBindTarget())
-  }, [anchor])
-
-  useEvents(element, { onClose, onInit, onLoad });
+    const component = element.current;
+    return () => {
+      component?.unBindTarget();
+      lastAnchor.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (isOpen) element.current?.open();
+    else element.current?.close();
+  }, [isOpen]);
 
   return (
     <jb-popover ref={element} {...otherProps}>
@@ -61,14 +73,21 @@ export const JBPopover = (props: Props) => {
   );
 };
 
-type PopoverProps = EventProps & React.PropsWithChildren<{
-  isOpen?: boolean,
-  anchor?: React.RefObject<HTMLElement | null>,
-  positionArea?:Partial<PositionArea>,
-  overflowHandler?: "NONE" | "SLIDE",
-  overflowDom?: HTMLElement | null,
-  ref?: React.ForwardedRef<JBPopoverWebComponent | null | undefined>
-}>
-export type Props = PopoverProps & JBElementStandardProps<JBPopoverWebComponent, keyof PopoverProps>
-
+type PopoverProps = EventProps &
+  React.PropsWithChildren<{
+    isOpen?: boolean;
+    swipeToClose?: boolean;
+    dragFromContent?: boolean;
+    autoPlacement?: boolean;
+    modal?: boolean | "auto";
+    closeOnEscape?: boolean;
+    restoreFocus?: boolean;
+    autoCloseOnBackgroundClick?: boolean;
+    anchor?: React.RefObject<HTMLElement | null>;
+    positionArea?: Partial<PositionArea>;
+    overflowHandler?: "NONE" | "SLIDE";
+    overflowDom?: HTMLElement | null;
+    ref?: React.ForwardedRef<JBPopoverWebComponent | null | undefined>;
+  }>;
+export type Props = PopoverProps & JBElementStandardProps<JBPopoverWebComponent, keyof PopoverProps>;
 JBPopover.displayName = "JBPopover";

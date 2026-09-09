@@ -1,1 +1,1 @@
-export * from './dist/JBPopover.js';
+export * from "./dist/JBPopover.js";

@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Responsive popover web component for floating content next to an anchor element on desktop and showing it as a bottom sheet on mobile.",
+          "description": "Responsive anchored desktop popover, centered tablet panel, and mobile bottom sheet with optional touch dismissal at viewport widths up to 40rem.",
           "name": "JBPopoverWebComponent",
           "tagName": "jb-popover",
           "customElement": true,
@@ -29,13 +29,20 @@
               "type": {
                 "text": "string"
               }
+            },
+            {
+              "name": "aria-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible label applied to the internal dialog when modal behavior is active."
             }
           ],
           "members": [
             {
               "kind": "field",
               "name": "isOpen",
-              "description": "Current open state.",
+              "description": "True until dismissal animation finishes; closed reports completion.",
               "type": {
                 "text": "boolean"
               },
@@ -83,6 +90,85 @@
                 "text": "symbol"
               },
               "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "swipeToClose",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enable downward touch dismissal from the backdrop or mobile bottom-sheet handle and, when opted in, content. Applies only at widths up to 40rem. Set as a JavaScript property, not an HTML attribute."
+            },
+            {
+              "kind": "field",
+              "name": "dragFromContent",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt in to downward gestures starting in content. Scrollable ancestors must already be at the top when touch starts; scrolling to the top requires a new gesture. Interactive controls, horizontal gestures, and regions marked data-jb-popover-no-drag are excluded. Requires swipeToClose."
+            },
+            {
+              "kind": "field",
+              "name": "autoPlacement",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Flip and shift desktop placement inside the viewport; false requests exact alignment."
+            },
+            {
+              "kind": "field",
+              "name": "modal",
+              "type": {
+                "text": "boolean | 'auto'"
+              },
+              "default": "'auto'",
+              "description": "Auto enables modal focus containment, inert background, and scroll locking on mobile/tablet. Set false for non-modal pickers or true for modal desktop popovers."
+            },
+            {
+              "kind": "field",
+              "name": "closeOnEscape",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allow Escape to request dismissal of the topmost popover."
+            },
+            {
+              "kind": "field",
+              "name": "restoreFocus",
+              "type": { "text": "boolean" },
+              "default": "false",
+              "description": "Opt in to restoring the previously focused element on close. Leave disabled for triggers that open on focus."
+            },
+            {
+              "kind": "field",
+              "name": "autoCloseOnBackgroundClick",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Automatically close after an allowed backdrop click request."
+            },
+            {
+              "kind": "field",
+              "name": "isMobileMode",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true,
+              "description": "True at widths up to 48rem, including tablets."
+            },
+            {
+              "kind": "field",
+              "name": "isBottomSheet",
+              "type": {
+                "text": "boolean"
+              },
+              "readonly": true,
+              "description": "True at widths up to 40rem."
             }
           ],
           "methods": [
@@ -92,11 +178,11 @@
             },
             {
               "name": "close",
-              "description": "Closes the popover and removes anchor observers."
+              "description": "Animate dismissal, release focus/scroll/history ownership, and emit closed on completion. Programmatic calls bypass close-request events."
             },
             {
               "name": "bindTarget",
-              "description": "Binds the popover to an anchor element and positions it with fixed positioning on desktop."
+              "description": "Bind or replace the desktop anchor, restarting size and scroll observation when open."
             },
             {
               "name": "unBindTarget",
@@ -122,7 +208,24 @@
             },
             {
               "name": "close",
-              "description": "Dispatched for backdrop clicks and mobile browser-back close attempts. detail.eventType can be BACKGROUND_CLICK, HISTORY_BACK_EVENT, OUTSIDE_CLICK, or CLOSE_BUTTON_CLICK."
+              "description": "Cancelable bubbling/composed swipe, backdrop, or Escape request after before-close. HISTORY_BACK_EVENT is a notification; use closed for animation completion.",
+              "type": {
+                "text": "CustomEvent<{ eventType: JBPopoverCloseEventType }>"
+              }
+            },
+            {
+              "name": "before-close",
+              "description": "Cancelable bubbling/composed request for SWIPE_DOWN, BACKGROUND_CLICK, or ESCAPE_KEY. preventDefault keeps the popover open.",
+              "type": {
+                "text": "CustomEvent<{ eventType: 'SWIPE_DOWN' | 'BACKGROUND_CLICK' | 'ESCAPE_KEY' }>"
+              }
+            },
+            {
+              "name": "closed",
+              "description": "Bubbling/composed completion event after any close animation. isOpen is now false; focus and scroll state have been restored.",
+              "type": {
+                "text": "CustomEvent"
+              }
             }
           ],
           "slots": [
@@ -135,6 +238,14 @@
             {
               "name": "content",
               "description": "The popover content wrapper."
+            },
+            {
+              "name": "drag-handle",
+              "description": "Mobile bottom-sheet touch handle."
+            },
+            {
+              "name": "backdrop",
+              "description": "Mobile and tablet overlay backdrop. Owns background color, blur, and opacity; supports backdrop clicks and mobile swipe gestures."
             }
           ],
           "cssProperties": [
@@ -169,6 +280,10 @@
             {
               "name": "--jb-popover-box-shadow",
               "description": "Box shadow of the popover content wrapper."
+            },
+            {
+              "name": "--jb-popover-handle-color",
+              "description": "Color of the bottom-sheet handle."
             }
           ]
         }
