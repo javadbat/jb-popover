@@ -118,7 +118,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
     this.dispatchEvent(new CustomEvent("load"));
   }
   callOnInitEvent() {
-    this.dispatchEvent(new CustomEvent("init"));
+    this.dispatchEvent(new CustomEvent("init", { composed: false }));
   }
   initWebComponent() {
     const shadow = this.attachShadow({ mode: "open", clonable: true, serializable: true });
