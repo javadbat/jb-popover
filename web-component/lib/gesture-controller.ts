@@ -63,6 +63,9 @@ export class GestureController {
     this.#gesture = null;
   }
 
+  /**
+   * Put everything in Normal (cancel dragging animation and popover back to position)
+   */
   reset() {
     this.#endGesture();
     this.#generation++;
@@ -95,7 +98,7 @@ export class GestureController {
       for (const node of path) {
         if (node === this.#content) break;
         if (!(node instanceof Element)) continue;
-        if (node.matches('input, textarea, select, button, a, [contenteditable]:not([contenteditable="false"]), [data-jb-popover-no-drag]')) return;
+        if (node.matches('input, textarea, select, button, a, [contenteditable]:not([contenteditable="false"]), [data-jb-popover-no-drag]') || (node.constructor as any)?.formAssociated) return;
         if (node.scrollHeight > node.clientHeight && node.scrollTop > 0) return;
       }
     }
@@ -161,7 +164,9 @@ export class GestureController {
       if (this.#dragOffset > 0) this.#settle(false);
       return;
     }
+    // detect fast short swipe
     const flick = event.timeStamp - gesture.time < 100 && gesture.velocity > 0.5 && this.#dragOffset > 24;
+
     const dismiss = event.type !== "touchcancel" && (this.#dragOffset > this.#height * 0.3 || flick);
     if (dismiss && this.#requestClose()) this.#component.close();
     else if (this.#component.isOpen && !this.#settling) this.#settle(false);
@@ -175,6 +180,9 @@ export class GestureController {
     this.#backdrop.style.transition = "none";
     this.#backdrop.style.opacity = opacity;
   }
+  /**
+   * Run animation and settle our doms to their final destination if closing lead to closed state if not back to first position
+   */
   #settle(closing: boolean) {
     this.#endGesture();
     this.#settling = true;

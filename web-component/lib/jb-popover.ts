@@ -161,7 +161,7 @@ export class JBPopoverWebComponent extends JBBaseComponent {
   };
   #requestClose(type: "BACKGROUND_CLICK" | "SWIPE_DOWN" | "ESCAPE_KEY") {
     if (this.#gestureController.isClosing) return false;
-    if (!this.dispatchEvent(new CustomEvent("before-close", { bubbles: true, composed: true, cancelable: true, detail: { eventType: type } }))) return false;
+    if (!this.dispatchEvent(new CustomEvent("cancel", { bubbles: true, composed: true, cancelable: true, detail: { eventType: type } }))) return false;
     return this.#dispatchCloseEvent(type);
   }
   #dispatchCloseEvent(type: JBPopoverCloseEventType) {

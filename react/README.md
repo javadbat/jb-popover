@@ -53,11 +53,11 @@ function Example() {
 | `onLoad` | `load` | Connection started; can occur before React effects attach. |
 | `onInit` | `init` | Connection initialization completed; can occur before React effects attach. |
 | `onUrlOpen` | `url-open` | Opening from a matching hash; initial connection can precede effect attachment. |
-| `onBeforeClose` | `before-close` | Cancelable swipe/backdrop/Escape request. |
+| `onCancel` | `cancel` | Cancelable swipe/backdrop/Escape request. |
 | `onClose` | `close` | Allowed dismissal request, or a browser-back notification. |
 | `onClosed` | `closed` | The exit animation finished and the element's `isOpen` is false. |
 
-`onBeforeClose` and `onClose` use `JBPopoverCloseEvent`. `event.detail.eventType` identifies `SWIPE_DOWN`, `BACKGROUND_CLICK`, `ESCAPE_KEY`, or (onClose only) `HISTORY_BACK_EVENT`. `OUTSIDE_CLICK` and `CLOSE_BUTTON_CLICK` are reserved legacy reasons.
+`onCancel` and `onClose` use `JBPopoverCloseEvent`. `event.detail.eventType` identifies `SWIPE_DOWN`, `BACKGROUND_CLICK`, `ESCAPE_KEY`, or (onClose only) `HISTORY_BACK_EVENT`. `OUTSIDE_CLICK` and `CLOSE_BUTTON_CLICK` are reserved legacy reasons.
 
 ## Controlled open state
 
@@ -74,7 +74,7 @@ Use `onClose` to synchronize requested state after user dismissal. Keep the comp
 
 ```tsx
 <JBPopover isOpen={open} aria-label="Edit filters"
-  onBeforeClose={event => {
+  onCancel={event => {
     if (hasUnsavedChanges) event.preventDefault();
     console.log(event.detail.eventType);
   }}
@@ -83,7 +83,7 @@ Use `onClose` to synchronize requested state after user dismissal. Keep the comp
 </JBPopover>
 ```
 
-Cancellation must be synchronous. For asynchronous confirmation, prevent first and set `isOpen` to false after confirmation. Browser-back is not cancelable through `onBeforeClose`.
+Cancellation must be synchronous. For asynchronous confirmation, prevent first and set `isOpen` to false after confirmation. Browser-back is not cancelable through `onCancel`.
 
 ## Anchor position
 

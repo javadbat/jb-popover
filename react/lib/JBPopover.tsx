@@ -16,7 +16,7 @@ export const JBPopover = (props: Props) => {
     anchor,
     children,
     onClose,
-    onBeforeClose,
+    onCancel,
     onClosed,
     onUrlOpen,
     onInit,
@@ -37,7 +37,7 @@ export const JBPopover = (props: Props) => {
   const inline = positionArea?.inline ?? "start";
   const block = positionArea?.block ?? "after";
   useImperativeHandle(ref, () => element.current!, []);
-  useEvents(element, { onClose, onBeforeClose, onClosed, onUrlOpen, onInit, onLoad });
+  useEvents(element, { onClose, onCancel, onClosed, onUrlOpen, onInit, onLoad });
 
   useEffect(() => {
     if (!element.current) return;

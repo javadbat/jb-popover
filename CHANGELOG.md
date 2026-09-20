@@ -20,8 +20,8 @@ rrt# Changelog
 - Mobile bottom sheets support downward swipe dismissal from the backdrop or a visible handle, enabled by default with `swipeToClose`. Tablet centered panels and desktop popovers do not support dragging.f
 - Added optional `dragFromContent` (default `false`), with scroll-boundary checks and `data-jb-popover-no-drag` exclusions for calendars, swipers, and other gesture controls.
 - Added finger tracking, backdrop fading, distance-or-flick dismissal, animated return for incomplete or prevented gestures, and reduced-motion support.
-- Added cancelable `before-close` requests for swipe and backdrop dismissal. `detail.eventType` identifies `SWIPE_DOWN` or `BACKGROUND_CLICK`.
-- Added React `swipeToClose`, `dragFromContent`, and `onBeforeClose` props, plus exported `JBPopoverCloseEvent` and `JBPopoverCloseEventType` types.
+- Added cancelable `cancel` requests for swipe and backdrop dismissal. `detail.eventType` identifies `SWIPE_DOWN` or `BACKGROUND_CLICK`.
+- Added React `swipeToClose`, `dragFromContent`, and `onCancel` props, plus exported `JBPopoverCloseEvent` and `JBPopoverCloseEventType` types.
 - Added the `drag-handle` CSS part and `--jb-popover-handle-color` styling variable.
 
 ### Changed

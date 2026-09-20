@@ -208,13 +208,13 @@
             },
             {
               "name": "close",
-              "description": "Cancelable bubbling/composed swipe, backdrop, or Escape request after before-close. HISTORY_BACK_EVENT is a notification; use closed for animation completion.",
+              "description": "Cancelable bubbling/composed swipe, backdrop, or Escape request after cancel. HISTORY_BACK_EVENT is a notification; use closed for animation completion.",
               "type": {
                 "text": "CustomEvent<{ eventType: JBPopoverCloseEventType }>"
               }
             },
             {
-              "name": "before-close",
+              "name": "cancel",
               "description": "Cancelable bubbling/composed request for SWIPE_DOWN, BACKGROUND_CLICK, or ESCAPE_KEY. preventDefault keeps the popover open.",
               "type": {
                 "text": "CustomEvent<{ eventType: 'SWIPE_DOWN' | 'BACKGROUND_CLICK' | 'ESCAPE_KEY' }>"

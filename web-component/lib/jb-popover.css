@@ -31,7 +31,7 @@
         position: fixed;
         width: var(--viewport-width, 100vw);
         height: var(--viewport-height, 100dvh);
-
+        
         display: grid;
         grid-template-rows: 1fr auto;
         grid-template-columns: 1fr;
@@ -45,14 +45,19 @@
         width: var(--viewport-width, 100vw);
         height: var(--viewport-height, 100dvh);
         margin: 0;
-
+        
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
         grid-template-areas: "content";
         overflow: hidden;
     }
-
+    @media(--jb-viewport-md-to) {
+        inset-block-start: var(--viewport-top, 0px);
+        inset-inline-start: auto;
+        left: var(--viewport-left, 0px);
+        right: auto;
+    }
     .popover-content {
         background: var(--bg-color);
         border-radius: var(--border-radius);
@@ -77,17 +82,27 @@
             padding-bottom: max(2rem, env(safe-area-inset-bottom));
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
+            padding-block-start: 0;
+            max-height: var(--viewport-height, 100dvh);
+            grid-template-rows: auto minmax(0, 1fr);
+            
             @starting-style {
                 transform: translateY(100%);
             }
             &> slot {
                 width: 100%;
+                display: flex;
+                justify-content: center;
                 min-height: 0;
                 max-height: 100%;
-                display: block;
                 overflow: auto;
                 overscroll-behavior: contain;
             }
+        }
+        @media (--jb-viewport-sm-from) {
+            opacity: 1;
+            transition: opacity 0.2s ease;
+            @starting-style { opacity: 0; }
         }
         @media (--jb-viewport-sm-from) and (--jb-viewport-md-to) {
             padding: 2rem;
@@ -96,15 +111,38 @@
             align-self: center;
             width: max-content;
             max-width: calc(100vw - 2rem);
-            max-height: calc(100dvh - 2rem);
+            max-height: calc(var(--viewport-height, 100dvh) - 2rem);
+            overflow: auto;
+        }
+        @media (--jb-viewport-md-to) {
+            max-width: 100%;
+            overscroll-behavior: contain;
+            position: relative;
+        }
+
+        .drag-handle { 
+            display: none;
+            @media(--jb-viewport-sm-to){
+                display: grid;
+                place-items: center;
+                width: 100%;
+                height: 2rem;
+                touch-action: none;
+                user-select: none;
+                span {
+                    width: 2.5rem;
+                    height: 0.25rem;
+                    border-radius: 999px;
+                    background: var(--jb-popover-handle-color, oklch(from var(--jb-surface-inverse) l c h / 0.3));
+                }
+            }
         }
     }
 }
 
-.popover-backdrop { display: none; }
-.drag-handle { display: none; }
-@media (--jb-viewport-md-to) {
-    .popover-backdrop {
+.popover-backdrop { 
+    display: none;
+    @media (--jb-viewport-md-to) {
         display: block;
         position: absolute;
         inset: 0;
@@ -114,62 +152,26 @@
         transition: opacity 0.2s ease;
         @starting-style { opacity: 0; }
     }
-    .popover-content { position: relative; }
+    @media (--jb-viewport-sm-to) {
+        touch-action: none;
+    }
 }
+
 /*TODO: move @media styles to tree style structure (AI put new styles kike this and they are not organized)*/
 @media (--jb-viewport-sm-to) {
-    .popover-backdrop { touch-action: none; }
     .jb-popover-web-component .popover-content {
-        padding-block-start: 0;
-        max-height: var(--viewport-height, 100dvh);
-        grid-template-rows: auto minmax(0, 1fr);
-    }
-    .drag-handle {
-        display: grid;
-        place-items: center;
-        width: 100%;
-        height: 2rem;
-        touch-action: none;
-        user-select: none;
-    }
-    .drag-handle span {
-        width: 2.5rem;
-        height: 0.25rem;
-        border-radius: 999px;
-        background: var(--jb-popover-handle-color, oklch(from var(--jb-surface-inverse) l c h / 0.3));
+
     }
 }
-@media (--jb-viewport-sm-from) {
-    .popover-content {
-        opacity: 1;
-        transition: opacity 0.2s ease;
-        @starting-style { opacity: 0; }
-    }
-}
+
 @media (prefers-reduced-motion: reduce) {
     .popover-backdrop,
     .jb-popover-web-component .popover-content { transition: none; }
 }
 
-@media (--jb-viewport-md-to) {
-    .jb-popover-web-component {
-        inset-block-start: var(--viewport-top, 0px);
-        inset-inline-start: auto;
-        left: var(--viewport-left, 0px);
-        right: auto;
-    }
-    .popover-content {
-        max-width: 100%;
-        overscroll-behavior: contain;
-    }
-}
 
-@media (--jb-viewport-sm-from) and (--jb-viewport-md-to) {
-    .jb-popover-web-component .popover-content {
-        max-height: calc(var(--viewport-height, 100dvh) - 2rem);
-        overflow: auto;
-    }
-}
+
+
 
 @media (--jb-viewport-md-from) {
     .jb-popover-web-component.--auto-placement .popover-content {

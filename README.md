@@ -74,7 +74,7 @@ Options are JavaScript properties, not HTML attributes, unless listed as attribu
 | `load` | none | Component connected, before internal listeners are registered. |
 | `init` | none | Connection initialization completed. |
 | `url-open` | none | The current URL hash caused opening. |
-| `before-close` | `{ eventType }` | Cancelable request for swipe, backdrop, or Escape dismissal. |
+| `cancel` | `{ eventType }` | Cancelable request for swipe, backdrop, or Escape dismissal. |
 | `close` | `{ eventType }` | Follows an allowed request; also cancelable for swipe/backdrop/Escape. Browser-back dispatches a notification. |
 | `closed` | none | Non-cancelable completion event after any animated close, including programmatic close. |
 
@@ -93,7 +93,7 @@ Dismissal events bubble and cross shadow boundaries. The `close` event is a requ
 Use `event.preventDefault()` synchronously to reject a request. A rejected swipe returns smoothly. For asynchronous confirmation, prevent first and call `close()` after confirmation.
 
 ```js
-popover.addEventListener('before-close', event => {
+popover.addEventListener('cancel', event => {
   if (hasUnsavedChanges) event.preventDefault();
   console.log(event.detail.eventType);
 });
@@ -153,7 +153,7 @@ The sheet accounts for safe-area insets and visual-viewport height/offset change
 
 An `id` enables a history entry when an open popover enters mobile/tablet mode. Router state fields are preserved. Once created, the entry remains owned through a resize back to desktop, so browser back still dismisses it. An existing matching deep link is not pushed again.
 
-Closing consumes only the current entry owned by this instance. Disconnecting restores the previous URL/state for a current owned entry without navigating away. Avoid assigning the same id to multiple popovers. Browser-back remains a notification and does not use `before-close`.
+Closing consumes only the current entry owned by this instance. Disconnecting restores the previous URL/state for a current owned entry without navigating away. Avoid assigning the same id to multiple popovers. Browser-back remains a notification and does not use `cancel`.
 
 ## CSS parts and variables
 

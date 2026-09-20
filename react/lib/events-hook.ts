@@ -14,7 +14,7 @@ export type EventProps = {
   onClose?: (e: JBPopoverCloseEvent) => void;
   onClosed?: (e: JBPopoverEventType<CustomEvent>) => void;
   onUrlOpen?: (e: JBPopoverEventType<CustomEvent>) => void;
-  onBeforeClose?: (e: JBPopoverCloseEvent) => void;
+  onCancel?: (e: JBPopoverCloseEvent) => void;
 };
 export function useEvents(element: RefObject<JBPopoverWebComponent | null>, props: EventProps) {
   useEvent(element, "load", props.onLoad, true);
@@ -22,5 +22,5 @@ export function useEvents(element: RefObject<JBPopoverWebComponent | null>, prop
   useEvent(element, "close", props.onClose);
   useEvent(element, "closed", props.onClosed);
   useEvent(element, "url-open", props.onUrlOpen);
-  useEvent(element, "before-close", props.onBeforeClose);
+  useEvent(element, "cancel", props.onCancel);
 }
