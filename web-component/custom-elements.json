@@ -262,6 +262,10 @@
               "description": "Border radius of the content wrapper."
             },
             {
+              "name": "--jb-popover-corner-shape",
+              "description": "Corner shape of the content wrapper; defaults to the global `--jb-corner-shape` token."
+            },
+            {
               "name": "--jb-popover-top",
               "description": "Top position in desktop mode when not bound to an anchor."
             },

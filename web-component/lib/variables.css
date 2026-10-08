@@ -1,6 +1,7 @@
 :host{
   /* Size */
   --border-radius:var(--jb-popover-border-radius, var(--jb-radius-xl));
+  --content-corner-shape: var(--jb-popover-corner-shape, var(--jb-corner-shape, round));
   /*padding also affect fixed position item (positioned by js in bindTarget)*/
   --margin-top:var(--jb-popover-margin-top,0);
   --inset-block-start: var(--jb-popover-top, 0);

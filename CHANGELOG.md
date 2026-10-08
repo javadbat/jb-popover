@@ -1,5 +1,11 @@
 rrt# Changelog
 
+## [2.1.0] - 2026-10-08
+
+### Added
+
+- Support the global `--jb-corner-shape` token for the popover content, with a `--jb-popover-corner-shape` override.
+
 ## [2.0.0] - 2026-09-09
 
 ### Fixed

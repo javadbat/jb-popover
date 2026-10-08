@@ -170,6 +170,7 @@ Closing consumes only the current entry owned by this instance. Disconnecting re
 | `--jb-popover-back-bg-color` | Backdrop background. |
 | `--jb-popover-handle-color` | Drag indicator color. |
 | `--jb-popover-border-radius` | Content corner radius. |
+| `--jb-popover-corner-shape` | Content corner shape; defaults to the global `--jb-corner-shape` token. |
 | `--jb-popover-padding` | Desktop content padding. |
 | `--jb-popover-box-shadow` | Content shadow. |
 | `--jb-popover-top` | Unanchored desktop top position. |
