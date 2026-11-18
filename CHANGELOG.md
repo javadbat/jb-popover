@@ -1,5 +1,10 @@
 rrt# Changelog
 
+## [2.1.1] - 2026-11-18
+### Fixed
+- fix flex container direction bug.
+- fix area hidden warning for handle lose focused elements 
+
 ## [2.1.0] - 2026-10-08
 
 ### Added
